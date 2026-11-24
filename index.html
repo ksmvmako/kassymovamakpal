@@ -455,6 +455,55 @@
     @media(max-width:760px){nav{gap:6px}nav a{padding:7px 9px;font-size:.72rem}.topbar-inner{align-items:center}.alert-scene{height:285px}.hero{padding-top:35px}}
     @media(prefers-reduced-motion:reduce){.alert-scene.active .signal-ring{animation:none}.person .head,.person .body{transition:none}}
 
+
+    /* BalaSafe search-themed cursor: only on the illustrated opening screen. */
+    .search-cursor {
+      position: fixed; left: 0; top: 0;
+      width: 58px; height: 58px;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0;
+      transition: opacity .16s ease;
+      filter: drop-shadow(0 3px 9px rgba(0,0,0,.35));
+    }
+    .search-cursor.visible { opacity: 1; }
+    .search-cursor svg {display:block;width:100%;height:100%;}
+    @media (hover:hover) and (pointer:fine) {
+      body.cursor-ready .hero, body.cursor-ready .hero * { cursor: none !important; }
+    }
+    @media (hover:none), (pointer:coarse), (prefers-reduced-motion:reduce) {
+      .search-cursor { display:none !important; }
+      body.cursor-ready .hero, body.cursor-ready .hero * { cursor:auto !important; }
+      body.cursor-ready .hero button, body.cursor-ready .hero a { cursor:pointer !important; }
+    }
+
+
+    /* Section 1: visually explain fragmented alert distribution instead of a misleading bar chart. */
+    .alert-fragmentation{margin-top:26px;border-radius:26px;padding:clamp(20px,3vw,36px);background:linear-gradient(145deg,#fffefa 0%,#f7f5f0 100%);border:1px solid #e8e1d6;box-shadow:0 12px 36px rgba(34,41,54,.055)}
+    .fragmentation-eyebrow{font-size:.73rem;font-weight:850;letter-spacing:.15em;color:#9a6234;margin-bottom:9px}
+    .fragmentation-header h3{font-size:clamp(1.5rem,2.7vw,2.15rem);line-height:1.15;letter-spacing:-.025em;margin:0 0 12px}
+    .fragmentation-header p{color:#626775;max-width:770px;margin:0 0 28px}
+    .feed-flow{display:grid;grid-template-columns:minmax(180px,.7fr) 65px minmax(280px,1.5fr);align-items:center;gap:16px}
+    .origin-card{min-height:168px;background:#fff;border:1px solid #eadcc6;border-radius:20px;display:flex;align-items:center;justify-content:center;gap:8px;flex-direction:column;padding:18px;text-align:center;box-shadow:0 8px 25px #2d34400a}
+    .origin-symbol{height:49px;width:49px;border-radius:16px;display:grid;place-items:center;background:#f8d9a8;color:#6c441f;font-weight:900;font-size:1.8rem}
+    .origin-card strong{font-size:1rem}.origin-card span{font-size:.78rem;color:#6f7784}
+    .flow-connector{position:relative;display:flex;flex-direction:column;gap:20px;justify-content:center;height:140px}
+    .flow-connector span{height:2px;background:linear-gradient(90deg,#d5ac68,#ded9d0);position:relative}
+    .flow-connector span::after{content:'›';position:absolute;right:-2px;top:-14px;font-size:22px;color:#b28c54}
+    .feeds{display:grid;gap:10px}
+    .feed-card{display:flex;align-items:center;gap:13px;background:#fff;border:1px solid #e9e4da;border-radius:15px;padding:13px 15px;min-width:0}
+    .feed-card>div:nth-child(2){flex:1;min-width:0}.feed-card strong{display:block;font-size:.95rem}.feed-card span:not(.feed-tag){display:block;font-size:.79rem;color:#707787}
+    .feed-icon{flex-shrink:0;width:41px;height:41px;border-radius:13px;display:grid;place-items:center;font-weight:800;font-size:23px}
+    .telegram{background:#e6f5fc;color:#1b91be}.instagram{background:#f9eafa;color:#ae528b}.org{background:#e9efe7;color:#4c7b52}
+    .feed-tag{white-space:nowrap;background:#f8f1e8;color:#8a6744;font-size:.71rem;font-weight:700;padding:5px 9px;border-radius:999px}
+    .fragmentation-bottom{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:24px}
+    .gap-box{display:flex;gap:13px;align-items:flex-start;padding:17px;background:#faf0e9;border:1px solid #efd9c8;border-radius:17px}
+    .gap-icon{width:35px;height:35px;border-radius:50%;display:grid;place-items:center;background:#f0d6ba;color:#87502b;font-weight:800;font-size:19px;flex-shrink:0}
+    .gap-box strong{font-size:.94rem}.gap-box p{margin:4px 0 0;font-size:.83rem;line-height:1.5;color:#6c6570}
+    .fragmentation-caveat{margin:19px 0 0;font-size:.78rem;color:#6c7380;line-height:1.6}
+    @media(max-width:740px){.feed-flow{grid-template-columns:1fr;gap:10px}.flow-connector{height:25px;flex-direction:row;align-items:center}.flow-connector span{width:2px;height:20px}.flow-connector span::after{content:''}.fragmentation-bottom{grid-template-columns:1fr}.feed-tag{display:none}}
+
   </style>
 </head>
 <body>
@@ -539,10 +588,10 @@
               Importantly, Kazakhstani law-enforcement guidance states that families do <strong>not</strong> need to wait 24 hours before reporting a child missing. In principle, the police should begin responding immediately. Yet immediate reporting does not automatically guarantee broad public awareness.
             </p>
             <div class="pull-quote">
-              The core problem of this project is not simply that children go missing. It is that information about active searches may remain fragmented across police channels, volunteer networks, and social media — limiting how quickly ordinary residents can become useful participants in the search.
+              The question is not whether Kazakhstan has search organizations — it does. It is whether residents can find one timely, clearly verified public alert and know how to help safely, rather than relying on scattered posts and forwarded screenshots.
             </div>
             <p>
-              Volunteer groups such as LIDER.KZ already help distribute announcements and coordinate community support. But public participation still depends heavily on whether people follow the right pages, belong to the right chat groups, or happen to encounter an alert in time. This creates unequal access to urgent information.
+              Volunteer groups such as LIDER.KZ already distribute search notices, while official public guidance also describes notices shared through social-media groups. However, a notice appearing in a Telegram chat or Instagram post is not necessarily received by someone near the search area. Forwarded posts may also be missing context about whether the information is current and officially approved. Whether this creates measurable gaps in awareness is a question this project investigates, not an established national statistic.
             </p>
           </div>
 
@@ -569,27 +618,31 @@
           </div>
         </div>
 
-        <div class="card chart-card">
-          <h3 style="margin-top:0;">A small local trend: unauthorized departures of minors in Astana</h3>
-          <p style="margin-top:0; color:var(--muted);">Journalistic reporting citing Astana police data noted the following counts of minors leaving home without permission.</p>
-          <div class="bars">
-            <div class="bar-col">
-              <div class="bar-wrap"><div class="bar" style="height:100%;">308</div></div>
-              <div class="bar-label">2023</div>
+        <section class="alert-fragmentation" aria-labelledby="fragmentation-heading">
+          <div class="fragmentation-header">
+            <div class="fragmentation-eyebrow">THE PUBLIC INFORMATION GAP</div>
+            <h3 id="fragmentation-heading">One missing-child alert. Many separate feeds.</h3>
+            <p>A search notice may be shared across police communications, volunteer groups and social media. But who sees the same update — and can they tell which information is current and authorized?</p>
+          </div>
+          <div class="feed-flow">
+            <div class="origin-card">
+              <div class="origin-symbol" aria-hidden="true">!</div>
+              <strong>Verified search notice</strong>
+              <span>Authorized for public release</span>
             </div>
-            <div class="bar-col">
-              <div class="bar-wrap"><div class="bar" style="height:96.4%;">297</div></div>
-              <div class="bar-label">2024</div>
-            </div>
-            <div class="bar-col">
-              <div class="bar-wrap"><div class="bar" style="height:93.5%;">288</div></div>
-              <div class="bar-label">2025</div>
+            <div class="flow-connector" aria-hidden="true"><span></span><span></span><span></span></div>
+            <div class="feeds" aria-label="Illustrative channels carrying search notices">
+              <div class="feed-card"><div class="feed-icon telegram">↗</div><div><strong>Telegram groups</strong><span>Different chats, different audiences</span></div><span class="feed-tag">May miss</span></div>
+              <div class="feed-card"><div class="feed-icon instagram">◎</div><div><strong>Instagram posts</strong><span>Reposts can circulate independently</span></div><span class="feed-tag">Check date</span></div>
+              <div class="feed-card"><div class="feed-icon org">✳</div><div><strong>Volunteer organizations</strong><span>Search notices and local coordination</span></div><span class="feed-tag">Confirm source</span></div>
             </div>
           </div>
-          <p class="bar-note">
-            This chart shows one local category only. It should not be interpreted as a complete measure of all missing-child cases in Astana or Kazakhstan.
-          </p>
-        </div>
+          <div class="fragmentation-bottom">
+            <div class="gap-box"><span class="gap-icon" aria-hidden="true">?</span><div><strong>Can residents verify an alert?</strong><p>A screenshot or forwarded post may lack a current status or an obvious link back to its original source.</p></div></div>
+            <div class="gap-box"><span class="gap-icon" aria-hidden="true">⌖</span><div><strong>Does it reach people nearby?</strong><p>A public post is not the same as an opt-in alert delivered to residents in a relevant area.</p></div></div>
+          </div>
+          <p class="fragmentation-caveat"><strong>Evidence boundary:</strong> This is an illustrative map of communication channels, not measured reach or proof that every post is unreliable. Official eGov guidance mentions social-media groups; LIDER.KZ describes distributing and publishing search notices. In the reviewed sources, we could not verify one nationwide, publicly accessible platform that combines police-approved alerts, location-based delivery and a consistent verification trail. <a href="https://beta.egov.kz/situations/232/659?lang=ru" target="_blank" rel="noopener noreferrer">eGov</a> · <a href="https://poisk-lider.kz/" target="_blank" rel="noopener noreferrer">LIDER.KZ</a></p>
+        </section>
 
         <div class="research-question" id="research-question">
           <h3>Research Question</h3>
@@ -685,7 +738,33 @@
     </div>
   </footer>
 
+
+  <!-- Decorative magnifying-glass cursor for the hero. Not a real tracking tool. -->
+  <div class="search-cursor" id="searchCursor" aria-hidden="true">
+    <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="26" cy="25" r="20" fill="#142343" stroke="#FFC66E" stroke-width="3.5"/>
+      <circle cx="26" cy="25" r="12" fill="none" stroke="#F7D69D" stroke-width="1.3" stroke-dasharray="3 3"/>
+      <path d="M41 40 L56 56" stroke="#FFC66E" stroke-width="7" stroke-linecap="round"/>
+    </svg>
+  </div>
+
   <script>
+
+    // Follow the pointer only within the opening screen; keep ordinary cursor elsewhere.
+    const searchCursor = document.getElementById('searchCursor');
+    const heroArea = document.querySelector('.hero');
+    const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
+    if (searchCursor && heroArea && finePointer.matches) {
+      document.body.classList.add('cursor-ready');
+      heroArea.addEventListener('pointermove', (event) => {
+        searchCursor.style.left = event.clientX + 'px';
+        searchCursor.style.top = event.clientY + 'px';
+        searchCursor.classList.add('visible');
+      });
+      heroArea.addEventListener('pointerleave', () => searchCursor.classList.remove('visible'));
+      window.addEventListener('blur', () => searchCursor.classList.remove('visible'));
+    }
+
     const send = document.getElementById('sendAlert');
     const scene = document.getElementById('alertScene');
     const status = document.getElementById('sceneStatus');
