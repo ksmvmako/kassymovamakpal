@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BalaSafe KZ</title>
+  <style>
+    :root {
+      --bg: #f8f6f1;
+      --bg-soft: #fffdf9;
+      --paper: #ffffff;
+      --text: #1f2430;
+      --muted: #5d6573;
+      --accent: #b33a3a;
+      --accent-soft: #f6dede;
+      --line: #e8e1d6;
+      --gold: #d69c2f;
+      --shadow: 0 12px 35px rgba(34, 41, 54, 0.08);
+      --radius: 22px;
+      --max: 1180px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background: linear-gradient(180deg, #f8f6f1 0%, #fcfbf8 35%, #f7f4ed 100%);
+      line-height: 1.6;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .container {
+      width: min(var(--max), calc(100% - 32px));
+      margin: 0 auto;
+    }
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+      background: rgba(248, 246, 241, 0.88);
+      border-bottom: 1px solid rgba(184, 169, 146, 0.22);
+    }
+    .topbar-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 0;
+      gap: 16px;
+    }
+    .brand {
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      font-size: 1.04rem;
+    }
+    .brand small {
+      display: block;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    nav {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+    nav a {
+      color: var(--text);
+      font-size: 0.92rem;
+      font-weight: 600;
+      opacity: 0.88;
+    }
+
+    .hero {
+      padding: 52px 0 30px;
+    }
+    .eyebrow {
+      display: inline-block;
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-weight: 800;
+      color: var(--accent);
+      background: rgba(179,58,58,0.08);
+      padding: 8px 12px;
+      border-radius: 999px;
+      margin-bottom: 18px;
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 28px;
+      align-items: start;
+    }
+    h1 {
+      font-size: clamp(2.3rem, 4vw, 4.3rem);
+      line-height: 1.05;
+      margin: 0 0 18px;
+      letter-spacing: -0.03em;
+    }
+    .hero p.lead {
+      font-size: 1.12rem;
+      color: var(--muted);
+      max-width: 720px;
+      margin: 0 0 24px;
+    }
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 22px;
+    }
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 13px 18px;
+      border-radius: 999px;
+      font-weight: 700;
+      border: 1px solid transparent;
+      box-shadow: var(--shadow);
+    }
+    .button.primary {
+      background: var(--accent);
+      color: #fff;
+    }
+    .button.secondary {
+      background: #fff;
+      color: var(--text);
+      border-color: var(--line);
+    }
+    .hero-note {
+      font-size: 0.94rem;
+      color: var(--muted);
+      background: rgba(255,255,255,0.7);
+      padding: 14px 16px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      max-width: 760px;
+    }
+
+    .hero-card, .card {
+      background: rgba(255,255,255,0.84);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    .hero-card {
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-card::before {
+      content: "";
+      position: absolute;
+      inset: auto -40px -40px auto;
+      width: 180px;
+      height: 180px;
+      background: radial-gradient(circle, rgba(179,58,58,0.14), transparent 65%);
+      border-radius: 50%;
+    }
+    .hero-card h3 {
+      margin: 0 0 8px;
+      font-size: 1.15rem;
+    }
+    .hero-card p {
+      margin: 0 0 16px;
+      color: var(--muted);
+      font-size: 0.96rem;
+    }
+    .big-number {
+      font-size: 2.75rem;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      line-height: 1;
+      color: var(--accent);
+      margin: 6px 0;
+    }
+    .caption {
+      font-size: 0.88rem;
+      color: var(--muted);
+    }
+    .tile-grid {
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      gap: 8px;
+      margin: 18px 0 10px;
+    }
+    .tile {
+      aspect-ratio: 1;
+      border-radius: 10px;
+      background: var(--accent-soft);
+      border: 1px solid rgba(179,58,58,0.12);
+      position: relative;
+    }
+    .tile::after {
+      content: "";
+      position: absolute;
+      left: 50%; top: 50%;
+      width: 9px; height: 9px;
+      border-radius: 50%;
+      background: var(--accent);
+      transform: translate(-50%, -50%);
+      opacity: 0.85;
+    }
+    .mini-grid {
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      gap: 7px;
+      margin-top: 14px;
+    }
+    .mini-tile {
+      height: 16px;
+      border-radius: 999px;
+      background: #eee5d8;
+      border: 1px solid rgba(65,65,65,0.05);
+    }
+    .mini-tile.active { background: #e2b154; }
+
+    .section {
+      padding: 34px 0;
+    }
+    .section-header {
+      margin-bottom: 24px;
+    }
+    .section-tag {
+      font-size: 0.8rem;
+      letter-spacing: 0.14em;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+    h2 {
+      font-size: clamp(1.7rem, 3vw, 2.8rem);
+      line-height: 1.1;
+      margin: 0 0 12px;
+      letter-spacing: -0.02em;
+    }
+    .section-subtitle {
+      max-width: 760px;
+      color: var(--muted);
+      font-size: 1.02rem;
+    }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin: 22px 0 28px;
+    }
+    .stat-card {
+      padding: 22px;
+    }
+    .stat-label {
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+    .stat-number {
+      font-size: 2.4rem;
+      font-weight: 900;
+      line-height: 1;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+    .problem-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 22px;
+      align-items: start;
+    }
+    .text-block, .visual-block {
+      padding: 28px;
+    }
+    .text-block p { margin-top: 0; color: #38404d; }
+    .pull-quote {
+      margin: 18px 0;
+      padding: 16px 18px;
+      border-left: 4px solid var(--accent);
+      background: rgba(179,58,58,0.06);
+      border-radius: 0 16px 16px 0;
+      font-weight: 700;
+    }
+    .flow {
+      display: grid;
+      gap: 12px;
+      margin-top: 18px;
+    }
+    .flow-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 16px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+    }
+    .flow-badge {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      background: var(--accent-soft);
+      color: var(--accent);
+      flex: 0 0 auto;
+    }
+    .flow-item span { font-size: 0.95rem; }
+
+    .subcards {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+      margin-top: 24px;
+    }
+    .small-card {
+      padding: 20px;
+    }
+    .small-card h3 {
+      margin: 0 0 8px;
+      font-size: 1.08rem;
+    }
+    .small-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.96rem;
+    }
+    .chart-card {
+      padding: 24px;
+      margin-top: 22px;
+    }
+    .bars {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      align-items: end;
+      min-height: 230px;
+      margin-top: 18px;
+    }
+    .bar-col {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: center;
+    }
+    .bar-wrap {
+      width: 100%;
+      background: #f1ebdf;
+      border-radius: 18px 18px 8px 8px;
+      height: 180px;
+      display: flex;
+      align-items: flex-end;
+      overflow: hidden;
+      border: 1px solid rgba(0,0,0,0.03);
+    }
+    .bar {
+      width: 100%;
+      background: linear-gradient(180deg, #dcb163 0%, #bf8441 100%);
+      border-radius: 18px 18px 0 0;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      color: #fff;
+      font-weight: 800;
+      padding-top: 12px;
+      font-size: 1rem;
+    }
+    .bar-label { font-weight: 700; }
+    .bar-note { color: var(--muted); font-size: 0.9rem; }
+
+    .research-question {
+      padding: 28px;
+      margin-top: 24px;
+      background: linear-gradient(135deg, rgba(179,58,58,0.09), rgba(214,156,47,0.08));
+      border-radius: var(--radius);
+      border: 1px solid rgba(179,58,58,0.12);
+    }
+    .research-question h3 { margin-top: 0; }
+    .research-question p:last-child { margin-bottom: 0; }
+
+    .placeholder {
+      padding: 26px;
+      background: rgba(255,255,255,0.75);
+      border: 1px dashed #d7ccbb;
+      border-radius: var(--radius);
+      color: var(--muted);
+      margin-bottom: 18px;
+    }
+
+    footer {
+      padding: 36px 0 60px;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+    .sources li { margin-bottom: 8px; }
+
+    @media (max-width: 980px) {
+      .hero-grid, .problem-grid { grid-template-columns: 1fr; }
+      .stats-row, .subcards { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 760px) {
+      .topbar-inner { align-items: flex-start; flex-direction: column; }
+      nav { justify-content: flex-start; }
+      .tile-grid { gap: 6px; }
+      .bars { gap: 10px; }
+      .bar-note { text-align: center; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <div class="brand">
+        BalaSafe KZ
+        <small>PLS419 Final Project</small>
+      </div>
+      <nav>
+        <a href="#top">Home</a>
+        <a href="#problem">The Problem</a>
+        <a href="#data">Background & Data</a>
+        <a href="#research">Research</a>
+        <a href="#solution">AI Solution</a>
+        <a href="#costs">Costs</a>
+        <a href="#verdict">Verdict</a>
+        <a href="#ai-transparency">AI Transparency</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <div class="eyebrow">Missing Children · Kazakhstan</div>
+          <h1>A Child Goes Missing.<br>But Who Knows?</h1>
+          <p class="lead">
+            In Kazakhstan, missing-child searches are real and frequent. Yet public awareness often depends on fragmented posts, volunteer pages, or whether someone happens to see an alert in time. This project asks whether AI-assisted public alerts could help connect verified search information with the people most likely to help.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#problem">Explore the problem</a>
+            <a class="button secondary" href="#research-question">See the research question</a>
+          </div>
+          <div class="hero-note">
+            This is a research project website, not a functioning search platform. It presents an evidence-based problem analysis and a proposed AI-assisted solution for Kazakhstan.
+          </div>
+        </div>
+
+        <aside class="hero-card" aria-label="visual summary of missing children figures">
+          <h3>What does 6,000+ mean?</h3>
+          <p>Each tile below represents <strong>100 children whose whereabouts were established nationwide in 2025</strong>.</p>
+          <div class="big-number">6,000+</div>
+          <div class="tile-grid" id="tileGrid"></div>
+          <div class="caption">This figure demonstrates the scale of missing-child search activity. It does not mean that all cases were identical, nor does it show how quickly each child was found.</div>
+
+          <hr style="border:none;border-top:1px solid var(--line);margin:18px 0;">
+
+          <h3 style="margin-top:0;">Astana · January–August 2026</h3>
+          <p style="margin-bottom:10px;">About <strong>2,000 reports</strong> concerned missing minors or unauthorized departures.</p>
+          <div class="mini-grid" id="miniGrid"></div>
+          <div class="caption">Each gold bar = 100 reports. Different categories and time periods should not be directly compared.</div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section" id="problem">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-tag">01 / The Problem</div>
+          <h2>Missing-child searches are not only about police response — they are also about public awareness.</h2>
+          <p class="section-subtitle">
+            A person may be physically close to a missing child and still never know a search is taking place. This project focuses on that information gap: how search information travels, who receives it, and who never sees it at all.
+          </p>
+        </div>
+
+        <div class="stats-row">
+          <div class="card stat-card">
+            <div class="stat-label">Kazakhstan · 2025</div>
+            <div class="stat-number">6,000+</div>
+            <div>Missing children whose whereabouts were established nationwide.</div>
+          </div>
+          <div class="card stat-card">
+            <div class="stat-label">Kazakhstan · Q1 2026</div>
+            <div class="stat-number">1,300</div>
+            <div>Children whose whereabouts were established in the first quarter alone.</div>
+          </div>
+          <div class="card stat-card">
+            <div class="stat-label">Astana · Jan–Aug 2026</div>
+            <div class="stat-number">~2,000</div>
+            <div>Reports concerning missing minors and children leaving home without permission.</div>
+          </div>
+        </div>
+
+        <div class="problem-grid">
+          <div class="card text-block">
+            <p>
+              Missing children are a serious child-safety issue in Kazakhstan. Official reports by the Ministry of Internal Affairs and the Astana Police Department show that thousands of cases require search and response every year. These numbers alone do not prove system failure — but they do show that this is not a rare or marginal issue.
+            </p>
+            <p>
+              Importantly, Kazakhstani law-enforcement guidance states that families do <strong>not</strong> need to wait 24 hours before reporting a child missing. In principle, the police should begin responding immediately. Yet immediate reporting does not automatically guarantee broad public awareness.
+            </p>
+            <div class="pull-quote">
+              The core problem of this project is not simply that children go missing. It is that information about active searches may remain fragmented across police channels, volunteer networks, and social media — limiting how quickly ordinary residents can become useful participants in the search.
+            </div>
+            <p>
+              Volunteer groups such as LIDER.KZ already help distribute announcements and coordinate community support. But public participation still depends heavily on whether people follow the right pages, belong to the right chat groups, or happen to encounter an alert in time. This creates unequal access to urgent information.
+            </p>
+          </div>
+
+          <div class="card visual-block">
+            <h3 style="margin-top:0;">How the information gap works</h3>
+            <p style="color:var(--muted); margin-top:0;">A search alert may move through several actors before it ever reaches the wider public.</p>
+            <div class="flow">
+              <div class="flow-item"><div class="flow-badge">1</div><span><strong>Family</strong> reports a child missing.</span></div>
+              <div class="flow-item"><div class="flow-badge">2</div><span><strong>Police</strong> register and process the case.</span></div>
+              <div class="flow-item"><div class="flow-badge">3</div><span><strong>Volunteer organizations</strong> may help spread approved alerts.</span></div>
+              <div class="flow-item"><div class="flow-badge">4</div><span><strong>Citizens</strong> only help if the information reaches them in time.</span></div>
+            </div>
+
+            <div class="subcards">
+              <div class="card small-card">
+                <h3>The visibility problem</h3>
+                <p>Even motivated citizens may never see a missing-child announcement unless they already follow volunteer channels or encounter the alert through social media.</p>
+              </div>
+              <div class="card small-card">
+                <h3>The coordination problem</h3>
+                <p>When information is scattered, residents may not know whether a case is active, what details are verified, or how to report a sighting safely.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card chart-card">
+          <h3 style="margin-top:0;">A small local trend: unauthorized departures of minors in Astana</h3>
+          <p style="margin-top:0; color:var(--muted);">Journalistic reporting citing Astana police data noted the following counts of minors leaving home without permission.</p>
+          <div class="bars">
+            <div class="bar-col">
+              <div class="bar-wrap"><div class="bar" style="height:100%;">308</div></div>
+              <div class="bar-label">2023</div>
+            </div>
+            <div class="bar-col">
+              <div class="bar-wrap"><div class="bar" style="height:96.4%;">297</div></div>
+              <div class="bar-label">2024</div>
+            </div>
+            <div class="bar-col">
+              <div class="bar-wrap"><div class="bar" style="height:93.5%;">288</div></div>
+              <div class="bar-label">2025</div>
+            </div>
+          </div>
+          <p class="bar-note">
+            This chart shows one local category only. It should not be interpreted as a complete measure of all missing-child cases in Astana or Kazakhstan.
+          </p>
+        </div>
+
+        <div class="research-question" id="research-question">
+          <h3>Research Question</h3>
+          <p><strong>How do existing information-sharing practices between police, volunteer organizations, and citizens shape public awareness and participation in missing-child searches in Kazakhstan, and under what conditions could AI-assisted location-based alerts improve this coordination?</strong></p>
+          <p>
+            This framing keeps the project grounded in social science. The central issue is not whether AI is impressive, but whether information flows, institutional coordination, and public participation could be improved in a way that is useful, ethical, and realistic.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="data">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-tag">02 / Background & Data</div>
+          <h2>What the data shows — and what it still hides.</h2>
+          <p class="section-subtitle">This section will map official statistics, regional differences, and the silences in currently available data.</p>
+        </div>
+        <div class="placeholder">Coming next: data landscape, your own analytical figure/table, and a discussion of what current statistics do not measure.</div>
+      </div>
+    </section>
+
+    <section class="section" id="research">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-tag">03 / Current State of Research</div>
+          <h2>What scholars know about missing-child investigations, coordination, and AI.</h2>
+          <p class="section-subtitle">This section will group at least six academic sources by approach and identify the research gap your project addresses.</p>
+        </div>
+        <div class="placeholder">Coming next: academic literature organized by approach, critical synthesis, and research gap.</div>
+      </div>
+    </section>
+
+    <section class="section" id="solution">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-tag">04 / AI-Assisted Solution</div>
+          <h2>BalaSafe KZ: a proposed public alert platform for missing-child searches.</h2>
+          <p class="section-subtitle">This section will explain what kind of AI system is proposed, how it would work, who would run it, and which real-world cases support the idea.</p>
+        </div>
+        <div class="placeholder">Coming next: the concrete AI proposal and two documented implementation cases.</div>
+      </div>
+    </section>
+
+    <section class="section" id="costs">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-tag">05 / The Cost of AI</div>
+          <h2>What would this system cost — environmentally, economically, and politically?</h2>
+          <p class="section-subtitle">This section will evaluate environmental, economic, labor, governance, and ethical costs before deciding whether the proposal should be implemented.</p>
+        </div>
+        <div class="placeholder">Coming next: cost analysis across all five required dimensions.</div>
+      </div>
+    </section>
+
+    <section class="section" id="verdict">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-tag">06 / Final Verdict</div>
+          <h2>Should Kazakhstan actually build BalaSafe KZ?</h2>
+          <p class="section-subtitle">This section will present the final argument: yes, no, or only under strict conditions.</p>
+        </div>
+        <div class="placeholder">Coming next: evidence-based final verdict.</div>
+      </div>
+    </section>
+
+    <section class="section" id="ai-transparency">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-tag">07 / AI Transparency</div>
+          <h2>How AI contributed to this project.</h2>
+          <p class="section-subtitle">This statement will explain what AI contributed, what was accepted, what was rejected, and why.</p>
+        </div>
+        <div class="placeholder">Coming next: your AI transparency statement and contribution notes.</div>
+
+        <div class="card text-block" style="margin-top:22px;">
+          <h3 style="margin-top:0;">Sources used in Section 1</h3>
+          <ol class="sources">
+            <li><a href="https://www.gov.kz/org/qriim/press/news/details/1206648?lang=ru" target="_blank" rel="noopener noreferrer">Ministry of Internal Affairs of Kazakhstan (2026). Search for missing persons and why the first day matters.</a></li>
+            <li><a href="https://www.gov.kz/org/mvd-astana/press/news/details/1279384?lang=ru" target="_blank" rel="noopener noreferrer">Astana Police Department (2026). About 2,000 reports concerning missing minors.</a></li>
+            <li><a href="https://www.gov.kz/situations/232/658?lang=ru" target="_blank" rel="noopener noreferrer">eGov Kazakhstan. What to do if a person goes missing.</a></li>
+            <li><a href="https://poisk-lider.kz/" target="_blank" rel="noopener noreferrer">LIDER.KZ volunteer search movement.</a></li>
+            <li><a href="https://inbusiness.kz/ru/news/kuda-propadayut-deti-v-kazahstane" target="_blank" rel="noopener noreferrer">Inbusiness.kz (2025). Where do children disappear in Kazakhstan?</a></li>
+          </ol>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      BalaSafe KZ · PLS419 Final Project · This website presents a research argument, not an operational missing-child response platform.
+    </div>
+  </footer>
+
+  <script>
+    const tileGrid = document.getElementById('tileGrid');
+    for (let i = 0; i < 60; i++) {
+      const tile = document.createElement('div');
+      tile.className = 'tile';
+      tile.title = 'Represents 100 children';
+      tileGrid.appendChild(tile);
+    }
+
+    const miniGrid = document.getElementById('miniGrid');
+    for (let i = 0; i < 20; i++) {
+      const tile = document.createElement('div');
+      tile.className = 'mini-tile active';
+      tile.title = 'Represents 100 reports';
+      miniGrid.appendChild(tile);
+    }
+  </script>
+</body>
+</html>
