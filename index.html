@@ -1,10 +1,11 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BalaSafe KZ</title>
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>BalaSafe KZ</title>
+<style>
     :root {
       --bg: #f8f6f1;
       --bg-soft: #fffdf9;
@@ -456,314 +457,1200 @@
     @media(prefers-reduced-motion:reduce){.alert-scene.active .signal-ring{animation:none}.person .head,.person .body{transition:none}}
 
 
-    /* BalaSafe search-themed cursor: only on the illustrated opening screen. */
-    .search-cursor {
-      position: fixed; left: 0; top: 0;
-      width: 58px; height: 58px;
-      transform: translate(-50%, -50%);
-      pointer-events: none;
-      z-index: 9999;
-      opacity: 0;
-      transition: opacity .16s ease;
-      filter: drop-shadow(0 3px 9px rgba(0,0,0,.35));
+    /* Right-hand scrolling control: larger amber magnifying glass, moves with scrolling. */
+    .search-scroll-track{position:fixed;right:10px;top:22vh;height:56vh;width:38px;z-index:105;touch-action:none;cursor:grab;border-radius:32px;background:rgba(201,175,129,.13);border:1px solid rgba(170,120,57,.22)}
+    .search-scroll-track:active{cursor:grabbing}
+    .search-scroll-lens{height:44px;width:44px;position:absolute;top:0;left:-4px;border-radius:50%;display:grid;place-items:center;background:#fffdf5;box-shadow:0 3px 15px #74562b33;border:2px solid #d5a04c;will-change:transform}
+    .search-scroll-lens svg{width:30px;height:30px;display:block}
+    @media(max-width:750px){.search-scroll-track{right:3px;width:27px;top:25vh;height:52vh}.search-scroll-lens{width:32px;height:32px;left:-3px}.search-scroll-lens svg{width:24px;height:24px}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+    .data-story{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+    .data-fact{background:#fff;border-radius:20px;border:1px solid #e7ded0;padding:24px;box-shadow:0 4px 16px #22222209}
+    .data-fact .value{font-size:clamp(2rem,4vw,3rem);font-weight:850;letter-spacing:-.05em;color:#b33a3a;line-height:1.1}
+    .data-fact h3{font-size:1rem;line-height:1.35;margin:10px 0}
+    .data-fact p,.data-story p{color:#5d6573;font-size:.94rem}
+    .data-measured{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:20px}
+    .data-panel{background:#fff;border:1px solid #e7ded0;border-radius:22px;padding:24px}
+    .data-pill{padding:10px 13px;margin:10px 0;border-radius:11px;font-size:.95rem;font-weight:650}
+    .data-pill.known{background:#eaf5eb;color:#255b39}
+    .data-pill.unknown{background:#fff1e6;color:#8c4a19}
+    .data-note{background:#fcf5e8;border-left:4px solid #d69c2f;border-radius:8px;padding:17px 20px;margin:22px 0}
+    .data-questions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+    .data-questions>div{background:#fff;border:1px solid #e7ded0;border-radius:16px;padding:20px}
+    @media(max-width:760px){.data-story,.data-measured,.data-questions{grid-template-columns:1fr}}
+
+
+    /* Compact, readable comparison for the public-information gap */
+    .gap-table-section{margin:34px 0;background:#fffdf9;border:1px solid #e7ded0;border-radius:24px;padding:clamp(19px,3vw,33px);box-shadow:0 8px 30px rgba(35,40,55,.05)}
+    .gap-table-section .fragmentation-header h3{font-size:clamp(1.38rem,2.5vw,2.15rem);line-height:1.2;margin:8px 0}
+    .gap-table-section .fragmentation-header p{color:#586271;max-width:820px;margin:0 0 22px}
+    .gap-table-section .fragmentation-eyebrow{font-size:.73rem;font-weight:850;letter-spacing:.14em;color:#ad523b}
+    .gap-table-wrap{overflow-x:auto;border:1px solid #e1dbd0;border-radius:15px}
+    .gap-comparison{border-collapse:collapse;table-layout:fixed;width:100%;min-width:670px;background:#fff}
+    .gap-comparison th,.gap-comparison td{text-align:left;padding:15px 17px;vertical-align:top;font-size:.91rem;line-height:1.5;border-bottom:1px solid #ebe7df}
+    .gap-comparison thead th{background:#f2eee6;color:#263248;font-size:.78rem;text-transform:uppercase;letter-spacing:.045em}
+    .gap-comparison thead th:nth-child(1){width:25%}
+    .gap-comparison thead th:nth-child(2){width:36%}
+    .gap-comparison tbody th{color:#263248;font-weight:750}
+    .gap-comparison tbody tr:nth-child(even){background:#fcfaf6}
+    .gap-comparison tbody tr:last-child>*{border-bottom:0}
+    .gap-comparison a{text-decoration:underline;text-underline-offset:3px}
+    .gap-table-takeaway{display:flex;align-items:flex-start;gap:15px;margin-top:18px;padding:17px 19px;background:#fff4e5;border-left:4px solid #d59b40;border-radius:12px}
+    .gap-table-takeaway p{margin:0;color:#3d4551;font-size:.95rem}
+    .gap-takeaway-mark{background:#e4b36b;color:#263248;font-weight:900;border-radius:50%;width:29px;height:29px;display:grid;place-items:center;flex-shrink:0}
+    .gap-table-section .fragmentation-caveat{margin-top:17px;font-size:.81rem;color:#606b75;line-height:1.5}
+
+
+    .recovery-progress{display:grid;gap:18px;margin:23px 0 16px}
+    .recovery-item{display:grid;gap:7px}
+    .recovery-row{display:flex;justify-content:space-between;gap:12px;font-size:.94rem}
+    .recovery-rail{height:19px;background:#eee8df;border-radius:20px;overflow:hidden}
+    .recovery-fill{height:100%;background:linear-gradient(90deg,#cc9952,#a95a43);border-radius:20px}
+
+    /* Interactive source-grounded regional evidence table */
+    .region-explorer { padding: 24px; margin-bottom: 28px; }
+    .region-controls { display:flex; flex-wrap:wrap; gap:16px; margin-bottom:18px; }
+    .region-controls label { display:flex; flex-direction:column; gap:6px; flex:1 1 190px; font-size:.85rem; font-weight:750; color:#414954; }
+    .region-controls select,.region-controls input { width:100%; min-height:42px; border:1px solid #ded6ca; border-radius:12px; background:#fff; color:#1f2430; font:inherit; padding:9px 12px; }
+    .region-table-scroll { overflow-x:auto; border:1px solid #e9e1d6; border-radius:15px; }
+    .region-table { width:100%; border-collapse:collapse; min-width:700px; }
+    .region-table th,.region-table td { padding:14px 13px; text-align:left; border-bottom:1px solid #eee8de; font-size:.91rem; }
+    .region-table thead { background:#f5f0e7; }
+    .region-table thead th { font-size:.77rem; text-transform:uppercase; letter-spacing:.06em; color:#4e5968; }
+    .region-table tbody tr:last-child td { border-bottom:0; }
+    .region-table tbody tr { cursor:pointer; transition:background .15s; }
+    .region-table tbody tr:hover,.region-table tbody tr.selected { background:#f8eee3; }
+    .region-table tbody tr:focus-visible { outline:3px solid #bd761f; outline-offset:-3px; }
+    .region-value { color:#ab453c; font-size:1.3rem; font-weight:850; white-space:nowrap; }
+    .region-chip { font-size:.76rem; border-radius:100px; background:#f2ede5; padding:5px 9px; color:#424b57; display:inline-block; }
+    .region-detail-button { border:1px solid #d8b78d; color:#864f21; background:#fff9f1; padding:7px 10px; border-radius:8px; font:inherit; cursor:pointer; }
+    .region-explainer { background:#f8f4ed; padding:17px 20px; border-radius:12px; color:#354050; margin:14px 0; }
+    .region-explainer a { font-weight:700; }
+    .region-explorer .caption { margin:0; }
+
+
+
+/* COMPLETE RESEARCH PROJECT — new section styles */
+.chapter-intro{font-size:1.02rem;color:#505a66;max-width:840px;margin:0 0 25px}
+.project-kicker{font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;color:#ad493c;font-weight:800}
+.chapter-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin:22px 0}
+.chapter-grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+.chapter-box{background:#fff;border:1px solid #e8e1d6;border-radius:18px;padding:22px;box-shadow:0 8px 24px rgba(34,41,54,.045)}
+.chapter-box h3{margin:3px 0 9px;font-size:1.14rem;line-height:1.3}
+.chapter-box p{color:#515967;margin:0 0 12px;font-size:.96rem}
+.chapter-box p:last-child{margin-bottom:0}
+.chapter-box .step-index{color:#b33a3a;font-size:.84rem;font-weight:800;letter-spacing:.08em}
+.chapter-box a{font-size:.89rem;font-weight:700}
+.flowline{display:flex;align-items:stretch;gap:9px;margin:20px 0;flex-wrap:wrap}
+.flowstep{flex:1 1 160px;min-width:0;background:#fff;border:1px solid #e5dbc9;padding:17px 16px;border-radius:17px;position:relative}
+.flowstep strong{display:block;margin-bottom:5px}
+.flowstep p{color:#5a626d;font-size:.86rem;margin:0}
+.flowstep .stepnumber{color:#ba5148;display:block;font-size:.79rem;font-weight:850;margin-bottom:5px}
+.accent-band{background:#f7ede3;border:1px solid #e7d4b8;border-radius:19px;padding:24px;margin:20px 0}
+.accent-band strong{color:#773e2f}
+.comparison-table{border-collapse:collapse;width:100%;min-width:670px;background:#fff}
+.comparison-table th,.comparison-table td{padding:15px 14px;text-align:left;border-bottom:1px solid #eee5d8;vertical-align:top;font-size:.92rem}
+.comparison-table th{background:#f4eee4;color:#43505e;font-size:.79rem;text-transform:uppercase;letter-spacing:.06em}
+.comparison-table tbody tr:nth-child(even){background:#fcfaf7}
+.table-shell{border:1px solid #e8e1d6;border-radius:16px;overflow-x:auto;background:#fff;margin:20px 0}
+.case-status{color:#98602d;font-weight:800;font-size:.75rem;text-transform:uppercase;letter-spacing:.09em}
+.case-card .case-number{font-size:2rem;font-weight:900;color:#9b443b;line-height:1.12;margin:12px 0}
+.case-card a{font-weight:750}
+.risk-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:20px 0}
+.risk-card{padding:19px;background:#fff;border:1px solid #eadfce;border-radius:18px}
+.risk-card h3{margin:0 0 7px;font-size:1.07rem}
+.risk-card p{margin:0;color:#5d6570;font-size:.93rem}
+.pilot-note{font-size:.85rem;color:#606875;margin:10px 0 0}
+.calc-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:24px;align-items:stretch;margin:22px 0}
+.calc-panel{padding:24px;background:#fff;border:1px solid #e5dfd5;border-radius:20px}
+.calc-panel h3{margin-top:0}
+.calc-field{margin:17px 0}
+.calc-field label{display:flex;justify-content:space-between;gap:10px;font-weight:700;font-size:.9rem}
+.calc-field input[type=range]{width:100%;accent-color:#b33a3a;cursor:pointer;margin-top:10px}
+.calc-field output{font-variant-numeric:tabular-nums;color:#9e453a}
+.calc-hero{font-size:2.3rem;color:#a64b42;font-weight:850;letter-spacing:-.04em}
+.calc-results{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0}
+.calc-result{border-radius:14px;background:#f9f5ef;padding:15px}
+.calc-result b{display:block;font-size:1.3rem;color:#283140}
+.calc-result span{font-size:.82rem;color:#656d77}
+.formula{background:#f6f0e7;padding:16px;border-radius:12px;color:#555e68;font-size:.85rem;line-height:1.6}
+.source-notes{padding-left:20px}
+.source-notes li{margin-bottom:9px;line-height:1.45;overflow-wrap:anywhere}
+.verify-flag{background:#fff7e4;padding:12px 16px;border-left:3px solid #d49b33;border-radius:0 10px 10px 0;margin:14px 0;font-size:.87rem;color:#624b2c}
+.bal-tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.bal-tab{background:#fff;border:1px solid #e3d7c7;border-radius:10px;padding:9px 14px;color:#3e4753;font-weight:750;cursor:pointer}
+.bal-tab[aria-selected=true]{background:#a9493e;color:#fff;border-color:#a9493e}
+.bal-tab-panel{padding:20px;background:#fff;border:1px solid #e6dccb;border-radius:15px;min-height:150px}
+.verdict-columns{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:22px 0}
+.verdict-columns h3{margin-top:0}
+.decision-chip{display:inline-flex;align-items:center;background:#f2e0cb;color:#7b3d35;padding:7px 13px;border-radius:50px;font-weight:850;font-size:.8rem}
+.q-check{padding:12px 0;border-bottom:1px solid #ece5d9;display:flex;gap:12px;align-items:flex-start}
+.q-check b{color:#ad4d43}
+@media(max-width:850px){.chapter-grid,.chapter-grid.two,.risk-list,.calc-grid,.verdict-columns{grid-template-columns:1fr}.flowline{display:grid;grid-template-columns:1fr 1fr}.calc-results{grid-template-columns:1fr 1fr}}
+@media(max-width:540px){.flowline{grid-template-columns:1fr}.calc-results{grid-template-columns:1fr 1fr}.calc-hero{font-size:1.9rem}}
+
+  
+
+    body::before {
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      background:
+        radial-gradient(circle at 10% 15%, rgba(214,156,47,0.09), transparent 22%),
+        radial-gradient(circle at 88% 10%, rgba(179,58,58,0.08), transparent 20%),
+        radial-gradient(circle at 18% 85%, rgba(66,112,167,0.08), transparent 24%),
+        radial-gradient(circle at 82% 78%, rgba(214,156,47,0.08), transparent 18%);
+      z-index:0;
     }
-    .search-cursor.visible { opacity: 1; }
-    .search-cursor svg {display:block;width:100%;height:100%;}
-    @media (hover:hover) and (pointer:fine) {
-      body.cursor-ready .hero, body.cursor-ready .hero * { cursor: none !important; }
+    main, .topbar, footer { position: relative; z-index: 1; }
+    #problem { background: linear-gradient(180deg, rgba(255,255,255,0.25), rgba(255,245,233,0.55)); }
+    #data { background: linear-gradient(180deg, rgba(251,249,244,0.8), rgba(255,255,255,0.9)); }
+    #research { background: linear-gradient(180deg, rgba(246,248,252,0.75), rgba(255,252,247,0.92)); }
+    #solution { background: linear-gradient(180deg, rgba(255,249,242,0.9), rgba(247,249,255,0.88)); }
+    #costs { background: linear-gradient(180deg, rgba(252,247,240,0.92), rgba(255,255,255,0.92)); }
+    #verdict { background: linear-gradient(180deg, rgba(248,249,252,0.88), rgba(255,249,243,0.88)); }
+    #ai-transparency { background: linear-gradient(180deg, rgba(255,253,249,0.92), rgba(246,248,252,0.95)); }
+    .section { position: relative; overflow: hidden; }
+    .section::before {
+      content:"";
+      position:absolute;
+      width:260px;height:260px;border-radius:50%;
+      background: radial-gradient(circle, rgba(214,156,47,0.08), transparent 70%);
+      top:-80px; right:-80px; pointer-events:none;
     }
-    @media (hover:none), (pointer:coarse), (prefers-reduced-motion:reduce) {
-      .search-cursor { display:none !important; }
-      body.cursor-ready .hero, body.cursor-ready .hero * { cursor:auto !important; }
-      body.cursor-ready .hero button, body.cursor-ready .hero a { cursor:pointer !important; }
+    .section:nth-of-type(even)::before { left:-80px; right:auto; background: radial-gradient(circle, rgba(95,126,177,0.08), transparent 70%); }
+    .hidden-gap-grid { display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap:18px; margin-top:20px; }
+    .gap-reveal { text-align:left; padding:22px; cursor:pointer; transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease; background:linear-gradient(145deg, #fffdf8, #fff5ea); }
+    .gap-reveal:hover { transform: translateY(-3px); border-color: rgba(214,156,47,0.35); }
+    .gap-label { display:inline-block; font-size:.74rem; text-transform:uppercase; letter-spacing:.12em; color:var(--accent); font-weight:800; margin-bottom:8px; }
+    .gap-reveal h3 { margin:0 0 6px; }
+    .gap-reveal p { margin:0; color:var(--muted); }
+    .gap-hidden { padding:22px; display:none; background:linear-gradient(145deg, #fff, #f8fbff); border:1px dashed #d6c29a; }
+    .gap-hidden.open { display:block; animation:fadeReveal .3s ease; }
+    .gap-hidden h4 { margin:0 0 8px; }
+    @keyframes fadeReveal { from {opacity:0; transform:translateY(6px);} to {opacity:1; transform:translateY(0);} }
+    .long-reference-list { columns: 1; }
+    .long-reference-list li { margin-bottom: 10px; }
+    @media (max-width: 900px) {
+      .hidden-gap-grid { grid-template-columns: 1fr; }
     }
 
 
-    /* Section 1: visually explain fragmented alert distribution instead of a misleading bar chart. */
-    .alert-fragmentation{margin-top:26px;border-radius:26px;padding:clamp(20px,3vw,36px);background:linear-gradient(145deg,#fffefa 0%,#f7f5f0 100%);border:1px solid #e8e1d6;box-shadow:0 12px 36px rgba(34,41,54,.055)}
-    .fragmentation-eyebrow{font-size:.73rem;font-weight:850;letter-spacing:.15em;color:#9a6234;margin-bottom:9px}
-    .fragmentation-header h3{font-size:clamp(1.5rem,2.7vw,2.15rem);line-height:1.15;letter-spacing:-.025em;margin:0 0 12px}
-    .fragmentation-header p{color:#626775;max-width:770px;margin:0 0 28px}
-    .feed-flow{display:grid;grid-template-columns:minmax(180px,.7fr) 65px minmax(280px,1.5fr);align-items:center;gap:16px}
-    .origin-card{min-height:168px;background:#fff;border:1px solid #eadcc6;border-radius:20px;display:flex;align-items:center;justify-content:center;gap:8px;flex-direction:column;padding:18px;text-align:center;box-shadow:0 8px 25px #2d34400a}
-    .origin-symbol{height:49px;width:49px;border-radius:16px;display:grid;place-items:center;background:#f8d9a8;color:#6c441f;font-weight:900;font-size:1.8rem}
-    .origin-card strong{font-size:1rem}.origin-card span{font-size:.78rem;color:#6f7784}
-    .flow-connector{position:relative;display:flex;flex-direction:column;gap:20px;justify-content:center;height:140px}
-    .flow-connector span{height:2px;background:linear-gradient(90deg,#d5ac68,#ded9d0);position:relative}
-    .flow-connector span::after{content:'›';position:absolute;right:-2px;top:-14px;font-size:22px;color:#b28c54}
-    .feeds{display:grid;gap:10px}
-    .feed-card{display:flex;align-items:center;gap:13px;background:#fff;border:1px solid #e9e4da;border-radius:15px;padding:13px 15px;min-width:0}
-    .feed-card>div:nth-child(2){flex:1;min-width:0}.feed-card strong{display:block;font-size:.95rem}.feed-card span:not(.feed-tag){display:block;font-size:.79rem;color:#707787}
-    .feed-icon{flex-shrink:0;width:41px;height:41px;border-radius:13px;display:grid;place-items:center;font-weight:800;font-size:23px}
-    .telegram{background:#e6f5fc;color:#1b91be}.instagram{background:#f9eafa;color:#ae528b}.org{background:#e9efe7;color:#4c7b52}
-    .feed-tag{white-space:nowrap;background:#f8f1e8;color:#8a6744;font-size:.71rem;font-weight:700;padding:5px 9px;border-radius:999px}
-    .fragmentation-bottom{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:24px}
-    .gap-box{display:flex;gap:13px;align-items:flex-start;padding:17px;background:#faf0e9;border:1px solid #efd9c8;border-radius:17px}
-    .gap-icon{width:35px;height:35px;border-radius:50%;display:grid;place-items:center;background:#f0d6ba;color:#87502b;font-weight:800;font-size:19px;flex-shrink:0}
-    .gap-box strong{font-size:.94rem}.gap-box p{margin:4px 0 0;font-size:.83rem;line-height:1.5;color:#6c6570}
-    .fragmentation-caveat{margin:19px 0 0;font-size:.78rem;color:#6c7380;line-height:1.6}
-    @media(max-width:740px){.feed-flow{grid-template-columns:1fr;gap:10px}.flow-connector{height:25px;flex-direction:row;align-items:center}.flow-connector span{width:2px;height:20px}.flow-connector span::after{content:''}.fragmentation-bottom{grid-template-columns:1fr}.feed-tag{display:none}}
+/* 2026 editorial visual refresh: narrower reading rhythm and clear color zones */
+:root{--max:1040px;--text:#26303e;--muted:#5c6472;--line:#e4dcd2;--accent:#a44e36;--gold:#d5a34b}
+body{background:#fff8f0;color:var(--text)}
+.container{width:min(1040px,calc(100% - 44px))}
+.section>.container{width:min(960px,calc(100% - 44px))}
+.section-header{max-width:785px;margin-left:auto;margin-right:auto}
+.section-subtitle,.section p:not(.caption):not(.pilot-note){max-width:72ch}
+.section h2{font-family:Georgia,'Times New Roman',serif;letter-spacing:-.025em;font-weight:700;font-size:clamp(1.9rem,3vw,2.7rem);line-height:1.17}
+.section h3{line-height:1.3}
+.chapter-box,.text-block,.calc-panel,.region-explorer{border-radius:14px}
+.section{border-top:1px solid rgba(55,51,51,.1);padding-top:76px;padding-bottom:82px}
+#problem{background:linear-gradient(130deg,#fff6eb 0%,#fffefb 62%,#f7eee8 100%)}
+#data{background:linear-gradient(125deg,#f6f9fc 0%,#fdfdfa 65%,#f0f4f8 100%)}
+#research{background:linear-gradient(140deg,#fcf7ed 0%,#f6f3ff 100%)}
+#solution{background:linear-gradient(135deg,#fffaf5 0%,#f0f5f6 100%)}
+#costs{background:linear-gradient(135deg,#fff2e9 0%,#fffcfa 63%,#f3e9f0 100%)}
+#verdict{background:linear-gradient(120deg,#f1f6f4 0%,#fcf4ed 100%)}
+#ai-transparency{background:linear-gradient(130deg,#f7f3ee 0%,#fffdfb 100%)}
+.section::before{width:380px;height:380px;opacity:.6}
+.section-tag{letter-spacing:.16em}
+.bill-tabs-wrapper{margin:26px auto;max-width:900px;background:#fff;border:1px solid #e5d9d0;border-top:4px solid #302c33;border-radius:12px;padding:26px;box-shadow:0 14px 36px rgba(54,40,36,.07)}
+.bill-tabs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:9px}
+.bill-tab{border:1px solid #e6dcd4;background:#fff6ef;border-radius:12px;min-height:82px;padding:12px 8px;color:#282932;cursor:pointer;text-align:center;transition:transform .2s,background .2s,box-shadow .2s}
+.bill-tab:hover{transform:translateY(-3px);box-shadow:0 7px 20px rgba(0,0,0,.06)}
+.bill-tab strong{display:block;font-size:.85rem;line-height:1.25}
+.bill-tab small{display:block;font-size:.7rem;margin-top:6px;color:#6c6b79}
+.bill-tab.active{background:#302d35;color:#fff;border-color:#302d35;box-shadow:0 7px 14px rgba(46,38,43,.18)}
+.bill-tab.active small{color:#d8d0d8}
+.bill-panel{background:#fff7f0;padding:22px;margin-top:14px;border-radius:12px;min-height:155px}
+.bill-panel[hidden]{display:none!important}
+.bill-panel h3{margin:0 0 7px;font-size:1.12rem}
+.bill-panel p{margin:0 0 12px;font-size:.96rem;line-height:1.55}
+.bill-mitigation{font-size:.91rem;color:#544b4b;border-top:1px solid #eadbd0;padding-top:10px}
+.bill-caution{font-size:.79rem;color:#68616b;margin:13px 0 0}
+.non-ai-alternative{max-width:900px;margin:15px auto 32px;padding:18px 24px;border-left:4px solid #a44e36;background:rgba(255,255,255,.78);border-radius:8px}
+.non-ai-alternative h3{margin:0 0 6px;font-size:1.05rem}
+.non-ai-alternative p{margin:0;font-size:.92rem}
+.will-reveal{opacity:0;transform:translateY(23px);transition:opacity .65s ease,transform .65s cubic-bezier(.2,.8,.2,1)}
+.will-reveal.has-entered{opacity:1;transform:translateY(0)}
+@media(max-width:720px){.bill-tabs-wrapper{padding:15px}.bill-tabs{grid-template-columns:repeat(2,minmax(0,1fr))}.bill-tab{min-height:65px}.section{padding:52px 0}.section>.container{width:min(100% - 30px,960px)}}
+@media(prefers-reduced-motion:reduce){.will-reveal{opacity:1;transform:none;transition:none}.bill-tab{transition:none}}
 
-  </style>
+
+    .gap-step-buttons { display:grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap:10px; margin:18px 0; }
+    .gap-step-btn { border:1px solid var(--line); background:#fff; border-radius:999px; padding:12px 14px; font-weight:700; cursor:pointer; transition:.2s ease; }
+    .gap-step-btn.active, .gap-step-btn:hover { background:var(--ink); color:#fff; border-color:var(--ink); transform:translateY(-1px); }
+    .gap-step-panel { background:linear-gradient(145deg,#fff,#fffaf4); padding:20px; margin-bottom:14px; }
+    .gap-mini-label { text-transform:uppercase; font-size:.75rem; letter-spacing:.14em; color:var(--accent); font-weight:800; margin-bottom:8px; }
+    .gap-problem { border:1px dashed rgba(179,58,58,0.3); background:linear-gradient(145deg,#fff9f6,#fff); padding:20px; }
+    .global-fact-grid { display:grid; grid-template-columns:1fr 1fr; gap:18px; margin:18px 0 10px; }
+    .fact-highlight { padding:22px; background:linear-gradient(145deg,#fffdf8,#fff4e7); }
+    .fact-highlight.soft { background:linear-gradient(145deg,#f8fbff,#ffffff); }
+    .fact-number { font-size:2.3rem; font-weight:900; line-height:1; color:var(--ink); margin-bottom:12px; }
+    .fact-number.small { font-size:1.2rem; text-transform:uppercase; letter-spacing:.08em; }
+    .data-landscape-grid { display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:18px; margin-bottom:28px; }
+    .landscape-card { padding:22px; background:linear-gradient(145deg,#fff,#fff8f0); }
+    .landscape-icon { width:42px; height:42px; border-radius:50%; display:flex; align-items:center; justify-content:center; background:var(--ink); color:#fff; font-weight:800; margin-bottom:12px; }
+    .sources-toggle { margin-top:12px; }
+    .sources-toggle summary { list-style:none; cursor:pointer; padding:14px 16px; border-radius:14px; border:1px solid var(--line); background:linear-gradient(145deg,#fff,#f7f8fb); font-weight:800; }
+    .sources-toggle summary::-webkit-details-marker { display:none; }
+    .sources-toggle[open] summary { margin-bottom:14px; }
+    .sources-toggle ol { margin:0; padding-left:22px; }
+    .sources-toggle li { margin-bottom:10px; }
+    @media (max-width: 900px) {
+      .gap-step-buttons, .global-fact-grid, .data-landscape-grid { grid-template-columns:1fr; }
+    }
+
+/* EDITORIAL INTERACTIVE REDESIGN */
+    #problem .problem-grid{display:block;}
+    #problem .problem-grid > .text-block{max-width:800px;margin:0 auto 30px;}
+    #problem .story-lab{width:100%;max-width:100%;}
+.story-lab { background:linear-gradient(135deg,#13233e,#192f4e 72%,#23405c);color:#fff;border-radius:30px;padding:clamp(22px,3vw,38px);margin:28px 0 32px;box-shadow:0 20px 65px rgba(11,27,49,.16);max-width:100%;}
+.story-lab h3{color:white;font-size:clamp(1.7rem,3vw,2.35rem);letter-spacing:-.04em;line-height:1.1;margin:8px 0 6px}
+.story-topline{display:flex;justify-content:space-between;color:#f2bf69;font-size:.75rem;font-weight:800;letter-spacing:.12em}
+.story-instruction{color:#d4e1f0;margin:10px 0 18px;font-size:.96rem}
+.story-progress{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:22px}.story-progress span{height:5px;border-radius:5px;background:#52647d;transition:background .25s}.story-progress span.on{background:#f0b453}
+.story-stage{border:1px solid #405572;background:#102039;border-radius:22px;overflow:hidden}
+.story-scene{display:flex;justify-content:space-between;align-items:center;min-height:210px;padding:20px 22px;gap:4px}
+.story-node{flex:1;max-width:185px;min-width:0;display:flex;align-items:center;flex-direction:column;gap:5px;text-align:center;opacity:.47;transition:opacity .3s,transform .3s}.story-node small{font-size:.63rem;letter-spacing:.12em;color:#d3dfeb;font-weight:800}.story-node b{font-size:.86rem;line-height:1.2}.story-node-icon{font-size:2rem;display:grid;place-items:center;border:1px solid #7390a9;width:72px;height:72px;border-radius:22px;color:#d8e2ed;margin-bottom:5px}.story-node.active{opacity:1;transform:translateY(-3px)}.story-node.active .story-node-icon{color:#ffc36e;border-color:#ffc36e;background:#ffc36e18}.story-node.warn .story-node-icon{color:#ff9383;border-color:#ff9383;background:#ff938312}
+.story-chip{color:#a7f0bd;font-size:.63rem;border-radius:30px;border:1px solid #4c956c;padding:3px 8px}.story-chip.pending{color:#c2cbd7;border-color:#65788c}
+.story-route{flex:0 0 22px;display:flex;align-items:center;color:#eeb55a;opacity:.45}.story-route-line{width:10px;height:2px;background:#d1a75d}.story-route-arrow{font-size:22px}
+.story-copy{display:flex;gap:17px;padding:20px;background:#182c49;border-top:1px solid #405572}.story-index{color:#f5c478;font-size:1.7rem;font-weight:900}.story-copy h4{color:#fff;margin:0 0 6px;font-size:1.05rem}.story-copy p{color:#dfebf4;margin:0;font-size:.91rem}
+.story-controls{display:flex;justify-content:space-between;gap:15px;margin:18px 0}.story-controls button{border-radius:999px;padding:12px 22px;font-weight:800;cursor:pointer;font-size:.95rem}.story-back{border:1px solid #7d8aa0;background:transparent;color:#fff}.story-back:disabled{opacity:.4;cursor:not-allowed}.story-next{background:#ffc46e;color:#15243b;border:0;box-shadow:0 5px 25px #ffc46e29;animation:gentle-pulse 2.1s infinite}.story-next:hover{background:#ffe0a6}
+@keyframes gentle-pulse{50%{box-shadow:0 0 0 7px #ffc46e20}}.story-outcome{display:none;align-items:start;gap:14px;margin-top:18px;border:1px solid #d78b5d;background:#5b323e;border-radius:14px;padding:16px}.story-outcome.visible{display:flex;animation:fadeReveal .3s ease}.story-outcome p{margin:4px 0 0;font-size:.88rem;color:#ffeaeb}.story-outcome-light{display:grid;place-items:center;background:#ffac68;color:#4c2c26;font-weight:900;width:34px;height:34px;flex:none;border-radius:50%}.story-disclaimer{font-size:.74rem;color:#b6c6da;margin:15px 0 0}
+.question-spotlight{position:relative;isolation:isolate;overflow:hidden;background:#142741;color:#fff;border-radius:28px;padding:clamp(30px,5vw,58px);margin:38px 0 24px;box-shadow:0 16px 48px #152b4930}.question-mark{position:absolute;right:14px;top:-70px;font-size:19rem;font-weight:900;line-height:1;color:#ffffff0b;z-index:-1}.question-kicker{color:#ffc66f;font-size:.77rem;letter-spacing:.15em;font-weight:900}.question-spotlight h3{color:#fff;font-size:1.3rem;margin:16px 0 14px}.question-spotlight p{font-size:clamp(1.23rem,2.2vw,1.8rem);font-weight:650;line-height:1.45;letter-spacing:-.025em;max-width:760px;margin:0;color:#faf8f4}.question-underline{width:83px;height:5px;background:#ffc66f;border-radius:8px;margin-top:25px}
+.data-map{margin:28px 0 32px;padding:clamp(22px,3vw,34px);background:linear-gradient(135deg,#f8fbff,#fff8f0);border:1px solid #e1e6eb;border-radius:28px;box-shadow:0 16px 45px #152b4912}.data-map-heading span{font-weight:800;color:#995a39;letter-spacing:.13em;font-size:.75rem}.data-map-heading p{max-width:580px;color:#59667a;margin:5px 0 20px}.data-map-visual{position:relative;display:grid;grid-template-columns:1fr 1.4fr 1fr;grid-template-rows:auto auto;gap:14px;align-items:center;justify-items:center;min-height:330px}.data-map-core{grid-column:2;grid-row:1/3;background:#172b44;color:white;width:min(100%,235px);height:235px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:8px;border-radius:50%;padding:26px;box-shadow:0 0 0 14px #172b4408,0 10px 25px #182f492b;z-index:1}.data-core-circle{font-size:2rem;color:#ffc36e;font-weight:900}.data-map-core b{font-size:1.15rem;line-height:1.15}.data-map-core small{font-size:.73rem;color:#d5deea}.data-source-button{z-index:2;cursor:pointer;width:100%;max-width:200px;min-height:120px;border:1px solid #d4dce6;border-radius:20px;background:#fff;box-shadow:0 8px 15px #182e4b0b;display:flex;gap:7px;flex-direction:column;align-items:center;justify-content:center;color:#22334e;font-weight:850;letter-spacing:.04em;font-size:.83rem;transition:transform .2s,border-color .2s,background .2s}.data-source-button:hover,.data-source-button.active{border-color:#e6a953;background:#fff4de;transform:translateY(-3px)}.data-source-button:nth-of-type(1){grid-column:1;grid-row:1}.data-source-button:nth-of-type(2){grid-column:3;grid-row:1}.data-source-button:nth-of-type(3){grid-column:1;grid-row:2}.data-source-button:nth-of-type(4){grid-column:3;grid-row:2}.data-symbol{font-size:1.9rem;color:#ba854d}.data-map-insight{display:grid;grid-template-columns:auto 1fr;gap:20px;background:white;border-left:5px solid #dfac64;border-radius:15px;padding:22px;margin-top:24px}.data-insight-count{font-weight:900;color:#c28b4d;font-size:1.5rem}.data-map-insight h3{margin:0 0 8px}.data-map-insight p{margin:4px 0;color:#475264}
+@media(max-width:760px){.story-scene{padding:15px 8px;min-height:180px}.story-node-icon{width:53px;height:53px;border-radius:14px;font-size:1.45rem}.story-node b{font-size:.7rem}.story-node small{font-size:.53rem}.story-route{flex-basis:12px}.story-route-line{width:1px}.story-route-arrow{font-size:16px}.story-copy{padding:14px}.data-map-visual{grid-template-columns:1fr 1fr;grid-template-rows:auto auto auto;min-height:0}.data-map-core{grid-column:1/3;grid-row:1;width:180px;height:180px}.data-source-button{min-height:90px}.data-source-button:nth-of-type(1){grid-column:1;grid-row:2}.data-source-button:nth-of-type(2){grid-column:2;grid-row:2}.data-source-button:nth-of-type(3){grid-column:1;grid-row:3}.data-source-button:nth-of-type(4){grid-column:2;grid-row:3}.data-map-insight{gap:12px}}
+@media(prefers-reduced-motion:reduce){.story-next{animation:none}}
+
+    .identity-flow {margin: 28px 0 34px; padding:clamp(20px,4vw,34px); background:linear-gradient(135deg,#182c4a,#283f60);border-radius:22px;color:white}
+    .identity-flow-head h3 {font-size:clamp(1.35rem,2.4vw,2rem); margin:10px 0 6px;color:white}
+    .identity-flow-head p {color:#dae4f1; max-width:70ch}
+    .identity-roles {display:grid; grid-template-columns:repeat(4,minmax(0,1fr));gap:12px; margin:22px 0}
+    .identity-role {background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.22);border-radius:15px;padding:16px}
+    .identity-role h4 {margin:12px 0 6px;color:#fff;font-size:1rem}
+    .identity-role p {color:#dce6f3;font-size:.9rem;line-height:1.5;margin:0}
+    .role-symbol {display:inline-flex;align-items:center;justify-content:center;border-radius:50%;width:36px;height:36px;color:#1b2c48;background:#f7bf62;font-weight:800}
+    .identity-note {border-left:3px solid #f7bf62;padding:12px 16px;background:rgba(255,255,255,.08);border-radius:0 10px 10px 0;color:#e7eef7}
+    #why-searches-matter .global-fact-grid {grid-template-columns:minmax(0,1fr);max-width:630px}
+    @media(max-width:980px){.identity-roles{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media(max-width:570px){.identity-roles{grid-template-columns:1fr}}
+
+.bill-lens{background:#182943;color:#eaf0f8;padding:clamp(18px,3.3vw,34px);border-radius:24px;margin:26px 0 34px;box-shadow:0 18px 40px rgba(16,31,54,.13)}
+.bill-eyebrow,.bill-panel-tag{font-size:.73rem;font-weight:850;letter-spacing:.13em;color:#f0bd67;text-transform:uppercase}
+.bill-lens h3{color:#fff;margin:9px 0 6px;font-size:clamp(1.3rem,2.5vw,2.05rem)}
+.bill-hint{color:#d3dfef;margin:0 0 18px;max-width:65ch}
+.bill-tabs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-bottom:15px}
+.bill-tab{min-height:70px;padding:10px 8px;color:#e2e9f3;background:#2c3e59;border:1px solid #53667f;border-radius:12px;cursor:pointer;text-align:center;font-size:.82rem}
+.bill-tab strong{display:block;font-size:.93rem;margin-top:4px}
+.bill-tab:hover,.bill-tab.active{background:#f7be67;color:#172945;border-color:#f7be67}
+.bill-panel{padding:clamp(18px,2.6vw,26px);border-radius:16px;background:#f9fbff;color:#25314a}
+.bill-panel h4{font-size:clamp(1.1rem,2vw,1.4rem);margin:8px 0 12px;color:#172945}
+.bill-panel p{margin:10px 0;max-width:74ch;line-height:1.64}
+.bill-panel a{color:#a84238;text-decoration:underline}
+.bill-takeaway{border-left:4px solid #dca25a;background:#f7f0e6;padding:12px 15px;border-radius:0 10px 10px 0}
+@media(max-width:800px){.bill-tabs{grid-template-columns:repeat(2,minmax(0,1fr))}.bill-tab:last-child{grid-column:1/-1}}
+
+/* Kazakhstan regional evidence tile figure */
+.regional-figure{max-width:1000px;margin:0 auto 34px;background:#fff;border-radius:20px;padding:clamp(18px,3vw,30px);border:1px solid #e6ddd7;box-shadow:0 14px 35px rgba(29,39,61,.08);border-top:4px solid #1e293b}
+.regional-figure-top{display:flex;justify-content:space-between;align-items:end;gap:16px;margin-bottom:19px}
+.regional-figure-top h3{font-family:inherit;font-size:clamp(1.25rem,2.4vw,1.85rem);margin:6px 0;line-height:1.2}
+.regional-figure-top p{max-width:56ch;color:#6c6570;margin:0;font-size:.91rem}
+.figure-label{color:#8b5977;letter-spacing:.12em;font-size:.7rem;font-weight:850}
+.figure-tap{font-size:.76rem;font-weight:800;letter-spacing:.06em;color:#b95647;white-space:nowrap}
+.kaz-grid{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));grid-template-rows:repeat(5,76px);gap:7px;margin:10px 0 20px}
+.kaz-tile{grid-column:var(--x);grid-row:var(--y);background:#eee8f1;border:1px solid #d9cbdf;border-radius:11px;padding:7px 7px 8px;cursor:pointer;text-align:left;display:flex;flex-direction:column;justify-content:space-between;min-width:0;min-height:0;transition:transform .2s,box-shadow .2s,background .2s;position:relative;color:#283044}
+.kaz-tile.known{background:#ad8dbf;color:#fff;border-color:#9c7ab2}
+.kaz-tile.known[data-id="astana"]{background:#f1c5a7;color:#293241;border:2px dashed #293241;border-radius:40px}
+.kaz-tile.known[data-id="abai"]{background:#745ba4}
+.kaz-tile.known[data-id="aktobe"]{background:#8c75b4}
+.kaz-tile.known[data-id="mangystau"]{background:#b88fb1}
+.kaz-tile:hover,.kaz-tile:focus-visible{transform:translateY(-3px);box-shadow:0 9px 20px rgba(45,35,65,.18);outline:2px solid transparent}
+.kaz-tile.selected{outline:3px solid #f18c5f;outline-offset:2px;z-index:2;transform:translateY(-2px)}
+.kaz-code{font-weight:900;font-size:.72rem;letter-spacing:.05em}
+.kaz-number{font-size:clamp(.79rem,1.7vw,1.1rem);font-weight:900;line-height:1.1;letter-spacing:-.02em}
+.kaz-no-data{font-size:.66rem;line-height:1.08;opacity:.7}
+.figure-key{display:flex;align-items:center;gap:7px;flex-wrap:wrap;color:#67646d;font-size:.77rem;margin-bottom:17px}
+.key-dot{display:inline-block;width:10px;height:10px;border-radius:3px}.key-dot.measured{background:#9276b3}.key-dot.missing{background:#e6dce9;border:1px solid #c9bcd2;margin-left:14px}
+.kaz-detail{min-height:142px;border-radius:15px;background:#fff4eb;padding:20px 22px;display:flex;align-items:center;color:#2c2936}
+.detail-empty{text-align:center;width:100%;color:#665964}.detail-empty span{color:#c27255;font-size:1.7rem;display:block}
+.detail-empty strong{display:block;font-size:1rem}.detail-empty p{font-size:.86rem;margin:4px 0 0}
+.kaz-detail-content{width:100%}.kaz-detail-heading{display:flex;justify-content:space-between;gap:14px;align-items:baseline;flex-wrap:wrap}
+.kaz-detail h4{font-size:1.15rem;margin:0 0 7px}.kaz-detail h4 span{color:#8a5975;font-size:.78rem;font-weight:700;margin-left:8px}
+.kaz-detail-number{font-size:clamp(1.6rem,3.2vw,2.5rem);font-weight:900;line-height:1.05;margin-bottom:4px}
+.kaz-detail p{font-size:.9rem;margin:6px 0;line-height:1.5}.kaz-detail a{font-size:.9rem;font-weight:750;text-decoration:underline}
+.figure-footnote{font-size:.76rem;line-height:1.4;color:#746c74;margin:12px 0 0}
+@media(max-width:760px){.kaz-grid{grid-template-rows:repeat(5,65px);gap:4px}.kaz-tile{border-radius:7px;padding:5px}.kaz-code{font-size:.57rem}.kaz-number{font-size:.8rem}.kaz-no-data{font-size:.54rem}.figure-tap{display:none}}
+@media(max-width:500px){.kaz-grid{grid-template-rows:repeat(5,53px);gap:3px}.kaz-tile{padding:3px}.kaz-code{font-size:.5rem}.kaz-number{font-size:.66rem}.kaz-no-data{font-size:.47rem}.regional-figure{padding:12px}}
+
+/* Original, compact region report explorer: intentionally not a geographic tile map */
+.region-evidence-block{background:#fcfbf7;border:1px solid #dddcd9;border-top:3px solid #233b54;border-radius:15px;padding:clamp(19px,3vw,30px);margin:25px 0 33px}
+.region-evidence-heading h3{margin:7px 0 4px;font-size:clamp(1.35rem,2.4vw,1.9rem)}
+.region-evidence-heading p{color:#667083;margin:0 0 20px}
+.region-report-options{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.region-report-choice{display:flex;flex-direction:column;text-align:left;gap:6px;padding:18px;background:#fff;border:1px solid #d8dce1;border-radius:12px;cursor:pointer;transition:transform .18s,border-color .18s,background .18s}
+.region-report-choice:hover{transform:translateY(-3px);border-color:#cf9346}
+.region-report-choice.active{background:#213951;color:white;border-color:#213951}
+.region-report-choice .region-label{font-size:.7rem;letter-spacing:.12em;font-weight:900;color:inherit;opacity:.8}
+.region-report-choice strong{font-size:clamp(1.4rem,2.8vw,2rem);line-height:1.05;font-weight:900}
+.region-report-choice small{font-size:.76rem;opacity:.8}
+.region-report-detail{background:#f4eee5;border-radius:12px;margin-top:15px;padding:21px 24px;border-left:4px solid #d79b4d}
+.region-report-detail>span{font-size:.73rem;font-weight:800;letter-spacing:.1em;color:#925f35}
+.region-report-detail h4{margin:8px 0;font-size:1.35rem;color:#24334a}
+.region-report-detail p{margin:0 0 12px;max-width:72ch;color:#3b4250}
+.region-report-detail a{text-decoration:underline}
+.region-report-note{margin:13px 0 0;color:#606879;font-size:.83rem}
+.data-insight-block{margin:25px 0 45px}
+.insight-heading h2{margin:9px 0 3px;font-size:clamp(1.4rem,2.6vw,2.1rem)}
+.insight-heading p{color:#5b6879;margin:0 0 16px}
+.insight-trio{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.insight-trio details{border-radius:13px;background:white;border:1px solid #dfe2e6;padding:17px}
+.insight-trio summary{cursor:pointer;font-weight:800;list-style:none;line-height:1.4}
+.insight-trio summary::-webkit-details-marker{display:none}
+.insight-trio summary span{display:block;color:#b67b39;font-size:.75rem;letter-spacing:.15em;margin-bottom:8px}
+.insight-trio details[open]{border-color:#c68c45;box-shadow:0 8px 20px rgba(40,54,76,.05)}
+.insight-trio details p{font-size:.92rem;margin:12px 0 0;color:#4d5a69}
+.data-method-note{margin-top:16px;font-size:.86rem;color:#5d6773;max-width:85ch}
+@media(max-width:760px){.region-report-options{grid-template-columns:repeat(2,minmax(0,1fr))}.insight-trio{grid-template-columns:1fr}}
+
+.ai-ops{margin:26px 0 32px;padding:clamp(20px,3vw,32px);border:1px solid #d9dce3;border-radius:22px;background:linear-gradient(155deg,#f4f8fd,#fffaf4)}
+.ai-ops-header h3{font-size:clamp(1.5rem,2.5vw,2.1rem);margin:8px 0 4px}
+.ai-ops-header p{color:#606c7e;margin:0 0 20px}
+.ai-ops-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}
+.ai-op{background:white;border:1px solid #e0e7ee;border-radius:15px;padding:19px;box-shadow:0 5px 14px rgba(18,41,69,.04)}
+.ai-op:nth-child(2),.ai-op:nth-child(5){background:#f8f9fc}
+.ai-op-icon{width:38px;height:38px;border-radius:11px;display:inline-flex;align-items:center;justify-content:center;background:#203d60;color:#f6c87d;font-weight:850}
+.ai-op h4{font-size:1.14rem;margin:12px 0 6px;color:#1d2e4b}
+.ai-op p{font-size:.94rem;line-height:1.55;margin:0 0 14px;color:#485569}
+.ai-op-output{display:block;margin-top:auto;border-top:1px dashed #e0e3e8;padding-top:11px;font-size:.76rem;text-transform:uppercase;letter-spacing:.035em;font-weight:800;color:#98643e}
+.ai-boundary{background:#1d3556;color:#e9f2fc;border-radius:14px;padding:17px 20px;margin-top:15px;line-height:1.6}
+.ai-boundary strong{color:#f9ce88}
+.bill-numbers{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:12px 0 20px}
+.bill-numbers>div{background:#243b59;border:1px solid #526782;border-radius:12px;padding:12px}
+.bill-numbers .num{color:#ffce80;font-weight:850;font-size:clamp(.92rem,1.7vw,1.22rem);display:block}
+.bill-numbers small{color:#d5e1ef;line-height:1.35;display:block;margin-top:4px}
+@media(max-width:850px){.ai-ops-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:550px){.ai-ops-grid,.bill-numbers{grid-template-columns:1fr}}
+
+/* Dedicated References section */
+.references-section{background:linear-gradient(155deg,#fff9ef 0%,#f2f5fa 56%,#fffdf8 100%);padding-bottom:95px}
+.references-inner{max-width:900px}
+.references-card{border:1px solid #e1dacd;border-radius:22px;padding:clamp(18px,3vw,32px);background:#fff;box-shadow:0 16px 35px rgba(22,36,55,.06)}
+.references-section .section-header h2{max-width:18ch}
+.sources-toggle summary{display:flex;align-items:center;justify-content:space-between;gap:12px;background:#172a48;color:white;border-color:#172a48;padding:17px 20px;border-radius:15px}
+.sources-toggle summary:hover{background:#263f63}
+.references-summary-left{display:flex;align-items:center;gap:14px;text-align:left}
+.references-summary-left strong{font-size:1.04rem}
+.references-summary-left small{display:block;color:#bfc9d9;margin-top:3px;font-weight:500;font-size:.8rem}
+.references-book{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;background:rgba(255,255,255,.12);color:#f8c77f;font-size:1.7rem}
+.references-toggle-mark{font-size:1.7rem;font-weight:500;color:#f8c77f;transition:transform .2s}
+.sources-toggle[open] .references-toggle-mark{transform:rotate(45deg)}
+.references-card ol{padding-left:25px;margin:22px 0 0!important;columns:1}
+.references-card li{padding:7px 0;line-height:1.55;border-bottom:1px solid #eee8e0;break-inside:avoid}
+.references-card li:last-child{border-bottom:none}
+/* Click to reveal research */
+.approaches-instruction{font-size:.94rem;font-weight:700;color:#8a5038;letter-spacing:.01em;margin:12px 0 16px;padding-left:13px;border-left:3px solid #cf844a}
+.research-approach{border:1px solid #d9dfeb;background:#fff;box-shadow:0 10px 24px rgba(25,43,70,.05);border-radius:18px;margin-bottom:15px;overflow:hidden}
+.research-approach summary{list-style:none;cursor:pointer;padding:23px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;background:linear-gradient(105deg,#f6f8fc,#fff9f0);transition:background .2s}
+.research-approach summary::-webkit-details-marker{display:none}
+.research-approach summary:hover{background:linear-gradient(105deg,#e8eef8,#fff1dd)}
+.approach-labels{display:flex;flex-direction:column;gap:5px;min-width:0}
+.approach-kicker{color:#a0503f;font-size:.73rem;font-weight:800;letter-spacing:.1em}
+.approach-head{font-weight:800;color:#192a43;font-size:clamp(1.05rem,2vw,1.32rem);line-height:1.4}
+.approach-hint{color:#6d7390;font-size:.73rem;letter-spacing:.1em;font-weight:800;margin-top:4px}
+.approach-icon{display:grid;place-items:center;flex:none;font-size:1.8rem;font-weight:400;color:white;background:#233b5a;border-radius:50%;width:42px;height:42px;transition:transform .25s}
+.research-approach[open] .approach-icon{transform:rotate(45deg);background:#ae644e}
+.approach-body{padding:24px 25px 22px;border-top:1px solid #e6eaf1;animation:approachDrop .25s ease}
+.approach-body p{max-width:76ch}
+@keyframes approachDrop{from{opacity:.55;transform:translateY(-5px)}to{opacity:1;transform:translateY(0)}}
+/* Figure 1 is visibly clickable */
+.region-evidence-heading>p{color:#a34937;font-weight:800;letter-spacing:.02em}
+.region-report-choice{position:relative;cursor:pointer!important;transition:transform .22s,box-shadow .22s,border-color .22s!important;border:2px solid #c5a6a0!important;padding-bottom:16px!important}
+.region-report-choice:hover,.region-report-choice:focus-visible{transform:translateY(-5px);box-shadow:0 12px 30px rgba(32,48,81,.18);border-color:#cc714d!important;outline:2px solid #eab270;outline-offset:2px}
+.region-report-choice.active{border-color:#b75036!important;box-shadow:0 0 0 3px rgba(206,122,66,.22),0 12px 30px rgba(34,46,67,.11)!important}
+.region-action-text{display:block;margin-top:14px;padding:7px 5px;border-radius:8px;background:#233c59;color:#fff;font-size:.68rem;font-weight:900;letter-spacing:.065em;text-align:center;line-height:1.25}
+.region-report-choice.active .region-action-text{background:#a44939;color:white}
+.region-report-choice:hover .region-action-text{background:#b75336}
+/* The one live bill details panel must remain visible for all tabs */
+.bill-panel{display:block!important;visibility:visible!important;opacity:1!important}
+@media(max-width:720px){.region-action-text{font-size:.59rem}.references-section{padding-bottom:54px}.research-approach summary{padding:18px 16px}.approach-body{padding:17px}.references-card{padding:15px}}
+
+#costs .bill-lens {padding:clamp(18px,2.5vw,26px)}
+#costs .bill-panel {min-height:0;padding:18px 21px}
+#costs .bill-panel p {margin:7px 0;line-height:1.48}
+#costs .bill-panel h4 {margin:5px 0 9px}
+#costs .bill-takeaway {padding:9px 12px}
+#costs .bill-hint {margin-bottom:12px}
+#costs .cost-assumption-details {margin-top:14px; font-size:.86rem}
+#costs .cost-assumption-details summary {cursor:pointer; font-weight:700; color:var(--text); padding:9px 12px; border:1px solid var(--line); border-radius:10px}
+#costs .cost-assumption-details .formula {margin-top:10px}
+
+.evidence-tension{background:#f3f6fa;border-left:3px solid #8f658f;padding:12px 16px;border-radius:0 12px 12px 0;font-size:.96rem;max-width:850px;margin-top:14px}
+.ai-value-statement{border-left:3px solid #dfaa53;padding:12px 16px;background:linear-gradient(90deg,#fff8ec,#fffdf8);border-radius:0 12px 12px 0;margin:12px 0 26px;max-width:850px;font-size:.96rem}
+.region-report-note{border-top:1px solid var(--line);padding-top:12px;font-size:.9rem;max-width:880px}
+
+
+.section-figure{margin:20px 0 26px;padding:22px;background:linear-gradient(145deg,#fff,#fff9f1)}
+.figure-kicker{font-size:.73rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:850;margin-bottom:12px}
+.figure-flex{display:grid;grid-template-columns: minmax(260px, 1fr) 1.1fr;gap:20px;align-items:center}
+.figure-svg{width:100%;height:auto;display:block;border-radius:18px;background:transparent}
+.figure-svg.small-figure{max-width:330px;margin:auto}
+.figure-copy h3{margin:0 0 10px;font-size:1.35rem}
+.figure-copy p{margin:0;color:var(--muted)}
+.section-mini-figures{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:18px 0 28px}
+.mini-figure{padding:18px;background:linear-gradient(145deg,#fff,#f8fbff)}
+.mini-svg{width:100%;height:auto;display:block;margin-bottom:10px}
+.mini-figure h4{margin:2px 0 6px;font-size:1rem}
+.mini-figure p{margin:0;color:var(--muted);font-size:.94rem}
+.research-pillars{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.pillar{padding:18px;border-radius:18px;background:linear-gradient(145deg,#172943,#21395c);color:#eaf0f8;min-height:150px}
+.pillar span{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;background:#f1b85a;color:#172943;font-weight:900;margin-bottom:10px}
+.pillar b{display:block;font-size:1rem;margin-bottom:6px;color:#fff}
+.pillar small{display:block;line-height:1.45;color:#dbe5f1;font-size:.88rem}
+.ai-orbit{position:relative;min-height:280px;background:linear-gradient(145deg,#f8fbff,#fff8ef);border-radius:20px;overflow:hidden}
+.ai-core{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:84px;height:84px;border-radius:50%;background:#172943;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:1.2rem;z-index:2;box-shadow:0 10px 28px rgba(23,41,67,.14)}
+.orbit{position:absolute;padding:10px 14px;border-radius:999px;background:#fff;border:1px solid rgba(23,41,67,.12);font-weight:700;font-size:.9rem;z-index:2;box-shadow:0 8px 18px rgba(23,41,67,.08)}
+.orbit-1{left:50%;top:16px;transform:translateX(-50%)}
+.orbit-2{left:24px;top:84px}
+.orbit-3{right:24px;top:84px}
+.orbit-4{left:34px;bottom:38px}
+.orbit-5{right:20px;bottom:38px}
+.orbit-lines{position:absolute;inset:0;width:100%;height:100%}
+.orbit-lines path{stroke:#e1ac58;stroke-width:2.5;fill:none;opacity:.75;stroke-dasharray:5 5}
+.cost-icons-row{grid-template-columns:repeat(5,minmax(0,1fr));margin-top:18px}
+.mini-figure.compact{text-align:center;padding:18px 12px}
+.icon-badge{width:54px;height:54px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;background:#172943;color:#fff;font-size:1.5rem;font-weight:800}
+.mini-figure.compact h4{margin:0;font-size:.96rem}
+@media(max-width:980px){.figure-flex,.research-pillars,.cost-icons-row{grid-template-columns:1fr}.section-mini-figures{grid-template-columns:1fr}.ai-orbit{min-height:340px}.orbit-2,.orbit-4{left:12px}.orbit-3,.orbit-5{right:12px}}
+
+/* Numeric evidence should stand out instead of blending into long paragraphs. */
+.evidence-spotlight{margin:23px 0 28px;border-radius:22px;overflow:hidden;background:#162a46;color:#f8fbff;box-shadow:0 18px 40px rgba(21,39,66,.15)}
+.evidence-top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 20px;background:#112239;letter-spacing:.1em;font-weight:800;font-size:.72rem;color:#f0bd68}
+.evidence-note{font-size:.69rem;color:#b6c8de;letter-spacing:.02em;font-weight:600}
+.evidence-numbers{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0}
+.evidence-stat{padding:22px 20px 20px;border-right:1px solid rgba(255,255,255,.16);min-width:0}
+.evidence-stat:last-child{border-right:0}
+.evidence-period{font-size:.69rem;font-weight:800;letter-spacing:.09em;color:#bed0e2}
+.evidence-number{display:block;font-size:clamp(2rem,4vw,3.15rem);font-weight:900;color:#f6c36e;line-height:1.1;margin:10px 0 8px;letter-spacing:-.035em}
+.evidence-stat p{color:#eef3f9;font-size:.89rem;line-height:1.42;min-height:60px;margin:0 0 10px;max-width:22ch}
+.evidence-stat a{font-size:.8rem;color:#f6c36e;text-decoration:underline;text-underline-offset:3px}
+.evidence-caveat{margin:0;padding:12px 20px;background:#203752;color:#cad6e6;font-size:.75rem;line-height:1.5}
+.water-evidence{display:flex;gap:15px;align-items:center;border-radius:15px;padding:16px 18px;background:#eaf4fc;margin:14px 0 10px;color:#163550}
+.water-droplet{font-size:2.2rem}
+.water-evidence strong{display:block;font-size:clamp(1.7rem,3vw,2.2rem);line-height:1.15;color:#1b5b83}
+.water-evidence span:last-child{display:block;font-size:.82rem;margin-top:3px}
+.calc-result.water-result{background:linear-gradient(140deg,#eff8ff,#fff)}
+.water-result small{font-size:.7rem;color:#5e6c7a}
+@media(max-width:900px){.evidence-numbers{grid-template-columns:repeat(2,minmax(0,1fr))}.evidence-stat:nth-child(2){border-right:0}.evidence-stat:nth-child(-n+2){border-bottom:1px solid rgba(255,255,255,.16)}}
+@media(max-width:510px){.evidence-stat{padding:17px 14px}.evidence-stat p{min-height:0}.evidence-top{align-items:flex-start;flex-direction:column}.evidence-number{font-size:2.15rem}}
+
+#problem .section-stat-sources{margin:9px 0 22px;color:var(--muted);font-size:.78rem;line-height:1.5}
+#problem .global-eight{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(230px,.7fr);align-items:center;gap:12px;margin:24px 0 30px;padding:clamp(22px,4vw,36px);background:linear-gradient(125deg,#162947,#283f60);border-color:#314865;color:#fff;overflow:hidden}
+#problem .global-eight h3{color:#fff;margin:2px 0 16px;max-width:34ch;font-size:clamp(1.28rem,2.25vw,1.75rem);line-height:1.25}
+#problem .global-eight .section-tag{color:#f4be72}
+#problem .global-eight-stat{display:flex;flex-wrap:wrap;align-items:center;gap:16px;margin:8px 0 16px}
+#problem .global-eight-stat span{font-weight:900;font-size:clamp(2.6rem,5vw,4.2rem);letter-spacing:-.05em;color:#f4be72;line-height:1}
+#problem .global-eight-stat small{max-width:170px;line-height:1.35;color:#e4edf8}
+#problem .global-eight p{color:#e0e9f3;margin:7px 0;font-size:.92rem}
+#problem .global-eight a{color:#f4be72;text-decoration:underline}
+#problem .global-eight .global-eight-note{font-size:.77rem;color:#b8c8db;margin-top:7px}
+#problem .global-eight-art{max-width:310px;margin-left:auto}
+#problem .global-eight-art svg{display:block;width:100%;height:auto}
+@media(max-width:760px){#problem .global-eight{grid-template-columns:1fr}#problem .global-eight-art{max-width:220px;margin:-10px auto 0}}
+
+/* Magazine chapter-turn transitions. No existing section styles or content modified. */
+.magazine-chapter-turn {
+  position: relative;
+  z-index: 2;
+  padding: clamp(12px, 2.5vw, 28px) 18px clamp(4px, 1.4vw, 16px);
+  background: linear-gradient(180deg, transparent, rgba(250,247,241,.70) 40%, transparent 100%);
+  pointer-events: none;
+  isolation: isolate;
+}
+.magazine-turn-kicker {
+  max-width: 875px; margin: 0 auto 10px; display: flex; justify-content: center;
+  align-items: center; gap: 12px; font-size: .65rem; line-height: 1;
+  letter-spacing: .19em; font-weight: 750; color: #997e63;
+}
+.magazine-turn-line { flex: 1; max-width: 82px; height: 1px; background: #d9c8b2; }
+.magazine-book {
+  max-width: 875px; height: clamp(135px, 16vw, 176px); margin: 0 auto; position: relative;
+  perspective: 1550px; filter: drop-shadow(0 11px 12px rgba(40,38,41,.13));
+}
+.magazine-leaf {
+  position: absolute; width: calc(50% - 2px); top: 0; bottom: 0;
+  display: flex; flex-direction: column; justify-content: space-between;
+  padding: clamp(12px,2vw,25px) clamp(16px,3vw,42px);
+  border: 1px solid #e2d9c9; color: #28374b;
+}
+.magazine-leaf-left { left: 0; border-radius: 13px 2px 3px 13px; background: linear-gradient(100deg,#fffaf0 0%,#fffdf8 80%,#f0e6d9 100%); }
+.magazine-leaf-right { right: 0; border-radius: 2px 13px 13px 3px; background: linear-gradient(95deg,#f4ecdf,#fffdf7 30%,#fdf6ed); }
+.magazine-book-top, .magazine-book-bottom { font-size: .65rem; font-weight: 760; letter-spacing: .12em; position:relative;z-index:1; }
+.magazine-book-top { color: #8b7c74; }
+.magazine-book-bottom { color: #6f7784; }
+.magazine-book-highlight { color: #b8792c; }
+.magazine-ghost-number { position:absolute; font-family: Georgia,serif; font-size: clamp(68px,10vw,134px); font-weight:700; top:4%;right:12%;line-height:1;color:#d7c4a9;opacity:.34; }
+.magazine-chapter-name { font-family: Georgia, 'Times New Roman', serif; font-weight:700; font-size: clamp(1.02rem,2.1vw,1.82rem); line-height:1.1; letter-spacing:-.025em; max-width:85%; position:relative;z-index:1; }
+.magazine-chapter-number { position:absolute; bottom:12px; right:22px; font-family: Georgia,serif; font-size: clamp(2.8rem,6.5vw,5rem);line-height:1;font-weight:700;color:#cc9b63;opacity:.28; }
+.magazine-spine { position:absolute;z-index:5;left:calc(50% - 2px);top:0;width:5px;height:100%;background:linear-gradient(90deg,rgba(75,57,35,.26),rgba(255,255,255,.45),rgba(75,57,35,.16));box-shadow: 0 0 8px rgba(61,47,34,.17); }
+.magazine-flip-page {
+  position:absolute;z-index:4; left:50%;top:0; width:50%;height:100%;
+  border-radius:2px 13px 13px 2px;border:1px solid #e7dac8;
+  background:linear-gradient(130deg,#f6ecde 0%, #fff9f0 55%, #efe0cc 100%);
+  transform-origin:left center;transform-style:preserve-3d;backface-visibility:hidden;
+  box-shadow: inset 7px 0 15px rgba(96,72,48,.09), 4px 4px 10px rgba(60,54,46,.11);
+  transform: rotateY(0deg);
+}
+.magazine-flip-label {position:absolute; bottom:20px;right:32px;font-family:Georgia,serif;font-size:clamp(1.4rem,3vw,2.6rem);color:#ac8a68;}
+.magazine-fold {position:absolute;right:0;bottom:0;width:26px;height:26px;background:linear-gradient(135deg, transparent 49%,#e5ccb1 50%,#fffaf0 73%);filter:drop-shadow(-1px -1px 2px #d5c4b3);border-radius:0 0 12px 0;}
+.magazine-chapter-turn.is-open .magazine-flip-page {animation:magazine-page-flip 1.15s cubic-bezier(.25,.6,.19,1) both;}
+@keyframes magazine-page-flip {
+  0% {transform: rotateY(0deg);opacity:1;filter:brightness(1)}
+  55% {filter:brightness(.83)}
+  100% {transform: rotateY(-176deg); opacity:0; filter:brightness(1)}
+}
+@media (max-width: 650px){
+  .magazine-leaf { padding:14px 16px; }
+  .magazine-book-top,.magazine-book-bottom {font-size:.52rem;letter-spacing:.06em;}
+  .magazine-turn-kicker {font-size:.57rem;}
+  .magazine-chapter-name{font-size:clamp(.94rem,3.7vw,1.22rem);}
+  .magazine-chapter-number{font-size:2.8rem;right:12px;}
+}
+@media(prefers-reduced-motion:reduce){
+  .magazine-flip-page{display:none!important;}
+  .magazine-chapter-turn.is-open .magazine-flip-page{animation:none;}
+}
+
+</style>
 </head>
 <body>
-  <header class="topbar">
-    <div class="container topbar-inner">
-      <nav aria-label="Main navigation">
-        <a href="#problem">1 The problem</a>
-        <a href="#data">2 Background & data</a>
-        <a href="#research">3 Research</a>
-        <a href="#solution">4 Solution & bill</a>
-        <a href="#verdict">Verdict</a>
-        <a href="#ai-transparency">AI transparency</a>
-        <a href="#sources">Sources</a>
-      </nav>
-    </div>
-  </header>
+<header class="topbar">
+<div class="container topbar-inner">
+<nav aria-label="Main navigation">
+<a href="#problem">1 The problem</a>
+<a href="#data">2 Background &amp; data</a>
+<a href="#research">3 Research</a>
+<a href="#solution">4 AI solution</a><a href="#costs">5 Costs</a>
+<a href="#verdict">Verdict</a>
+<a href="#ai-transparency">7 AI process</a>
+<a href="#sources">References</a>
+</nav>
+</div>
+</header>
+<main id="top">
+<section aria-labelledby="hero-title" class="hero">
+<div class="container">
+<div class="eyebrow">PLS419 · An AI answer for Kazakhstan</div>
+<h1 id="hero-title">What if you walked past a <em>missing child</em> today?</h1>
+<p class="lead">Somewhere nearby, a child could be missing — and you might never see the alert. BalaSafe KZ explores whether verified, location-based information can reach more of the people who could help.</p>
+<div class="hero-actions">
+<button class="button primary" id="sendAlert" type="button">◎ Send alert</button>
+<a class="button secondary" href="#problem">Start reading ↓</a>
+</div>
+<div aria-live="polite" class="scene-status" id="sceneStatus" role="status">Press “Send alert” to reveal who receives the message.</div>
+<div aria-label="Illustration of a missing child among passers-by. An alert reaches some people but not all." class="alert-scene" id="alertScene">
+<svg aria-labelledby="sceneTitle sceneDesc" preserveaspectratio="xMidYMax slice" role="img" viewbox="0 0 1340 325">
+<title id="sceneTitle">Who gets the alert?</title><desc id="sceneDesc">An illustrated city street with passers-by and a highlighted child; the alert reaches only some people.</desc>
+<defs><lineargradient id="building" x1="0" x2="0" y1="0" y2="1"><stop stop-color="#1f3058"></stop><stop offset="1" stop-color="#122041"></stop></lineargradient></defs>
+<path d="M0 196V98H95V177H150V67H240V190H320V106H390V188H482V51H578V187H640V124H750V191H822V75H919V192H975V95H1068V189H1135V58H1232V193H1340V212Z" fill="url(#building)"></path>
+<path d="M0 237H1340V325H0Z" fill="#111b35"></path><path d="M0 239H1340" stroke="#62718c" stroke-width="2"></path>
+<g fill="#44577a" opacity=".65"><rect height="13" width="10" x="177" y="94"></rect><rect height="13" width="10" x="204" y="94"></rect><rect height="14" width="10" x="507" y="78"></rect><rect height="14" width="10" x="533" y="78"></rect><rect height="14" width="12" x="849" y="104"></rect><rect height="14" width="12" x="878" y="104"></rect><rect height="15" width="13" x="1161" y="83"></rect><rect height="15" width="13" x="1194" y="83"></rect></g>
+<g transform="translate(606 150)"><circle class="signal-ring ring-one" cx="0" cy="0" r="40"></circle><circle class="signal-ring ring-two" cx="0" cy="0" r="40"></circle></g>
+<g class="person" id="ped-0" transform="translate(100 120) scale(1.06)"><circle class="head" cx="0" cy="0" r="19"></circle><path class="body" d="M-16 23 Q0 12 16 23 L28 84 L8 84 L17 151 L-3 151 L-11 94 L-18 151 L-38 151 L-22 84 L-29 84 Z"></path></g><g class="person unreached" id="ped-1" transform="translate(260 148) scale(0.82)"><circle class="head" cx="0" cy="0" r="19"></circle><path class="body" d="M-16 23 Q0 12 16 23 L28 84 L8 84 L17 151 L-3 151 L-11 94 L-18 151 L-38 151 L-22 84 L-29 84 Z"></path></g><g class="person" id="ped-2" transform="translate(375 121) scale(1.02)"><circle class="head" cx="0" cy="0" r="19"></circle><path class="body" d="M-16 23 Q0 12 16 23 L28 84 L8 84 L17 151 L-3 151 L-11 94 L-18 151 L-38 151 L-22 84 L-29 84 Z"></path></g><g class="person unreached" id="ped-3" transform="translate(790 144) scale(0.88)"><circle class="head" cx="0" cy="0" r="19"></circle><path class="body" d="M-16 23 Q0 12 16 23 L28 84 L8 84 L17 151 L-3 151 L-11 94 L-18 151 L-38 151 L-22 84 L-29 84 Z"></path></g><g class="person" id="ped-4" transform="translate(910 115) scale(1.07)"><circle class="head" cx="0" cy="0" r="19"></circle><path class="body" d="M-16 23 Q0 12 16 23 L28 84 L8 84 L17 151 L-3 151 L-11 94 L-18 151 L-38 151 L-22 84 L-29 84 Z"></path></g><g class="person unreached" id="ped-5" transform="translate(1075 151) scale(0.78)"><circle class="head" cx="0" cy="0" r="19"></circle><path class="body" d="M-16 23 Q0 12 16 23 L28 84 L8 84 L17 151 L-3 151 L-11 94 L-18 151 L-38 151 L-22 84 L-29 84 Z"></path></g><g class="person" id="ped-6" transform="translate(1210 123) scale(0.98)"><circle class="head" cx="0" cy="0" r="19"></circle><path class="body" d="M-16 23 Q0 12 16 23 L28 84 L8 84 L17 151 L-3 151 L-11 94 L-18 151 L-38 151 L-22 84 L-29 84 Z"></path></g><g class="person unreached" id="ped-7" transform="translate(695 170) scale(0.66)"><circle class="head" cx="0" cy="0" r="19"></circle><path class="body" d="M-16 23 Q0 12 16 23 L28 84 L8 84 L17 151 L-3 151 L-11 94 L-18 151 L-38 151 L-22 84 L-29 84 Z"></path></g><g class="person" id="ped-8" transform="translate(470 160) scale(0.72)"><circle class="head" cx="0" cy="0" r="19"></circle><path class="body" d="M-16 23 Q0 12 16 23 L28 84 L8 84 L17 151 L-3 151 L-11 94 L-18 151 L-38 151 L-22 84 L-29 84 Z"></path></g>
+<g class="child" transform="translate(606 176)"><circle class="head" cx="0" cy="0" r="15"></circle><path class="body" d="M-12 19Q0 13 12 19L18 67L8 67L11 111L-2 111L-6 73L-11 111L-24 111L-16 67L-20 67Z"></path></g>
+<path d="M0 303H1340" stroke="#586881" stroke-dasharray="26 19" stroke-width="3"></path>
+</svg>
+<div class="scene-caption">Illustrative scene · No real children or locations</div>
+</div>
+<div class="scene-legend"><span>Residents who receive an alert</span><span>Residents still unaware</span></div>
+</div>
+</section>
 
-  <main id="top">
-    <section class="hero" aria-labelledby="hero-title">
-      <div class="container">
-        <div class="eyebrow">PLS419 · An AI answer for Kazakhstan</div>
-        <h1 id="hero-title">What if you walked past a <em>missing child</em> today?</h1>
-        <p class="lead">Somewhere nearby, a child could be missing — and you might never see the alert. BalaSafe KZ explores whether verified, location-based information can reach more of the people who could help.</p>
-        <div class="hero-actions">
-          <button class="button primary" id="sendAlert" type="button">◎ Send alert</button>
-          <a class="button secondary" href="#problem">Start reading ↓</a>
-        </div>
-        <div class="scene-status" id="sceneStatus" role="status" aria-live="polite">Press “Send alert” to reveal who receives the message.</div>
-        <div class="alert-scene" id="alertScene" aria-label="Illustration of a missing child among passers-by. An alert reaches some people but not all.">
-          <svg viewBox="0 0 1340 325" preserveAspectRatio="xMidYMax slice" role="img" aria-labelledby="sceneTitle sceneDesc">
-            <title id="sceneTitle">Who gets the alert?</title><desc id="sceneDesc">An illustrated city street with passers-by and a highlighted child; the alert reaches only some people.</desc>
-            <defs><linearGradient id="building" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#1f3058"/><stop offset="1" stop-color="#122041"/></linearGradient></defs>
-            <path d="M0 196V98H95V177H150V67H240V190H320V106H390V188H482V51H578V187H640V124H750V191H822V75H919V192H975V95H1068V189H1135V58H1232V193H1340V212Z" fill="url(#building)"/>
-            <path d="M0 237H1340V325H0Z" fill="#111b35"/><path d="M0 239H1340" stroke="#62718c" stroke-width="2"/>
-            <g fill="#44577a" opacity=".65"><rect x="177" y="94" width="10" height="13"/><rect x="204" y="94" width="10" height="13"/><rect x="507" y="78" width="10" height="14"/><rect x="533" y="78" width="10" height="14"/><rect x="849" y="104" width="12" height="14"/><rect x="878" y="104" width="12" height="14"/><rect x="1161" y="83" width="13" height="15"/><rect x="1194" y="83" width="13" height="15"/></g>
-            <g transform="translate(606 150)"><circle class="signal-ring ring-one" cx="0" cy="0" r="40"/><circle class="signal-ring ring-two" cx="0" cy="0" r="40"/></g>
-            <g id="ped-0" class="person" transform="translate(100 120) scale(1.06)"><circle class="head" cx="0" cy="0" r="19"/><path class="body" d="M-16 23 Q0 12 16 23 L28 84 L8 84 L17 151 L-3 151 L-11 94 L-18 151 L-38 151 L-22 84 L-29 84 Z"/></g><g id="ped-1" class="person unreached" transform="translate(260 148) scale(0.82)"><circle class="head" cx="0" cy="0" r="19"/><path class="body" d="M-16 23 Q0 12 16 23 L28 84 L8 84 L17 151 L-3 151 L-11 94 L-18 151 L-38 151 L-22 84 L-29 84 Z"/></g><g id="ped-2" class="person" transform="translate(375 121) scale(1.02)"><circle class="head" cx="0" cy="0" r="19"/><path class="body" d="M-16 23 Q0 12 16 23 L28 84 L8 84 L17 151 L-3 151 L-11 94 L-18 151 L-38 151 L-22 84 L-29 84 Z"/></g><g id="ped-3" class="person unreached" transform="translate(790 144) scale(0.88)"><circle class="head" cx="0" cy="0" r="19"/><path class="body" d="M-16 23 Q0 12 16 23 L28 84 L8 84 L17 151 L-3 151 L-11 94 L-18 151 L-38 151 L-22 84 L-29 84 Z"/></g><g id="ped-4" class="person" transform="translate(910 115) scale(1.07)"><circle class="head" cx="0" cy="0" r="19"/><path class="body" d="M-16 23 Q0 12 16 23 L28 84 L8 84 L17 151 L-3 151 L-11 94 L-18 151 L-38 151 L-22 84 L-29 84 Z"/></g><g id="ped-5" class="person unreached" transform="translate(1075 151) scale(0.78)"><circle class="head" cx="0" cy="0" r="19"/><path class="body" d="M-16 23 Q0 12 16 23 L28 84 L8 84 L17 151 L-3 151 L-11 94 L-18 151 L-38 151 L-22 84 L-29 84 Z"/></g><g id="ped-6" class="person" transform="translate(1210 123) scale(0.98)"><circle class="head" cx="0" cy="0" r="19"/><path class="body" d="M-16 23 Q0 12 16 23 L28 84 L8 84 L17 151 L-3 151 L-11 94 L-18 151 L-38 151 L-22 84 L-29 84 Z"/></g><g id="ped-7" class="person unreached" transform="translate(695 170) scale(0.66)"><circle class="head" cx="0" cy="0" r="19"/><path class="body" d="M-16 23 Q0 12 16 23 L28 84 L8 84 L17 151 L-3 151 L-11 94 L-18 151 L-38 151 L-22 84 L-29 84 Z"/></g><g id="ped-8" class="person" transform="translate(470 160) scale(0.72)"><circle class="head" cx="0" cy="0" r="19"/><path class="body" d="M-16 23 Q0 12 16 23 L28 84 L8 84 L17 151 L-3 151 L-11 94 L-18 151 L-38 151 L-22 84 L-29 84 Z"/></g>
-            <g class="child" transform="translate(606 176)"><circle class="head" cx="0" cy="0" r="15"/><path class="body" d="M-12 19Q0 13 12 19L18 67L8 67L11 111L-2 111L-6 73L-11 111L-24 111L-16 67L-20 67Z"/></g>
-            <path d="M0 303H1340" stroke="#586881" stroke-dasharray="26 19" stroke-width="3"/>
-          </svg>
-          <div class="scene-caption">Illustrative scene · No real children or locations</div>
-        </div>
-        <div class="scene-legend"><span>Residents who receive an alert</span><span>Residents still unaware</span></div>
-        <div class="no-data">This animation illustrates an information gap. It is not a statistic, active alert system, or real search prediction.</div>
-      </div>
-    </section>
-
-    <section class="section" id="problem">
-      <div class="container">
-        <div class="section-header">
-          <div class="section-tag">01 / The Problem</div>
-          <h2>Missing-child searches are not only about police response — they are also about public awareness.</h2>
-          <p class="section-subtitle">
+<!-- Magazine-style chapter turn: decorative, not part of the research content. -->
+<div class="magazine-chapter-turn" aria-hidden="true" data-chapter="01">
+  <div class="magazine-turn-kicker"><span class="magazine-turn-line"></span><span>TURN THE PAGE</span><span class="magazine-turn-line"></span></div>
+  <div class="magazine-book">
+    <div class="magazine-leaf magazine-leaf-left"><span class="magazine-book-top">INTRODUCTION</span><span class="magazine-ghost-number">00</span><span class="magazine-book-bottom">BALA<span class="magazine-book-highlight">SAFE</span> / PLS419</span></div>
+    <div class="magazine-leaf magazine-leaf-right"><span class="magazine-book-top">NEXT CHAPTER</span><span class="magazine-chapter-name">THE PROBLEM</span><span class="magazine-chapter-number">01</span></div>
+    <div class="magazine-flip-page"><span class="magazine-flip-label">01 / 08</span><div class="magazine-fold"></div></div>
+    <div class="magazine-spine"></div>
+  </div>
+</div>
+<section class="section" id="problem">
+<div class="container">
+<div class="section-header">
+<div class="section-tag">01 / The Problem</div>
+<h2>Missing-child searches are not only about police response — they are also about public awareness.</h2>
+<p class="section-subtitle">
             A person may be physically close to a missing child and still never know a search is taking place. This project focuses on that information gap: how search information travels, who receives it, and who never sees it at all.
           </p>
-        </div>
-
-        <div class="stats-row">
-          <div class="card stat-card">
-            <div class="stat-label">Kazakhstan · 2025</div>
-            <div class="stat-number">6,000+</div>
-            <div>Missing children whose whereabouts were established nationwide.</div>
-          </div>
-          <div class="card stat-card">
-            <div class="stat-label">Kazakhstan · Q1 2026</div>
-            <div class="stat-number">1,300</div>
-            <div>Children whose whereabouts were established in the first quarter alone.</div>
-          </div>
-          <div class="card stat-card">
-            <div class="stat-label">Astana · Jan–Aug 2026</div>
-            <div class="stat-number">~2,000</div>
-            <div>Reports concerning missing minors and children leaving home without permission.</div>
-          </div>
-        </div>
-
-        <div class="problem-grid">
-          <div class="card text-block">
-            <p>
+</div>
+<div class="stats-row">
+<div class="card stat-card">
+<div class="stat-label">Kazakhstan · 2025</div>
+<div class="stat-number">6,000+</div>
+<div>Missing children whose whereabouts were established nationwide.</div>
+</div>
+<div class="card stat-card">
+<div class="stat-label">Kazakhstan · Q1 2026</div>
+<div class="stat-number">1,300</div>
+<div>Children whose whereabouts were established in the first quarter alone.</div>
+</div>
+<div class="card stat-card">
+<div class="stat-label">Astana · Jan–25 Aug 2026</div>
+<div class="stat-number">~2,000</div>
+<div>Reports concerning missing minors and children leaving home without permission.</div>
+</div>
+</div><p class="section-stat-sources">Sources: <a href="https://www.gov.kz/org/qriim/press/news/details/1206648?lang=ru" rel="noopener noreferrer" target="_blank">Kazakhstan MIA (2025 and Q1 2026) ↗</a> · <a href="https://www.gov.kz/org/mvd-astana/press/news/details/1279384?lang=ru" rel="noopener noreferrer" target="_blank">Astana Police (2026) ↗</a></p>
+<div class="card section-figure reveal-on-scroll">
+<div class="figure-kicker">ILLUSTRATION · HOW A SEARCH CAN BE MISSED</div>
+<div class="figure-flex">
+<svg aria-hidden="true" class="figure-svg" viewbox="0 0 420 260" xmlns="http://www.w3.org/2000/svg">
+<rect fill="#172943" height="216" rx="28" width="376" x="22" y="22"></rect>
+<circle cx="105" cy="170" fill="#415978" r="30"></circle>
+<circle cx="165" cy="170" fill="#415978" r="30"></circle>
+<circle cx="225" cy="170" fill="#415978" r="30"></circle>
+<circle cx="285" cy="170" fill="#415978" r="30"></circle>
+<circle cx="225" cy="125" fill="#f1b85a" r="14"></circle>
+<path d="M209 147 Q225 131 241 147 L239 178 L211 178 Z" fill="#f1b85a"></path>
+<rect fill="#f8fafc" height="110" rx="16" width="86" x="58" y="52"></rect>
+<rect fill="#d7deea" height="14" rx="7" width="64" x="69" y="66"></rect>
+<rect fill="#c9d6ea" height="10" rx="5" width="46" x="69" y="90"></rect>
+<rect fill="#c9d6ea" height="10" rx="5" width="54" x="69" y="106"></rect>
+<circle cx="101" cy="130" fill="none" r="16" stroke="#f1b85a" stroke-width="4"></circle>
+<path d="M112 141 L126 154" stroke="#f1b85a" stroke-linecap="round" stroke-width="6"></path>
+<circle cx="225" cy="125" fill="none" opacity=".85" r="28" stroke="#f1b85a" stroke-width="3"></circle>
+<circle cx="225" cy="125" fill="none" opacity=".45" r="48" stroke="#f1b85a" stroke-width="3"></circle>
+<circle cx="225" cy="125" fill="none" opacity=".18" r="68" stroke="#f1b85a" stroke-width="3"></circle>
+</svg>
+<div class="figure-copy">
+<h3>One verified alert. Not one guaranteed audience.</h3>
+<p>A search may begin officially, but residents nearby might still never see a clear, current and location-relevant notice.</p>
+</div>
+</div>
+</div>
+<div class="problem-grid">
+<div class="card text-block">
+<p>
               Missing children are a serious child-safety issue in Kazakhstan. Official reports by the Ministry of Internal Affairs and the Astana Police Department show that thousands of cases require search and response every year. These numbers alone do not prove system failure — but they do show that this is not a rare or marginal issue.
             </p>
-            <p>
+<p>
               Importantly, Kazakhstani law-enforcement guidance states that families do <strong>not</strong> need to wait 24 hours before reporting a child missing. In principle, the police should begin responding immediately. Yet immediate reporting does not automatically guarantee broad public awareness.
             </p>
-            <div class="pull-quote">
+<div class="pull-quote">
               The question is not whether Kazakhstan has search organizations — it does. It is whether residents can find one timely, clearly verified public alert and know how to help safely, rather than relying on scattered posts and forwarded screenshots.
             </div>
-            <p>
-              Volunteer groups such as LIDER.KZ already distribute search notices, while official public guidance also describes notices shared through social-media groups. However, a notice appearing in a Telegram chat or Instagram post is not necessarily received by someone near the search area. Forwarded posts may also be missing context about whether the information is current and officially approved. Whether this creates measurable gaps in awareness is a question this project investigates, not an established national statistic.
-            </p>
-          </div>
+<p>Official search notices can circulate through police channels, social media and forwarded messages. A forwarded screenshot may no longer show whether the case is active, the details are verified, or the search concerns someone nearby. This project examines how such information gaps might affect public awareness.</p>
+</div>
+<div class="story-lab reveal-on-scroll" id="gapStory">
+<div class="story-topline"><span>INTERACTIVE · FOLLOW THE ALERT</span><span id="storyStepLabel">01 / 04</span></div>
+<h3>How does an alert lose its way?</h3>
+<p class="story-instruction">Press <strong>Next step →</strong> and follow one fictional search notice from police to the public.</p>
+<div aria-label="Four story stages" class="story-progress" id="storyProgress"><span class="on"></span><span></span><span></span><span></span></div>
+<div aria-live="polite" class="story-stage">
+<div class="story-scene" data-stage="0" id="storyScene">
+<div class="story-node node-police"><span class="story-node-icon">✦</span><small>POLICE</small><b>Approved alert</b><span class="story-chip">Verified</span></div>
+<div class="story-route"><div class="story-route-line"></div><span class="story-route-arrow">→</span></div>
+<div class="story-node node-phone"><span class="story-node-icon">▣</span><small>PUBLIC CHANNELS</small><b>Not yet delivered</b><span class="story-chip pending">Waiting</span></div>
+<div class="story-route"><div class="story-route-line"></div><span class="story-route-arrow">→</span></div>
+<div class="story-node node-people"><span class="story-node-icon">♙ ♙ ♙</span><small>RESIDENTS</small><b>Unaware</b><span class="story-chip pending">No alert</span></div>
+</div>
+<div class="story-copy"><div class="story-index" id="storyIcon">01</div><div><h4 id="storyTitle">An official notice is issued</h4><p id="storyDescription">Police approve information for public release. It exists — but it has not reached nearby residents yet.</p></div></div>
+</div>
+<div class="story-controls"><button class="story-back" disabled="" id="storyBack" type="button">← Back</button><button class="story-next" id="storyNext" type="button">Next step →</button></div>
+<div class="story-outcome" id="storyOutcome"><span class="story-outcome-light">!</span><div><strong>THE INFORMATION GAP</strong><p>A published alert does not guarantee that nearby residents receive information that is current, verified and relevant.</p></div></div>
+<p class="story-disclaimer">Illustrative communication scenario — not a measured failure rate in Kazakhstan.</p>
+</div>
+</div>
 
-          <div class="card visual-block">
-            <h3 style="margin-top:0;">How the information gap works</h3>
-            <p style="color:var(--muted); margin-top:0;">A search alert may move through several actors before it ever reaches the wider public.</p>
-            <div class="flow">
-              <div class="flow-item"><div class="flow-badge">1</div><span><strong>Family</strong> reports a child missing.</span></div>
-              <div class="flow-item"><div class="flow-badge">2</div><span><strong>Police</strong> register and process the case.</span></div>
-              <div class="flow-item"><div class="flow-badge">3</div><span><strong>Volunteer organizations</strong> may help spread approved alerts.</span></div>
-              <div class="flow-item"><div class="flow-badge">4</div><span><strong>Citizens</strong> only help if the information reaches them in time.</span></div>
-            </div>
+<div class="global-eight card reveal-on-scroll" id="why-searches-matter">
+<div class="global-eight-copy">
+<div class="section-tag">GLOBAL CONTEXT · WHY THIS TOPIC MATTERS</div>
+<h3>Missing children are a global child-protection issue.</h3>
+<div class="global-eight-stat"><span>8 million</span><small>ICMEC's worldwide estimate of missing children</small></div>
+<p>Missing-child searches are not limited to Kazakhstan. <a href="https://www.icmec.org/global-missing-child-alert/" rel="noopener noreferrer" target="_blank">International Centre for Missing &amp; Exploited Children ↗</a></p>
+<p class="global-eight-note">ICMEC presents this as an estimate, not a verified global count.</p>
+</div>
+<div aria-hidden="true" class="global-eight-art">
+<svg viewbox="0 0 280 225" xmlns="http://www.w3.org/2000/svg">
+<circle cx="140" cy="110" fill="none" opacity=".7" r="78" stroke="#f4be72" stroke-width="2"></circle>
+<circle cx="140" cy="110" fill="none" opacity=".6" r="58" stroke="#f4be72" stroke-width="2"></circle>
+<ellipse cx="140" cy="110" fill="none" opacity=".6" rx="33" ry="78" stroke="#f4be72" stroke-width="2"></ellipse>
+<path d="M64 110 H216 M84 73 H196 M84 147 H196" opacity=".65" stroke="#f4be72" stroke-width="2"></path>
+<circle cx="141" cy="107" fill="#f4be72" r="13"></circle>
+<path d="M122 145 Q140 124 159 145 L160 173 H121 Z" fill="#f4be72"></path>
+<circle cx="209" cy="44" fill="#fff" opacity=".72" r="9"></circle>
+<circle cx="59" cy="175" fill="#fff" opacity=".55" r="7"></circle>
+<circle cx="222" cy="175" fill="#fff" opacity=".55" r="6"></circle>
+</svg>
+</div>
+</div>
+<div class="question-spotlight reveal-on-scroll" id="research-question"><div aria-hidden="true" class="question-mark">?</div><span class="question-kicker">THE QUESTION BEHIND BALASAFE KZ</span><h3>Research question</h3><p>Where does information about a missing-child search fail to reach nearby residents in Kazakhstan, and could AI-assisted location-based alerts close that gap responsibly?</p><div class="question-underline"></div></div>
+</div>
+</section>
 
-            <div class="subcards">
-              <div class="card small-card">
-                <h3>The visibility problem</h3>
-                <p>Even motivated citizens may never see a missing-child announcement unless they already follow volunteer channels or encounter the alert through social media.</p>
-              </div>
-              <div class="card small-card">
-                <h3>The coordination problem</h3>
-                <p>When information is scattered, residents may not know whether a case is active, what details are verified, or how to report a sighting safely.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <section class="alert-fragmentation" aria-labelledby="fragmentation-heading">
-          <div class="fragmentation-header">
-            <div class="fragmentation-eyebrow">THE PUBLIC INFORMATION GAP</div>
-            <h3 id="fragmentation-heading">One missing-child alert. Many separate feeds.</h3>
-            <p>A search notice may be shared across police communications, volunteer groups and social media. But who sees the same update — and can they tell which information is current and authorized?</p>
-          </div>
-          <div class="feed-flow">
-            <div class="origin-card">
-              <div class="origin-symbol" aria-hidden="true">!</div>
-              <strong>Verified search notice</strong>
-              <span>Authorized for public release</span>
-            </div>
-            <div class="flow-connector" aria-hidden="true"><span></span><span></span><span></span></div>
-            <div class="feeds" aria-label="Illustrative channels carrying search notices">
-              <div class="feed-card"><div class="feed-icon telegram">↗</div><div><strong>Telegram groups</strong><span>Different chats, different audiences</span></div><span class="feed-tag">May miss</span></div>
-              <div class="feed-card"><div class="feed-icon instagram">◎</div><div><strong>Instagram posts</strong><span>Reposts can circulate independently</span></div><span class="feed-tag">Check date</span></div>
-              <div class="feed-card"><div class="feed-icon org">✳</div><div><strong>Volunteer organizations</strong><span>Search notices and local coordination</span></div><span class="feed-tag">Confirm source</span></div>
-            </div>
-          </div>
-          <div class="fragmentation-bottom">
-            <div class="gap-box"><span class="gap-icon" aria-hidden="true">?</span><div><strong>Can residents verify an alert?</strong><p>A screenshot or forwarded post may lack a current status or an obvious link back to its original source.</p></div></div>
-            <div class="gap-box"><span class="gap-icon" aria-hidden="true">⌖</span><div><strong>Does it reach people nearby?</strong><p>A public post is not the same as an opt-in alert delivered to residents in a relevant area.</p></div></div>
-          </div>
-          <p class="fragmentation-caveat"><strong>Evidence boundary:</strong> This is an illustrative map of communication channels, not measured reach or proof that every post is unreliable. Official eGov guidance mentions social-media groups; LIDER.KZ describes distributing and publishing search notices. In the reviewed sources, we could not verify one nationwide, publicly accessible platform that combines police-approved alerts, location-based delivery and a consistent verification trail. <a href="https://beta.egov.kz/situations/232/659?lang=ru" target="_blank" rel="noopener noreferrer">eGov</a> · <a href="https://poisk-lider.kz/" target="_blank" rel="noopener noreferrer">LIDER.KZ</a></p>
-        </section>
-
-        <div class="research-question" id="research-question">
-          <h3>Research Question</h3>
-          <p><strong>How do existing information-sharing practices between police, volunteer organizations, and citizens shape public awareness and participation in missing-child searches in Kazakhstan, and under what conditions could AI-assisted location-based alerts improve this coordination?</strong></p>
-          <p>
-            This framing keeps the project grounded in social science. The central issue is not whether AI is impressive, but whether information flows, institutional coordination, and public participation could be improved in a way that is useful, ethical, and realistic.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="data">
-      <div class="container">
-        <div class="section-header">
-          <div class="section-tag">02 / Background & Data</div>
-          <h2>What the data shows — and what it still hides.</h2>
-          <p class="section-subtitle">This section will map official statistics, regional differences, and the silences in currently available data.</p>
-        </div>
-        <div class="placeholder">Coming next: data landscape, your own analytical figure/table, and a discussion of what current statistics do not measure.</div>
-      </div>
-    </section>
-
-    <section class="section" id="research">
-      <div class="container">
-        <div class="section-header">
-          <div class="section-tag">03 / Current State of Research</div>
-          <h2>What scholars know about missing-child investigations, coordination, and AI.</h2>
-          <p class="section-subtitle">This section will group at least six academic sources by approach and identify the research gap your project addresses.</p>
-        </div>
-        <div class="placeholder">Coming next: academic literature organized by approach, critical synthesis, and research gap.</div>
-      </div>
-    </section>
-
-    <section class="section" id="solution">
-      <div class="container">
-        <div class="section-header">
-          <div class="section-tag">04 / AI-Assisted Solution</div>
-          <h2>BalaSafe KZ: a proposed public alert platform for missing-child searches.</h2>
-          <p class="section-subtitle">This section will explain what kind of AI system is proposed, how it would work, who would run it, and which real-world cases support the idea.</p>
-        </div>
-        <div class="placeholder">Coming next: the concrete AI proposal and two documented implementation cases.</div>
-      </div>
-    </section>
-
-    <section class="section" id="costs">
-      <div class="container">
-        <div class="section-header">
-          <div class="section-tag">05 / The Cost of AI</div>
-          <h2>What would this system cost — environmentally, economically, and politically?</h2>
-          <p class="section-subtitle">This section will evaluate environmental, economic, labor, governance, and ethical costs before deciding whether the proposal should be implemented.</p>
-        </div>
-        <div class="placeholder">Coming next: cost analysis across all five required dimensions.</div>
-      </div>
-    </section>
-
-    <section class="section" id="verdict">
-      <div class="container">
-        <div class="section-header">
-          <div class="section-tag">06 / Final Verdict</div>
-          <h2>Should Kazakhstan actually build BalaSafe KZ?</h2>
-          <p class="section-subtitle">This section will present the final argument: yes, no, or only under strict conditions.</p>
-        </div>
-        <div class="placeholder">Coming next: evidence-based final verdict.</div>
-      </div>
-    </section>
-
-    <section class="section" id="ai-transparency">
-      <div class="container">
-        <div class="section-header">
-          <div class="section-tag">07 / AI Transparency</div>
-          <h2>How AI contributed to this project.</h2>
-          <p class="section-subtitle">This statement will explain what AI contributed, what was accepted, what was rejected, and why.</p>
-        </div>
-        <div class="placeholder">Coming next: your AI transparency statement and contribution notes.</div>
-
-        <div class="card text-block" id="sources" style="margin-top:22px;">
-          <h3 style="margin-top:0;">Sources used in Section 1</h3>
-          <ol class="sources">
-            <li><a href="https://www.gov.kz/org/qriim/press/news/details/1206648?lang=ru" target="_blank" rel="noopener noreferrer">Ministry of Internal Affairs of Kazakhstan (2026). Search for missing persons and why the first day matters.</a></li>
-            <li><a href="https://www.gov.kz/org/mvd-astana/press/news/details/1279384?lang=ru" target="_blank" rel="noopener noreferrer">Astana Police Department (2026). About 2,000 reports concerning missing minors.</a></li>
-            <li><a href="https://www.gov.kz/situations/232/658?lang=ru" target="_blank" rel="noopener noreferrer">eGov Kazakhstan. What to do if a person goes missing.</a></li>
-            <li><a href="https://poisk-lider.kz/" target="_blank" rel="noopener noreferrer">LIDER.KZ volunteer search movement.</a></li>
-            <li><a href="https://inbusiness.kz/ru/news/kuda-propadayut-deti-v-kazahstane" target="_blank" rel="noopener noreferrer">Inbusiness.kz (2025). Where do children disappear in Kazakhstan?</a></li>
-          </ol>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer>
-    <div class="container">
-      BalaSafe KZ · PLS419 Final Project · This website presents a research argument, not an operational missing-child response platform.
-    </div>
-  </footer>
-
-
-  <!-- Decorative magnifying-glass cursor for the hero. Not a real tracking tool. -->
-  <div class="search-cursor" id="searchCursor" aria-hidden="true">
-    <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="26" cy="25" r="20" fill="#142343" stroke="#FFC66E" stroke-width="3.5"/>
-      <circle cx="26" cy="25" r="12" fill="none" stroke="#F7D69D" stroke-width="1.3" stroke-dasharray="3 3"/>
-      <path d="M41 40 L56 56" stroke="#FFC66E" stroke-width="7" stroke-linecap="round"/>
-    </svg>
+<!-- Magazine-style chapter turn: decorative, not part of the research content. -->
+<div class="magazine-chapter-turn" aria-hidden="true" data-chapter="02">
+  <div class="magazine-turn-kicker"><span class="magazine-turn-line"></span><span>TURN THE PAGE</span><span class="magazine-turn-line"></span></div>
+  <div class="magazine-book">
+    <div class="magazine-leaf magazine-leaf-left"><span class="magazine-book-top">THE PROBLEM</span><span class="magazine-ghost-number">01</span><span class="magazine-book-bottom">BALA<span class="magazine-book-highlight">SAFE</span> / PLS419</span></div>
+    <div class="magazine-leaf magazine-leaf-right"><span class="magazine-book-top">NEXT CHAPTER</span><span class="magazine-chapter-name">BACKGROUND & DATA</span><span class="magazine-chapter-number">02</span></div>
+    <div class="magazine-flip-page"><span class="magazine-flip-label">02 / 08</span><div class="magazine-fold"></div></div>
+    <div class="magazine-spine"></div>
   </div>
+</div>
+<section class="section" id="data">
+<div class="container">
+<div class="section-header">
+<div class="section-tag">02 / Background &amp; Data</div>
+<h2>What do Kazakhstan’s public records actually show?</h2>
+</div>
+<div class="data-map" id="dataMap">
+<div class="data-map-heading"><span>DATA LANDSCAPE · CLICK A SOURCE</span><p>Four institutions illuminate different parts of the problem. Select a source to reveal what it measures and what it misses.</p></div>
+<div class="data-map-visual">
+<div aria-hidden="true" class="data-link-lines"><span></span><span></span><span></span><span></span></div>
+<button aria-pressed="true" class="data-source-button active" data-ds="0" type="button"><span class="data-symbol">♜</span><span>POLICE</span></button>
+<button aria-pressed="false" class="data-source-button" data-ds="1" type="button"><span class="data-symbol">▥</span><span>STATISTICS</span></button>
+<div class="data-map-core"><span class="data-core-circle">?</span><b>What do we actually know?</b><small>Missing-child searches in Kazakhstan</small></div>
+<button aria-pressed="false" class="data-source-button" data-ds="2" type="button"><span class="data-symbol">◎</span><span>UNICEF</span></button>
+<button aria-pressed="false" class="data-source-button" data-ds="3" type="button"><span class="data-symbol">⌕</span><span>RESEARCH</span></button>
+</div>
+<div aria-live="polite" class="data-map-insight"><div class="data-insight-count" id="dataInsightCount">01 / 04</div><div><h3 id="dataInsightTitle">Ministries &amp; police</h3><p><b>Measures:</b> <span id="dataInsightMeasures">missing-child reports, searches and some regional outcomes.</span></p><p><b>Missing:</b> <span id="dataInsightMissing">a comparable dataset on alert reach and response time.</span></p></div></div>
+</div>
+<div class="section-mini-figures reveal-on-scroll">
+<div class="card mini-figure">
+<svg aria-hidden="true" class="mini-svg" viewbox="0 0 220 150" xmlns="http://www.w3.org/2000/svg">
+<rect fill="#fff7ee" height="114" rx="18" width="184" x="18" y="18"></rect>
+<rect fill="#1b2d49" height="82" rx="10" width="64" x="34" y="34"></rect>
+<rect fill="#d8e2ef" height="14" rx="7" width="66" x="113" y="38"></rect>
+<rect fill="#c8d6e9" height="10" rx="5" width="52" x="113" y="62"></rect>
+<rect fill="#c8d6e9" height="10" rx="5" width="42" x="113" y="80"></rect>
+<rect fill="#c8d6e9" height="10" rx="5" width="58" x="113" y="98"></rect>
+<circle cx="66" cy="75" fill="#f1b85a" r="18"></circle>
+<path d="M58 80 L65 88 L78 65" fill="none" stroke="#1b2d49" stroke-linecap="round" stroke-linejoin="round" stroke-width="5"></path>
+</svg>
+<h4>Public records show activity</h4>
+<p>Police, statistics and UNICEF measure different parts of the issue.</p>
+</div>
+<div class="card mini-figure">
+<svg aria-hidden="true" class="mini-svg" viewbox="0 0 220 150" xmlns="http://www.w3.org/2000/svg">
+<rect fill="#f7f9fd" height="110" rx="18" width="180" x="20" y="20"></rect>
+<circle cx="82" cy="70" fill="none" r="24" stroke="#f1b85a" stroke-width="6"></circle>
+<path d="M98 86 L122 108" stroke="#f1b85a" stroke-linecap="round" stroke-width="8"></path>
+<rect fill="#d8e2ef" height="12" rx="6" width="38" x="132" y="43"></rect>
+<rect fill="#c8d6e9" height="10" rx="5" width="30" x="132" y="65"></rect>
+<rect fill="#c8d6e9" height="10" rx="5" width="44" x="132" y="82"></rect>
+<rect fill="#c8d6e9" height="10" rx="5" width="24" x="45" y="44"></rect>
+<rect fill="#c8d6e9" height="10" rx="5" width="36" x="52" y="92"></rect>
+</svg>
+<h4>But key evidence is missing</h4>
+<p>Public data does not tell us who actually received a missing-child alert nearby.</p>
+</div>
+</div>
+<div class="section-header" style="margin-top:34px">
+<div class="section-tag">INTERACTIVE ORIGINAL DATA TABLE · REGIONAL POLICE REPORTS</div>
+<h2>Where do we have published regional figures?</h2>
+</div>
+<div class="region-evidence-block" id="regionalFigure">
+<div class="region-evidence-heading"><span class="figure-label">FIGURE 1 · OFFICIAL REGIONAL REPORTS</span><h3>Four places. Four different measures.</h3><p>INTERACTIVE FIGURE — click any highlighted tile to reveal the regional report below.</p></div>
+<div aria-label="Regional reporting figures" class="region-report-options" role="group">
+<button aria-pressed="true" class="region-report-choice active" data-region="astana" type="button"><span class="region-label">ASTANA</span><strong>≈2,000</strong><small>Jan–25 Aug 2026</small><span aria-hidden="true" class="region-action-text">CLICK TO EXPLORE ↗</span></button>
+<button aria-pressed="false" class="region-report-choice" data-region="abai" type="button"><span class="region-label">ABAI</span><strong>500+</strong><small>Jan–Oct 2026</small><span aria-hidden="true" class="region-action-text">CLICK TO EXPLORE ↗</span></button>
+<button aria-pressed="false" class="region-report-choice" data-region="aktobe" type="button"><span class="region-label">AKTOBE</span><strong>658</strong><small>2025</small><span aria-hidden="true" class="region-action-text">CLICK TO EXPLORE ↗</span></button>
+<button aria-pressed="false" class="region-report-choice" data-region="mangystau" type="button"><span class="region-label">MANGYSTAU</span><strong>20</strong><small>Jan–Oct 2026</small><span aria-hidden="true" class="region-action-text">CLICK TO EXPLORE ↗</span></button>
+</div>
+<div aria-label="Selected region source details" aria-live="polite" class="region-report-detail" id="regionReportDetail" tabindex="-1"><span>ASTANA · JAN–25 AUG 2026</span><h4>≈2,000 calls</h4><p>Missing-minor and unauthorized-departure calls. This is not a count of distinct children.</p><a href="https://www.gov.kz/org/mvd-astana/press/news/details/1279384?lang=ru" rel="noopener noreferrer" target="_blank">Read the police announcement ↗</a></div>
+<p class="region-report-note"><strong>Original finding: 0 of these 4 regional announcements reports how many nearby residents received an alert.</strong> They report different search-related measures, so their totals cannot be ranked against each other.</p>
+</div>
+<div class="data-insight-block" id="data-interpretation">
+<div class="insight-heading"><span class="section-tag">READING THE DATA</span><h2>What the figures reveal — and what they don't.</h2><p>Tap one question to reveal the evidence gap.</p></div>
+<div class="insight-trio">
+<details><summary><span>01</span> Can we compare regions?</summary><p>Not reliably. The reports count different things — calls, searches or children located — across different months. A larger figure is not automatically greater risk.</p></details>
+<details><summary><span>02</span> How quickly are children found?</summary><p>The reviewed announcements do not provide comparable regional 24-hour recovery figures or median search times. Recovery totals alone cannot measure response speed.</p></details>
+<details><summary><span>03</span> Who sees the alert?</summary><p>Public reports do not establish alert delivery, verified tip quality or reach among rural residents and different language groups. These are important questions for a future pilot, not proven inequalities.</p></details>
+</div>
+<p class="data-method-note"><strong>Data limitation:</strong> this project uses selected published reports, not an integrated national case database. Protecting children and witnesses also limits what should be made public.</p>
+</div></div>
+</section>
 
-  <script>
+<!-- Magazine-style chapter turn: decorative, not part of the research content. -->
+<div class="magazine-chapter-turn" aria-hidden="true" data-chapter="03">
+  <div class="magazine-turn-kicker"><span class="magazine-turn-line"></span><span>TURN THE PAGE</span><span class="magazine-turn-line"></span></div>
+  <div class="magazine-book">
+    <div class="magazine-leaf magazine-leaf-left"><span class="magazine-book-top">BACKGROUND & DATA</span><span class="magazine-ghost-number">02</span><span class="magazine-book-bottom">BALA<span class="magazine-book-highlight">SAFE</span> / PLS419</span></div>
+    <div class="magazine-leaf magazine-leaf-right"><span class="magazine-book-top">NEXT CHAPTER</span><span class="magazine-chapter-name">CURRENT RESEARCH</span><span class="magazine-chapter-number">03</span></div>
+    <div class="magazine-flip-page"><span class="magazine-flip-label">03 / 08</span><div class="magazine-fold"></div></div>
+    <div class="magazine-spine"></div>
+  </div>
+</div>
+<section class="section" id="research">
+<div class="container">
+<div class="section-header">
+<div class="section-tag">03 / Current State of Research</div>
+<h2>Can a better alert system actually help find missing children?</h2>
+<p class="section-subtitle">Research points to three connected problems: agencies must coordinate, citizens must know when and how to respond, and public alerts must not put vulnerable children at greater risk. The evidence does not yet prove that AI-powered alerts produce faster recoveries.</p>
+</div>
+<div class="card text-block" style="margin-bottom:20px">
+<h3 style="margin-top:0">From Kazakhstan to international research</h3>
+<p>In Kazakhstan, official statistics and operational information describe search activity, but the academic literature located for this review does not offer a direct evaluation of a nationwide missing-child geolocation alert system. A <a href="https://www.unicef.org/kazakhstan/en/reports/report-gaps-and-opportunities-child-protection-cross-border-information-exchange" rel="noopener noreferrer" target="_blank">UNICEF-supported 2021 study of cross-border child-protection information exchange between Kazakhstan and Kyrgyzstan</a> provides relevant regional context about case management. It is <strong>not</strong> an impact evaluation of missing-child public alerts.</p>
+<p>For evidence on missing-child investigations and public appeals, this review therefore draws on peer-reviewed studies from the United Kingdom, Canada and Europe. Their insights are informative, but their institutional contexts are not identical to Kazakhstan's.</p>
+</div>
+<div class="card section-figure reveal-on-scroll research-figure">
+<div class="figure-kicker">VISUAL GUIDE · WHAT RESEARCH STUDIES</div>
+<div class="research-pillars">
+<div class="pillar"><span>01</span><b>Institutions</b><small>How police, social services and other actors coordinate</small></div>
+<div class="pillar"><span>02</span><b>Public alerts</b><small>How people see, share and respond to notices</small></div>
+<div class="pillar"><span>03</span><b>Technology &amp; risk</b><small>How digital tools help — and where they may harm</small></div>
+</div>
+</div>
+<p class="approaches-instruction">Three research approaches · Select a card to reveal the studies, findings and limitations.</p><details class="research-approach reveal-on-scroll"><summary><span class="approach-labels"><span class="approach-kicker">APPROACH 01 · INSTITUTIONAL COORDINATION</span><span class="approach-head">Information moves between people and institutions—not just screens.</span><span class="approach-hint">CLICK TO READ STUDIES &amp; FINDINGS</span></span><span aria-hidden="true" class="approach-icon">+</span></summary><div class="approach-body">
+<p><strong>Waring et al. (2023)</strong> analysed 24 interviews with police, social services, local authorities and care-home staff across three UK boroughs. They identified unclear roles, inconsistent language and difficulties sharing information. <strong>Monaghan et al. (2025)</strong> surveyed the wider literature on inter-agency responses and found promising practices, including designated contacts, shared information and training, but limited evidence proving which interventions improve outcomes. <strong>Waring et al. (2023)</strong> also examined dedicated missing-person teams as an organizational alternative to relying on technology alone.</p>
+<p><strong>What we know:</strong> coordination can be constrained by organizational boundaries. <strong>What remains contested:</strong> whether new technology, clearer responsibilities or dedicated human teams deliver the greatest improvement. Qualitative interviews and reviews identify mechanisms, but cannot by themselves demonstrate a causal reduction in search times.</p>
+<p class="caption">Read: <a href="https://doi.org/10.1093/police/paad044" rel="noopener noreferrer" target="_blank">Waring et al. (2023), inter-agency working</a> · <a href="https://doi.org/10.1177/0032258X241241016" rel="noopener noreferrer" target="_blank">Monaghan et al. (2025), scoping review</a> · <a href="https://doi.org/10.1007/s41887-023-00090-5" rel="noopener noreferrer" target="_blank">Waring et al. (2023), dedicated teams</a></p>
+</div></details>
+<details class="research-approach reveal-on-scroll"><summary><span class="approach-labels"><span class="approach-kicker">APPROACH 02 · PUBLIC ALERTS AND CITIZEN PARTICIPATION</span><span class="approach-head">More views do not automatically mean more useful sightings.</span><span class="approach-hint">CLICK TO READ STUDIES &amp; FINDINGS</span></span><span aria-hidden="true" class="approach-icon">+</span></summary><div class="approach-body">
+<p><strong>Solymosi, Petcu and Wilkinson (2020)</strong> studied 1,008 missing-person appeal tweets from Greater Manchester Police to investigate what influences redistribution on social media. A separate Canadian study, <strong>#Missing to #Found (2020)</strong>, examined 373 missing-person tweets from 15 police services and their public engagement. These studies make alert visibility measurable—but retweets, likes and comments are <em>engagement indicators</em>, not confirmed recoveries.</p>
+<p><strong>Hunt, Ioannou and Synnott (2022)</strong> explored why members of the public say they would or would not report a possible sighting after seeing missing-child appeals. Their findings shift attention from receiving an alert to making a decision to act. Still, stated intentions based on hypothetical appeals may differ from real behaviour during an emergency.</p>
+<p><strong>What we know:</strong> the wording and distribution of appeals can shape engagement, while public decisions depend on more than exposure. <strong>What is missing:</strong> direct evidence that sending a geographically targeted notice to more phones creates more verified leads or shorter searches.</p>
+<p class="caption">Read: <a href="https://doi.org/10.1080/10439463.2020.1782409" rel="noopener noreferrer" target="_blank">Solymosi et al. (2020)</a> · <a href="https://doi.org/10.1080/15614263.2020.1753516" rel="noopener noreferrer" target="_blank">#Missing to #Found (2020)</a> · <a href="https://doi.org/10.1177/0032258X211023546" rel="noopener noreferrer" target="_blank">Hunt et al. (2022)</a></p>
+</div></details>
+<details class="research-approach reveal-on-scroll"><summary><span class="approach-labels"><span class="approach-kicker">APPROACH 03 · TECHNOLOGY, SAFETY AND VULNERABILITY</span><span class="approach-head">An alert can help a search—and create new risks.</span><span class="approach-hint">CLICK TO READ STUDIES &amp; FINDINGS</span></span><span aria-hidden="true" class="approach-icon">+</span></summary><div class="approach-body">
+<p><strong>Howlings and Solymosi (2023)</strong> interviewed eight professionals investigating missing children. Their pilot study documents the potential value of social media alongside concerns about immediate and long-term harm, and calls for safer ways to manage posts and remove outdated appeals. They propose investigating text-based machine learning, but do not establish its effectiveness in real searches.</p>
+<p>A <strong>2021 peer-reviewed study from the EU-funded ChildRescue research project</strong> drew on expert interviews across European countries and examined the information needs of missing-child responses, particularly vulnerable unaccompanied migrant minors. It also notes that robust evidence on the effects of child alert systems remains scarce.</p>
+<p><strong>What we know:</strong> child safety and data minimization cannot be secondary design features. <strong>What remains uncertain:</strong> which sensitive details should reach the public, how inaccurate sightings should be verified, and whether automated processing improves outcomes without amplifying harm.</p>
+<p class="caption">Read: <a href="https://doi.org/10.55917/2769-7045.1003" rel="noopener noreferrer" target="_blank">Howlings &amp; Solymosi (2023)</a> · <a href="https://doi.org/10.1057/s41599-021-00958-9" rel="noopener noreferrer" target="_blank">ChildRescue-related study (2021)</a> (<a href="https://www.nature.com/articles/s41599-021-00958-9" rel="noopener noreferrer" target="_blank">publisher page</a>)</p>
+</div></details>
+<div class="card text-block" style="margin-bottom:20px">
+<h3 style="margin-top:0">What the approaches agree on—and where they diverge</h3>
+<div style="overflow-x:auto">
+<table style="width:100%;border-collapse:collapse;text-align:left;min-width:620px">
+<thead><tr><th style="padding:12px;border-bottom:2px solid #ddd1bd">Approach</th><th style="padding:12px;border-bottom:2px solid #ddd1bd">Contribution</th><th style="padding:12px;border-bottom:2px solid #ddd1bd">Limit for BalaSafe</th></tr></thead>
+<tbody>
+<tr><td style="padding:12px;border-bottom:1px solid #e8e1d6">Institutional</td><td style="padding:12px;border-bottom:1px solid #e8e1d6">Explains coordination and role boundaries</td><td style="padding:12px;border-bottom:1px solid #e8e1d6">Does not prove AI is better than staffing or training</td></tr>
+<tr><td style="padding:12px;border-bottom:1px solid #e8e1d6">Public communication</td><td style="padding:12px;border-bottom:1px solid #e8e1d6">Measures engagement and reporting intentions</td><td style="padding:12px;border-bottom:1px solid #e8e1d6">Attention is not a verified lead or recovery</td></tr>
+<tr><td style="padding:12px">Safeguarding and technology</td><td style="padding:12px">Identifies information needs and potential harms</td><td style="padding:12px">Few causal evaluations of geolocated AI alerts</td></tr>
+</tbody>
+</table><p class="evidence-tension"><strong>The tension: </strong>Social-media research tracks sharing and attention; child-safety research warns that publicity can expose vulnerable minors. BalaSafe must count verified, safe tips—not clicks.</p>
+</div>
+</div>
+<div class="research-question">
+<div class="section-tag">THE RESEARCH GAP</div>
+<h3>What has not been demonstrated for Kazakhstan?</h3>
+<p>Existing scholarship supports the importance of coordinated institutions, well-designed public appeals and safeguarding. Yet the sources reviewed here do not test whether <strong>police-approved, location-based alerts with AI-assisted multilingual message processing</strong> increase the number of useful, verified public leads or shorten response time in Kazakhstan.</p>
+<p><strong>BalaSafe KZ addresses this gap as a policy and system proposal—not a proven intervention.</strong> Its value should be evaluated against an ordinary non-AI alert service using measures such as delivery speed, verified-tip quality, staff workload, language accessibility, privacy and safeguarding outcomes. Faster alerts alone are not sufficient proof of better child protection.</p>
+</div>
+</div>
+</section>
 
-    // Follow the pointer only within the opening screen; keep ordinary cursor elsewhere.
-    const searchCursor = document.getElementById('searchCursor');
-    const heroArea = document.querySelector('.hero');
-    const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
-    if (searchCursor && heroArea && finePointer.matches) {
-      document.body.classList.add('cursor-ready');
-      heroArea.addEventListener('pointermove', (event) => {
-        searchCursor.style.left = event.clientX + 'px';
-        searchCursor.style.top = event.clientY + 'px';
-        searchCursor.classList.add('visible');
-      });
-      heroArea.addEventListener('pointerleave', () => searchCursor.classList.remove('visible'));
-      window.addEventListener('blur', () => searchCursor.classList.remove('visible'));
+<!-- Magazine-style chapter turn: decorative, not part of the research content. -->
+<div class="magazine-chapter-turn" aria-hidden="true" data-chapter="04">
+  <div class="magazine-turn-kicker"><span class="magazine-turn-line"></span><span>TURN THE PAGE</span><span class="magazine-turn-line"></span></div>
+  <div class="magazine-book">
+    <div class="magazine-leaf magazine-leaf-left"><span class="magazine-book-top">CURRENT RESEARCH</span><span class="magazine-ghost-number">03</span><span class="magazine-book-bottom">BALA<span class="magazine-book-highlight">SAFE</span> / PLS419</span></div>
+    <div class="magazine-leaf magazine-leaf-right"><span class="magazine-book-top">NEXT CHAPTER</span><span class="magazine-chapter-name">AI-ASSISTED SOLUTION</span><span class="magazine-chapter-number">04</span></div>
+    <div class="magazine-flip-page"><span class="magazine-flip-label">04 / 08</span><div class="magazine-fold"></div></div>
+    <div class="magazine-spine"></div>
+  </div>
+</div>
+<section class="section" id="solution">
+<div class="container">
+<div class="section-header"><div class="section-tag">04 / AI-Assisted Solution</div>
+<h2>An AI coordination engine for faster, smarter missing-child alerts.</h2>
+<p class="section-subtitle">BalaSafe KZ is a <strong>proposed AI-assisted alert and coordination network</strong>. Instead of merely displaying posts, its AI turns approved case details and incoming reports into clear multilingual alerts, identifies repeat or contradictory tips, recommends which districts should receive updates, and helps dispatch verified volunteer teams. <strong>Humans authorize publication, verify leads and direct real searches.</strong></p></div><p class="ai-value-statement"><strong>Why AI? </strong>It can process many unstructured tips in three languages, flag duplicates and organize reviewer queues. Ordinary geofencing delivers messages; AI handles the messy incoming information. Its value must still be tested against human processing.</p>
+<div class="card section-figure reveal-on-scroll solution-figure">
+<div class="figure-kicker">AI WORKFLOW · WHAT THE MODEL ACTUALLY DOES</div>
+<div class="ai-orbit">
+<div class="ai-core">AI</div>
+<div class="orbit orbit-1">Translate</div>
+<div class="orbit orbit-2">Structure tips</div>
+<div class="orbit orbit-3">Flag duplicates</div>
+<div class="orbit orbit-4">Suggest districts</div>
+<div class="orbit orbit-5">Route volunteer queues</div>
+<svg aria-hidden="true" class="orbit-lines" viewbox="0 0 500 280" xmlns="http://www.w3.org/2000/svg">
+<path d="M250 138 L106 72"></path><path d="M250 138 L398 72"></path><path d="M250 138 L72 196"></path><path d="M250 138 L426 196"></path><path d="M250 138 L250 34"></path>
+</svg>
+</div>
+</div>
+<div class="accent-band"><div class="project-kicker">THE OPERATING IDEA</div><h3>One verified case → three languages → targeted alerts → organized tips and volunteer teams.</h3><p>AI handles high-volume preparation and coordination tasks; police and safeguarding staff retain decisions that could affect a child's safety.</p></div>
+<div class="section-header"><div class="section-tag">HOW IT WOULD WORK</div><h2>From official report to useful lead</h2></div>
+<div class="flowline">
+<div class="flowstep"><span class="stepnumber">01 · APPROVE</span><strong>Police authorize safe case details</strong><p>A safeguarding officer selects what may be shared. Unapproved private information stays restricted.</p></div>
+<div class="flowstep"><span class="stepnumber">02 · AI PROCESSING</span><strong>AI produces a structured, trilingual alert</strong><p>AI extracts confirmed descriptions and dates, drafts Kazakh/Russian/English versions and checks for inconsistencies. A human approves the wording.</p></div>
+<div class="flowstep"><span class="stepnumber">03 · AI TARGETING</span><strong>AI helps decide whom to notify</strong><p>Using confirmed location and case updates, AI proposes relevant districts and notification wording. Police approve the area; the service delivers the alert to opt-in residents.</p></div>
+<div class="flowstep"><span class="stepnumber">04 · AI COORDINATION</span><strong>AI sorts tips and matches volunteers</strong><p>Incoming tips are translated, clustered and prioritized for review. AI suggests district teams based on verified volunteer locations and availability; coordinators assign tasks.</p></div>
+</div>
+<div class="ai-ops" id="ai-operations">
+<div class="ai-ops-header"><span class="project-kicker">6 AI OPERATIONS · FROM CASE TO COORDINATION</span><h3>What the AI actually does</h3><p>These are proposed functions, not claims that a working platform has already been deployed.</p></div>
+<div class="ai-ops-grid">
+<article class="ai-op"><span class="ai-op-icon">01</span><h4>Extract</h4><p>Convert approved case descriptions, locations and timestamps into structured records.</p><span class="ai-op-output">OUTPUT · Clear case brief</span></article>
+<article class="ai-op"><span class="ai-op-icon">02</span><h4>Translate</h4><p>Draft alerts and incoming tip summaries in <strong>Kazakh, Russian and English</strong>.</p><span class="ai-op-output">OUTPUT · 3-language notices</span></article>
+<article class="ai-op"><span class="ai-op-icon">03</span><h4>Check relevance</h4><p>Flag old dates, mismatching descriptions and potentially duplicate forwarded reports.</p><span class="ai-op-output">OUTPUT · Review flags</span></article>
+<article class="ai-op"><span class="ai-op-icon">04</span><h4>Suggest local reach</h4><p>Recommend which districts should receive an update based on <strong>verified</strong> location information.</p><span class="ai-op-output">OUTPUT · Target-area suggestion</span></article>
+<article class="ai-op"><span class="ai-op-icon">05</span><h4>Triage tips</h4><p>Group duplicate witness messages, extract new details and rank which leads need review first.</p><span class="ai-op-output">OUTPUT · Organized lead queue</span></article>
+<article class="ai-op"><span class="ai-op-icon">06</span><h4>Match volunteers</h4><p>Suggest search groups by district, language, availability and verified membership.</p><span class="ai-op-output">OUTPUT · Draft team assignments</span></article>
+</div>
+<div class="ai-boundary"><strong>AI processes and recommends. People decide.</strong> Police approve alerts and search areas; coordinators assign volunteers; safeguarding staff can block publication. No AI-generated statement is treated as a verified sighting.</div>
+</div>
+<div class="identity-flow reveal-on-scroll">
+<div class="identity-flow-head">
+<span class="step-index">ACCOUNT SAFETY · VOLUNTEER COORDINATION</span>
+<h3>Not everyone gets the same permissions.</h3>
+<p>Open public information must be safe and accessible. Posting case details, sending private tips, and joining search teams require progressively stronger verification.</p>
+</div>
+<div class="identity-roles">
+<article class="identity-role"><span class="role-symbol">01</span><h4>Visitors</h4><p>Read approved public notices without submitting identifying details. No identity check just to stay informed.</p></article>
+<article class="identity-role"><span class="role-symbol">02</span><h4>Registered residents</h4><p>Confirm an email or phone number before submitting tips or subscribing to district alerts. Spam limits and moderation reduce fake submissions.</p></article>
+<article class="identity-role"><span class="role-symbol">03</span><h4>Verified volunteers</h4><p>Extra identity checks and organizer approval are needed to join district search groups or access assignments. Only assigned teams see operational instructions.</p></article>
+<article class="identity-role"><span class="role-symbol">04</span><h4>Police and coordinators</h4><p>Organization-issued credentials, role-based access, audit logs and two-factor authentication control publication and case management.</p></article>
+</div>
+<div class="identity-note"><strong>AI's supporting role:</strong> group authorized volunteers by district, availability and language; flag suspicious repeat submissions for review; and summarize incoming reports. A human confirms identity, reviews tips and assigns every search task.</div>
+</div>
+<div class="chapter-grid two" style="margin-top:28px">
+<div class="chapter-box case-card"><div class="case-status">Implemented case study 01 · Missing children</div><h3>ChildRescue — European Union</h3><div class="case-number">40+ · 30+ · 19</div><p>The EU-funded ChildRescue platform combined collective intelligence, location-aware communication and data analysis in missing-child work. The European Commission reports use in <strong>over 40 cases in Belgium</strong>, <strong>over 30 in Greece</strong>, and support for <strong>19 unaccompanied migrant minors</strong> through the Hellenic Red Cross.</p><p><strong>Transferable lesson:</strong> connected organizations and targeted public participation are operationally possible.</p><p><strong>Evidence limit:</strong> these are reported uses, not a controlled estimate of recovery gains; the AI-specific effect is not isolated.</p><a href="https://www.cordis.europa.eu/article/id/429893-harnessing-collective-intelligence-to-find-missing-children" rel="noopener noreferrer" target="_blank">European Commission — CORDIS ↗</a></div>
+<div class="chapter-box case-card"><div class="case-status">Implemented case study 02 · AI in emergency services</div><h3>LogiDebrief — Nashville, USA</h3><div class="case-number">1,701 calls</div><p>An AI-based emergency-call debriefing system using language models and structured rules was deployed at Metro Nashville Department of Emergency Communications. Its 2025 IJCAI paper reports review of <strong>1,701 calls</strong> and <strong>311.85 hours</strong> of active work saved.</p><p><strong>Transferable lesson:</strong> bounded language-processing tasks can reduce administrative workload.</p><p><strong>Evidence limit:</strong> it assessed calls after the event, not real-time missing-child recovery or public notification.</p><a href="https://www.ijcai.org/proceedings/2025/1065" rel="noopener noreferrer" target="_blank">IJCAI 2025 paper ↗</a></div>
+</div>
+<div class="chapter-box" style="margin-top:16px"><div class="case-status">Additional AI comparison · Emergency translation</div><h3>ALTERNIS — Ludwigshafen, Germany</h3><p>The European Emergency Number Association documented AI-supported translation used in <strong>600 real multilingual emergency calls</strong> after initial testing. The case highlights both the value of language accessibility and the need to detect translation errors. It supports BalaSafe's Kazakh/Russian/English communication concept but does not establish better recovery outcomes.</p><p><a href="https://eena.org/wp-content/uploads/2024/12/2024_12_02_EENA_AI_Project_Final_Report.pdf" rel="noopener noreferrer" target="_blank">EENA 2024 field report ↗</a></p></div>
+</div>
+</section>
+
+<!-- Magazine-style chapter turn: decorative, not part of the research content. -->
+<div class="magazine-chapter-turn" aria-hidden="true" data-chapter="05">
+  <div class="magazine-turn-kicker"><span class="magazine-turn-line"></span><span>TURN THE PAGE</span><span class="magazine-turn-line"></span></div>
+  <div class="magazine-book">
+    <div class="magazine-leaf magazine-leaf-left"><span class="magazine-book-top">AI-ASSISTED SOLUTION</span><span class="magazine-ghost-number">04</span><span class="magazine-book-bottom">BALA<span class="magazine-book-highlight">SAFE</span> / PLS419</span></div>
+    <div class="magazine-leaf magazine-leaf-right"><span class="magazine-book-top">NEXT CHAPTER</span><span class="magazine-chapter-name">THE BILL</span><span class="magazine-chapter-number">05</span></div>
+    <div class="magazine-flip-page"><span class="magazine-flip-label">05 / 08</span><div class="magazine-fold"></div></div>
+    <div class="magazine-spine"></div>
+  </div>
+</div>
+<section class="section" id="costs">
+<div class="container">
+<div class="section-header"><div class="section-tag">05 / The Cost of AI</div><h2>The Bill: what would BalaSafe cost?</h2><p class="section-subtitle">Five kinds of cost. Select one to see the main trade-off, then adjust the pilot budget below.</p></div>
+<div class="section-mini-figures reveal-on-scroll cost-icons-row">
+<div class="card mini-figure compact"><div class="icon-badge">⚡</div><h4>Energy</h4></div>
+<div class="card mini-figure compact"><div class="icon-badge">₸</div><h4>Budget</h4></div>
+<div class="card mini-figure compact"><div class="icon-badge">👥</div><h4>Labour</h4></div>
+<div class="card mini-figure compact"><div class="icon-badge">⚖</div><h4>Governance</h4></div>
+<div class="card mini-figure compact"><div class="icon-badge">🔒</div><h4>Ethics</h4></div>
+</div>
+<div class="bill-lens reveal-on-scroll">
+<div class="bill-eyebrow">THE FULL BILL · FIVE COST DIMENSIONS</div>
+<h3>What's the real price of an alert?</h3>
+<p class="bill-hint">Choose a category ↓</p>
+<div aria-label="The five dimensions of BalaSafe's cost" class="bill-tabs" role="tablist">
+<button aria-selected="true" class="bill-tab active" data-bill="environment" role="tab" type="button">01 <strong>Environment</strong></button>
+<button aria-selected="false" class="bill-tab" data-bill="economic" role="tab" type="button">02 <strong>Economic</strong></button>
+<button aria-selected="false" class="bill-tab" data-bill="labor" role="tab" type="button">03 <strong>Labour</strong></button>
+<button aria-selected="false" class="bill-tab" data-bill="governance" role="tab" type="button">04 <strong>Governance</strong></button>
+<button aria-selected="false" class="bill-tab" data-bill="ethics" role="tab" type="button">05 <strong>Data ethics</strong></button>
+</div>
+<div aria-live="polite" class="bill-panel" id="billPanel" role="tabpanel">
+<span class="bill-panel-tag">01 · ENVIRONMENT</span>
+<h4>How much water does AI use?</h4>
+<div class="water-evidence"><span aria-hidden="true" class="water-droplet">💧</span><div><strong>0.26 mL</strong><span>water per median Gemini text prompt · Google (May 2025)</span></div></div>
+<p><strong>Example:</strong> 1,040 such prompts would correspond to roughly <strong>0.27 litres</strong> of data-centre cooling water. This is a published <em>Gemini benchmark</em>, not BalaSafe's measured consumption.</p>
+<p>Kazakhstan's thermal-heavy grid also affects emissions. Water usage changes with the model, provider and cooling system, and indirect water use from electricity generation is not quantified here.</p>
+<a href="https://cloud.google.com/blog/products/infrastructure/measuring-the-environmental-impact-of-ai-inference?hl=en" rel="noopener noreferrer" target="_blank">Google's 2025 measurement ↗</a> · <a href="https://www.kegoc.kz/en/electric-power/natsionalnaya-energosistema/" rel="noopener noreferrer" target="_blank">KEGOC grid data ↗</a>
+</div>
+</div>
+<div class="section-header" style="margin-top:30px"><div class="section-tag">SCENARIO CALCULATOR</div><h2>Try the monthly budget</h2><p class="section-subtitle">Move the sliders to see estimated cost and workload.</p></div>
+<div class="calc-grid">
+<div class="calc-panel">
+<h3>Illustrative pilot inputs</h3>
+<div class="calc-field"><label for="casesMonth">Approved alerts per month <output id="casesOut">40</output></label><input id="casesMonth" max="200" min="5" step="5" type="range" value="40"/></div>
+<div class="calc-field"><label for="textsPerCase">SMS per alert <output id="textsOut">300</output></label><input id="textsPerCase" max="2000" min="0" step="50" type="range" value="300"/></div>
+<div class="calc-field"><label for="tipsPerCase">Witness tips per alert <output id="tipsOut">25</output></label><input id="tipsPerCase" max="100" min="0" step="5" type="range" value="25"/></div>
+<div class="calc-field"><label for="staffCount">Paid reviewers <output id="staffOut">2</output></label><input id="staffCount" max="8" min="1" step="1" type="range" value="2"/></div>
+<details class="cost-assumption-details"><summary>See published prices &amp; scenario assumptions</summary><div class="formula"><strong>Price anchors:</strong> a published Kazakhstan SMS list shows approximately <strong>16.6–19.6 KZT per message</strong> for several service categories (<a href="https://kazinfoteh.kz/sms-sending.html" rel="noopener noreferrer" target="_blank">Kazinfoteh ↗</a>). The calculator uses a rounded <strong>20 KZT/SMS</strong> scenario, not a guaranteed cross-network rate. A Kazakhstan VPS with 4 vCPU/8 GB is advertised at <strong>19,520 KZT/month</strong> (<a href="https://adastracloud.kz/en/pricing/" rel="noopener noreferrer" target="_blank">Adastra Cloud ↗</a>); <strong>80,480 KZT</strong> for support/backup is an assumption, making <strong>100,000 KZT/month</strong> total hosting/support. <strong>300,000 KZT per reviewer</strong> is an assumed salary, not a specialist quote (<a href="https://stat.gov.kz/en/industries/labor-and-income/stat-wags/publications/509380/" rel="noopener noreferrer" target="_blank">BNS wage context ↗</a>). Staffing time: 3 min per tip + 15 min per approved alert. The electricity model (30 kWh base + 0.002 kWh/task) is unmeasured. SMS sender-ID charges, model API/GPU use, development and security audits are <strong>not included</strong>.</div></details>
+</div>
+<div class="calc-panel">
+<div class="project-kicker">Indicative recurring operating costs</div><div class="calc-hero" id="monthlyCost">—</div><p class="caption">Illustrative monthly operating cost, not a supplier quote; excludes setup and audits.</p>
+<div class="calc-results"><div class="calc-result"><b id="annualCost">—</b><span>12-month recurring cost · KZT</span></div><div class="calc-result"><b id="smsCost">—</b><span>SMS spend per month · KZT</span></div><div class="calc-result"><b id="computeTasks">—</b><span>AI text tasks per month</span></div><div class="calc-result"><b id="modelKwh">—</b><span>Modeled operational electricity · kWh/month</span></div><div class="calc-result"><b id="reviewHours">—</b><span>Estimated human review hours/month · assumed</span></div><div class="calc-result water-result"><b id="waterBenchmark">—</b><span>Illustrative cooling water · L/month<br/><small>At Google's median Gemini prompt benchmark (not BalaSafe use)</small></span></div></div>
+<div class="accent-band"><strong>Not priced:</strong> AI API/GPU, sender IDs, development, audits, safeguards and volunteer time.</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Magazine-style chapter turn: decorative, not part of the research content. -->
+<div class="magazine-chapter-turn" aria-hidden="true" data-chapter="06">
+  <div class="magazine-turn-kicker"><span class="magazine-turn-line"></span><span>TURN THE PAGE</span><span class="magazine-turn-line"></span></div>
+  <div class="magazine-book">
+    <div class="magazine-leaf magazine-leaf-left"><span class="magazine-book-top">THE BILL</span><span class="magazine-ghost-number">05</span><span class="magazine-book-bottom">BALA<span class="magazine-book-highlight">SAFE</span> / PLS419</span></div>
+    <div class="magazine-leaf magazine-leaf-right"><span class="magazine-book-top">NEXT CHAPTER</span><span class="magazine-chapter-name">FINAL VERDICT</span><span class="magazine-chapter-number">06</span></div>
+    <div class="magazine-flip-page"><span class="magazine-flip-label">06 / 08</span><div class="magazine-fold"></div></div>
+    <div class="magazine-spine"></div>
+  </div>
+</div>
+<section class="section" id="verdict">
+<div class="container">
+<div class="section-header"><div class="section-tag">06 / Final Verdict</div><h2>Should Kazakhstan build BalaSafe KZ?</h2><p class="section-subtitle">The evidence supports investigating better public information delivery. It does <strong>not</strong> yet establish that an AI-powered system is necessary, affordable or safer than a well-designed non-AI alternative.</p></div>
+<div class="accent-band"><span class="decision-chip">PROVISIONAL PROJECT VERDICT · CONDITIONAL</span><h3 style="font-size:1.5rem;margin:14px 0">Start with verified alerts. Test AI only where it earns its place.</h3><p>Based on the reviewed evidence, a controlled pilot could be considered <strong>only</strong> after the current alert ecosystem is audited, a competent institution accepts legal responsibility, and the benefits of adding AI are tested against ordinary location-based notifications. There is not enough evidence to recommend nationwide deployment.</p></div>
+<div class="card section-figure reveal-on-scroll">
+<div class="figure-kicker">DECISION FIGURE · WHEN TO SAY YES</div>
+<div class="figure-flex">
+<svg aria-hidden="true" class="figure-svg small-figure" viewbox="0 0 360 220" xmlns="http://www.w3.org/2000/svg">
+<rect fill="#f8fbff" height="168" rx="24" width="310" x="25" y="26"></rect>
+<path d="M180 56 V154" stroke="#1b2d49" stroke-linecap="round" stroke-width="8"></path>
+<path d="M108 82 H252" stroke="#1b2d49" stroke-linecap="round" stroke-width="8"></path>
+<path d="M124 82 L88 124 H160 Z" fill="#f1b85a" opacity=".85"></path>
+<path d="M236 82 L200 124 H272 Z" fill="#d3dbe8"></path>
+<rect fill="#1b2d49" height="14" rx="7" width="68" x="146" y="154"></rect>
+<circle cx="180" cy="44" fill="#f1b85a" r="18"></circle>
+<path d="M171 44 L177 50 L190 36" fill="none" stroke="#1b2d49" stroke-linecap="round" stroke-linejoin="round" stroke-width="5"></path>
+</svg>
+<div class="figure-copy">
+<h3>Adopt only under conditions.</h3>
+<p>The site’s verdict is not a full endorsement. It argues for a cautious, limited and testable public-safety approach.</p>
+</div>
+</div>
+</div>
+<div class="verdict-columns">
+<div class="chapter-box"><h3>Conditions for a limited pilot</h3>
+<div class="q-check"><b>01</b><span>Police and child-protection authorities approve a public-notice protocol and a safeguarding veto for high-risk cases.</span></div>
+<div class="q-check"><b>02</b><span>Run one geographically limited pilot using opt-in alerts and no public disclosure of exact child locations.</span></div>
+<div class="q-check"><b>03</b><span>Compare a human-only geofencing service with an AI-assisted trilingual version using the same approved cases.</span></div>
+<div class="q-check"><b>04</b><span>Evaluate delivery time, verified tips, staff burden, language parity, errors and any child-safety complaints.</span></div>
+<div class="q-check"><b>05</b><span>Publish aggregate evaluation results and establish independent child-protection review.</span></div>
+</div>
+<div class="chapter-box"><h3>When the answer should be “no”</h3>
+<div class="q-check"><b>×</b><span>No lawful and reliable source of police-approved alerts is available.</span></div>
+<div class="q-check"><b>×</b><span>No institution can independently verify public tips or investigate erroneous alerts.</span></div>
+<div class="q-check"><b>×</b><span>Children's sensitive details or witnesses' identities cannot be protected or deleted promptly.</span></div>
+<div class="q-check"><b>×</b><span>The AI system performs worse than a simpler non-AI platform in accuracy, costs or equitable access.</span></div>
+<div class="q-check"><b>×</b><span>The tool encourages vigilantism, stalking or the return of children to unsafe environments.</span></div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Magazine-style chapter turn: decorative, not part of the research content. -->
+<div class="magazine-chapter-turn" aria-hidden="true" data-chapter="07">
+  <div class="magazine-turn-kicker"><span class="magazine-turn-line"></span><span>TURN THE PAGE</span><span class="magazine-turn-line"></span></div>
+  <div class="magazine-book">
+    <div class="magazine-leaf magazine-leaf-left"><span class="magazine-book-top">FINAL VERDICT</span><span class="magazine-ghost-number">06</span><span class="magazine-book-bottom">BALA<span class="magazine-book-highlight">SAFE</span> / PLS419</span></div>
+    <div class="magazine-leaf magazine-leaf-right"><span class="magazine-book-top">NEXT CHAPTER</span><span class="magazine-chapter-name">AI TRANSPARENCY</span><span class="magazine-chapter-number">07</span></div>
+    <div class="magazine-flip-page"><span class="magazine-flip-label">07 / 08</span><div class="magazine-fold"></div></div>
+    <div class="magazine-spine"></div>
+  </div>
+</div>
+<section class="section" id="ai-transparency">
+<div class="container">
+<div class="section-header"><div class="section-tag">07 / AI Transparency</div><h2>How AI contributed to this project</h2><p class="section-subtitle">The project was developed through student-led decisions and AI-assisted research and website development.</p></div>
+<div class="chapter-grid two">
+<div class="chapter-box"><div class="project-kicker">My contribution</div><h3>Ideas, decisions and design direction</h3><p>I chose missing-child safety in Kazakhstan, developed the idea of location-based public alerts, selected the website design and references, and decided which sources and AI suggestions to accept, revise or reject.</p></div>
+<div class="chapter-box"><div class="project-kicker">AI contribution</div><h3>Research and technical support</h3><p>ChatGPT helped find data, statistics and academic sources, draft and organize the text, and turn my design choices into website code and interactive visuals.</p></div>
+</div>
+<div class="chapter-box"><div class="project-kicker">Critical choices</div><h3>What I rejected</h3><p>I rejected unsupported claims about survival after 24 hours, irrelevant statistics about abductions, unnecessary app development, and content that did not meet the course rubric.</p></div>
+</div>
+</section>
+<!-- Magazine-style chapter turn: decorative, not part of the research content. -->
+<div class="magazine-chapter-turn" aria-hidden="true" data-chapter="08">
+  <div class="magazine-turn-kicker"><span class="magazine-turn-line"></span><span>TURN THE PAGE</span><span class="magazine-turn-line"></span></div>
+  <div class="magazine-book">
+    <div class="magazine-leaf magazine-leaf-left"><span class="magazine-book-top">AI TRANSPARENCY</span><span class="magazine-ghost-number">07</span><span class="magazine-book-bottom">BALA<span class="magazine-book-highlight">SAFE</span> / PLS419</span></div>
+    <div class="magazine-leaf magazine-leaf-right"><span class="magazine-book-top">NEXT CHAPTER</span><span class="magazine-chapter-name">REFERENCES</span><span class="magazine-chapter-number">08</span></div>
+    <div class="magazine-flip-page"><span class="magazine-flip-label">08 / 08</span><div class="magazine-fold"></div></div>
+    <div class="magazine-spine"></div>
+  </div>
+</div>
+<section class="section references-section" id="sources">
+<div class="container references-inner">
+<div class="section-header">
+<div class="section-tag">08 / REFERENCES</div>
+<h2>Sources behind the research.</h2>
+<p class="section-subtitle">Official Kazakhstan data, academic studies and documented AI deployments used throughout the project.</p>
+</div>
+<div class="references-card">
+<details class="sources-toggle">
+<summary><span class="references-summary-left"><span class="references-book">▤</span><span><strong>Explore all 32 references</strong><small>Click to open the full bibliography</small></span></span><span class="references-toggle-mark">＋</span></summary>
+<ol class="source-notes long-reference-list"><li><a href="https://www.gov.kz/org/qriim/press/news/details/1206648?lang=ru" rel="noopener" target="_blank">Kazakhstan Ministry of Internal Affairs (2026). Missing-person search activity, 2025 figures, volunteer cooperation.</a></li><li><a href="https://www.gov.kz/org/mvd-astana/press/news/details/1279384?lang=ru" rel="noopener" target="_blank">Astana Police Department (25 August 2026). Approximately 2,000 calls since January about missing minors and unauthorized departures.</a></li><li><a href="https://www.gov.kz/org/qriim/press/news/details/1310173?lang=ru" rel="noopener" target="_blank">Ministry of Internal Affairs (2026). Abai Region missing-child reports.</a></li><li><a href="https://www.gov.kz/org/mvd-mangystau/press/news/details/1331184?lang=ru" rel="noopener" target="_blank">Mangystau police (2026). Missing-person reports involving minors.</a></li><li><a href="https://www.gov.kz/org/mvd-aktobe/press/news/details/1137632" rel="noopener" target="_blank">Aktobe police (2025). Minors recorded as being sought.</a></li><li><a href="https://www.gov.kz/situations/232/658?lang=ru" rel="noopener" target="_blank">Kazakhstan eGov. How to report a missing person.</a></li><li><a href="https://bala.stat.gov.kz/en/" rel="noopener" target="_blank">Bureau of National Statistics. Children of Kazakhstan data portal.</a></li><li><a href="https://www.unicef.org/kazakhstan/en" rel="noopener" target="_blank">UNICEF Kazakhstan. Child-protection and inequality context.</a></li><li><a href="https://www.unicef.org/kazakhstan/en/reports/report-gaps-and-opportunities-child-protection-cross-border-information-exchange" rel="noopener" target="_blank">UNICEF (2021). Kazakhstan–Kyrgyzstan cross-border case management (regional context; not a missing-child alert evaluation).</a></li><li><a href="https://doi.org/10.1093/police/paad044" rel="noopener" target="_blank">Waring et al. (2023). Examining factors affecting inter-agency working in missing children investigations.</a></li><li><a href="https://doi.org/10.1177/0032258X241241016" rel="noopener" target="_blank">Monaghan et al. (2025). Scoping review of inter-agency responses to missing children investigations.</a></li><li><a href="https://doi.org/10.1177/0032258X261445854" rel="noopener" target="_blank">Monaghan et al. (2026). Mechanisms that facilitate and hinder multi-agency working.</a></li><li><a href="https://doi.org/10.1177/0032258X211023546" rel="noopener" target="_blank">Hunt et al. (2022). Reporting missing children to the police: qualitative exploration.</a></li><li><a href="https://scholarworks.sjsu.edu/ijmp/vol1/iss1/4/" rel="noopener" target="_blank">Howlings &amp; Solymosi (2023). Exploring facilitators, barriers and concerns of police using social media when investigating missing children.</a></li><li><a href="https://researchportal.port.ac.uk/en/publications/sharing-missing-persons-appeals-on-social-media-assessing-communi" rel="noopener" target="_blank">Ciobotaru et al. (2023). Sharing Missing Persons Appeals on Social Media: Assessing Community Engagement on Facebook and Twitter.</a></li><li><a href="https://doi.org/10.1177/0032258X221087829" rel="noopener" target="_blank">Phoenix &amp; Francis (2023). Police risk assessment and case outcomes in missing person investigations.</a></li><li><a href="https://www.cordis.europa.eu/article/id/429893-harnessing-collective-intelligence-to-find-missing-children" rel="noopener" target="_blank">European Commission CORDIS. ChildRescue implementation and reported case use.</a></li><li><a href="https://www.ijcai.org/proceedings/2025/1065" rel="noopener" target="_blank">IJCAI (2025). LogiDebrief AI emergency-call debriefing deployment.</a></li><li><a href="https://eena.org/wp-content/uploads/2024/12/2024_12_02_EENA_AI_Project_Final_Report.pdf" rel="noopener" target="_blank">EENA (2024). ALTERNIS emergency-call translation pilot.</a></li><li><a href="https://www.kegoc.kz/en/electric-power/natsionalnaya-energosistema/" rel="noopener" target="_blank">KEGOC. Kazakhstan national power system data for 2025.</a></li><li><a href="https://www.loc.gov/item/global-legal-monitor/2026-01-12/kazakhstan-new-law-introduces-rules-for-ai-systems-operating-in-the-country/" rel="noopener" target="_blank">US Library of Congress (2026). Kazakhstan law on AI and privacy obligations.</a></li><li><a href="https://www.icmec.org/missing-children-statistics/" rel="noopener noreferrer" target="_blank">International Centre for Missing &amp; Exploited Children. Missing children statistics and methodological limitations.</a></li><li><a href="https://stat.gov.kz/en/industries/labor-and-income/stat-wags/publications/509380/" rel="noopener noreferrer" target="_blank">Bureau of National Statistics (2025). Main labor market indicators and median wages (317,512 KZT).</a></li><li><a href="https://old.adilet.zan.kz/eng/docs/Z2500000230" rel="noopener noreferrer" target="_blank">Republic of Kazakhstan. Law on Artificial Intelligence (effective 18 January 2026).</a> <span class="caption">(If Adilet fails, consult <a href="https://www.gov.kz/org/maidd/documents/details/1083089?lang=en" rel="noopener noreferrer" target="_blank">official ministerial guidance</a>.)</span></li><li><a href="https://www.gov.kz/org/aqmola/documents/details/176880?lang=en" rel="noopener noreferrer" target="_blank">Republic of Kazakhstan. Law on Personal Data and their Protection.</a></li><li><a href="https://link.springer.com/article/10.1007/s41887-023-00090-5" rel="noopener noreferrer" target="_blank">Waring et al. (2023). Examining the impact of dedicated missing person teams on the multiagency response to missing children.</a></li><li><a href="https://research.manchester.ac.uk/en/publications/exploring-public-engagement-with-missing-person-appeals-on-twitte/" rel="noopener noreferrer" target="_blank">Solymosi, Petcu &amp; Wilkinson (2020). Exploring public engagement with missing person appeals on Twitter.</a></li><li><a href="https://doi.org/10.1080/15614263.2020.1753516" rel="noopener noreferrer" target="_blank">#Missing to #Found (2020). Exploring police Twitter use for missing persons investigations.</a></li><li><a href="https://www.nature.com/articles/s41599-021-00958-9" rel="noopener noreferrer" target="_blank">Brantl et al. (2021). Towards examining and addressing the danger of unaccompanied migrant minors going missing.</a></li><li><a href="https://kazinfoteh.kz/sms-sending.html" rel="noopener noreferrer" target="_blank">Kazinfoteh — Kazakhstan SMS delivery tariffs (2026, different network categories).</a></li><li><a href="https://adastracloud.kz/en/pricing/" rel="noopener noreferrer" target="_blank">Adastra Cloud — Kazakhstan VPS monthly price list (server-only price, 2026).</a></li><li><a href="https://www.gov.kz/org/maidd/press/news/details/1143060?lang=ru" rel="noopener noreferrer" target="_blank">Kazakhstan Ministry of Artificial Intelligence — AI Law effective 18 January 2026.</a></li><li><a href="https://cloud.google.com/blog/products/infrastructure/measuring-the-environmental-impact-of-ai-inference?hl=en" rel="noopener noreferrer" target="_blank">Google Cloud (2025). Measuring the environmental impact of AI inference — median Gemini text prompt water estimate (0.26 mL).</a></li></ol></details>
+</div></div>
+</section>
+</main>
+<footer>
+<div class="container">PLS419 Final Project</div>
+</footer>
+<!-- Scroll indicator: magnifying glass moves vertically with the page. -->
+<div aria-label="Scroll page" class="search-scroll-track" id="searchScrollTrack" title="Drag to scroll"><div class="search-scroll-lens" id="searchScrollLens"><svg aria-hidden="true" viewbox="0 0 50 50"><circle cx="20" cy="20" fill="#fff8e7" r="12" stroke="#bd761f" stroke-width="4"></circle><path d="M29 29 L43 43" stroke="#bd761f" stroke-linecap="round" stroke-width="6"></path></svg></div></div>
+<script>
+
+    // Source-specific evidence: do not use as a cross-region ranking.
+    // Schematic tile map; missing source counts stay missing, never zero.
+    const regionalEvidence = [
+      {id:'astana',name:'Astana',year:'2026',number:'≈2,000',metric:'Calls about missing minors and unauthorized departures',window:'Jan–25 Aug 2026',details:'Police reported approximately 2,000 calls to 102 concerning missing minors and unauthorized departures.',source:'https://www.gov.kz/org/mvd-astana/press/news/details/1279384?lang=ru'},
+      {id:'abai',name:'Abai Region',year:'2026',number:'500+',metric:'Missing-child reports',window:'Jan–13 Oct 2026',details:'More than 500 requests about missing children were reported, including 220 via line 102. Different reporting categories should not be treated as comparable regional rates.',source:'https://www.gov.kz/org/qriim/press/news/details/1310173?lang=ru'},
+      {id:'mangystau',name:'Mangystau Region',year:'2026',number:'20',metric:'Reports involving minors',window:'Jan–Oct 2026',details:'Of 167 missing-person reports over ten months, 20 involved minors; police said all 20 children were located.',source:'https://www.gov.kz/org/mvd-mangystau/press/news/details/1331184?lang=ru'},
+      {id:'aktobe',name:'Aktobe Region',year:'2025',number:'658',metric:'Minors recorded as being sought',window:'2025',details:'Police reported 658 minors in search records for 2025, all of whom were located. This is not a standardized number of new disappearance reports.',source:'https://www.gov.kz/org/mvd-aktobe/press/news/details/1137632'}
+    ];
+    const tileRegions = [
+      ['wko','WKO',1,2],['atyrau','ATY',1,3],['mangystau','MAN',1,4],
+      ['aktobe','AKT',2,3],['kostanay','KOS',3,2],['kyzylorda','KYZ',3,4],
+      ['ulytau','ULY',4,3],['akmola','AKM',4,2],['north','SKO',4,1],
+      ['karagandy','KAR',5,3],['astana','AST',5,2],['pavlodar','PAV',6,1],
+      ['abai','ABA',6,2],['zhetysu','ZHE',7,3],['east','VKO',7,1],
+      ['almatyreg','ALR',6,4],['almaty','ALA',6,5],['zhan','ZHA',5,4],
+      ['shymkent','SHY',4,5],['turkistan','TUR',5,5]
+    ];
+    const regionNames={wko:'West Kazakhstan Region',atyrau:'Atyrau Region',mangystau:'Mangystau Region',aktobe:'Aktobe Region',kostanay:'Kostanay Region',kyzylorda:'Kyzylorda Region',ulytau:'Ulytau Region',akmola:'Akmola Region',north:'North Kazakhstan Region',karagandy:'Karagandy Region',astana:'Astana',pavlodar:'Pavlodar Region',abai:'Abai Region',zhetysu:'Zhetysu Region',east:'East Kazakhstan Region',almatyreg:'Almaty Region',almaty:'Almaty city',zhan:'Zhambyl Region',shymkent:'Shymkent',turkistan:'Turkistan Region'};
+    const tileTarget=document.getElementById('kazTileGrid');
+    const detailTarget=document.getElementById('kazDetail');
+    function showRegion(id){
+      if(!detailTarget)return;
+      document.querySelectorAll('.kaz-tile').forEach(el=>{el.classList.toggle('selected',el.dataset.id===id);el.setAttribute('aria-pressed',String(el.dataset.id===id))});
+      const found=regionalEvidence.find(r=>r.id===id);
+      detailTarget.replaceChildren();
+      const wrap=document.createElement('div');wrap.className='kaz-detail-content';
+      const h=document.createElement('h4');h.textContent=regionNames[id]||id;wrap.append(h);
+      if(found){
+       const num=document.createElement('div');num.className='kaz-detail-number';num.textContent=found.number;wrap.append(num);
+       const metric=document.createElement('p');metric.textContent=found.metric+' · '+found.window;wrap.append(metric);
+       const info=document.createElement('p');info.textContent=found.details;wrap.append(info);
+       const a=document.createElement('a');a.href=found.source;a.target='_blank';a.rel='noopener noreferrer';a.textContent='Open original police announcement ↗';wrap.append(a);
+      }else{
+       const p=document.createElement('p');p.textContent='No region-specific missing-child count is included in the reviewed announcements for this area. This does not mean zero missing children.';wrap.append(p);
+       const note=document.createElement('p');note.textContent='An official comparable figure would need its reporting period, unit and original source.';wrap.append(note);
+      }
+      detailTarget.append(wrap);
     }
+    if(tileTarget){
+      for(const [id,code,x,y] of tileRegions){
+        const data=regionalEvidence.find(r=>r.id===id);
+        const b=document.createElement('button');b.type='button';b.className='kaz-tile'+(data?' known':'');b.dataset.id=id;b.style.setProperty('--x',x);b.style.setProperty('--y',y);b.setAttribute('aria-label',(regionNames[id]||code)+(data?': '+data.number:'; no figure in reviewed set'));b.setAttribute('aria-pressed','false');
+        const ab=document.createElement('span');ab.className='kaz-code';ab.textContent=code;
+        const value=document.createElement('span');value.className=data?'kaz-number':'kaz-no-data';value.textContent=data?data.number:'—';
+        b.append(ab,value);b.addEventListener('click',()=>showRegion(id));tileTarget.append(b);
+      }
+    }
+
+    // Scroll position drives the magnifying-glass thumb (not the mouse cursor).
+    const scrollTrack = document.getElementById("searchScrollTrack");
+    const scrollLens = document.getElementById("searchScrollLens");
+    function syncScrollLens(){
+      if(!scrollTrack || !scrollLens) return;
+      const max = Math.max(1,document.documentElement.scrollHeight-window.innerHeight);
+      const progress = Math.min(1,Math.max(0,window.scrollY/max));
+      const travel = scrollTrack.clientHeight-scrollLens.clientHeight;
+      scrollLens.style.transform = `translateY(${progress*travel}px)`;
+      scrollTrack.setAttribute("aria-valuenow",String(Math.round(progress*100)));
+    }
+    window.addEventListener("scroll",syncScrollLens,{passive:true});
+    window.addEventListener("resize",syncScrollLens);
+    let draggingLens=false;
+    scrollTrack.addEventListener("pointerdown",e=>{draggingLens=true;scrollTrack.setPointerCapture(e.pointerId);moveLens(e);});
+    scrollTrack.addEventListener("pointermove",e=>{if(draggingLens)moveLens(e);});
+    scrollTrack.addEventListener("pointerup",()=>draggingLens=false);
+    scrollTrack.addEventListener("pointercancel",()=>draggingLens=false);
+    function moveLens(e){
+      const bounds=scrollTrack.getBoundingClientRect();
+      const ratio=Math.max(0,Math.min(1,(e.clientY-bounds.top-scrollLens.offsetHeight/2)/(bounds.height-scrollLens.offsetHeight)));
+      window.scrollTo({top:ratio*(document.documentElement.scrollHeight-window.innerHeight),behavior:"instant"});
+    }
+    syncScrollLens();
+
 
     const send = document.getElementById('sendAlert');
     const scene = document.getElementById('alertScene');
@@ -782,6 +1669,191 @@
       });
       timeouts.push(setTimeout(()=>{status.textContent='Some residents are informed. Others never see the alert.'},2500));
     });
-  </script>
+
+    // Scenario calculator: all prices, energy and scale assumptions are illustrative.
+    (function(){
+      const ids=['casesMonth','textsPerCase','tipsPerCase','staffCount'];
+      const inputs=ids.map(id=>document.getElementById(id));
+      if(inputs.some(x=>!x))return;
+      const fmt=n=>new Intl.NumberFormat('en-US',{maximumFractionDigits:0}).format(n);
+      const set=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
+      const update=()=>{
+        const [cases,smsPerCase,tips,reviewers]=inputs.map(el=>Number(el.value));
+        const sms=cases*smsPerCase*20;
+        const payroll=reviewers*300000;
+        const monthly=sms+payroll+100000;
+        const tasks=cases*(1+tips);
+        const energy=30+tasks*.002;
+        set('casesOut',cases);set('textsOut',fmt(smsPerCase));set('tipsOut',tips);set('staffOut',reviewers);
+        set('monthlyCost',fmt(monthly)+' KZT');set('annualCost',fmt(monthly*12));
+        set('smsCost',fmt(sms));set('computeTasks',fmt(tasks));set('modelKwh',energy.toFixed(1));set('waterBenchmark',(tasks*0.26/1000).toFixed(2));set('reviewHours',(cases*0.25+cases*tips*3/60).toFixed(1));
+      };
+      inputs.forEach(el=>el.addEventListener('input',update));update();
+    })();
+
+  
+
+    document.querySelectorAll('.gap-reveal').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        const panel=document.getElementById(btn.dataset.target);
+        if(panel) panel.classList.toggle('open');
+      });
+    });
+
+
+    // Reveal content progressively on scroll; do not hide content when animations are disabled.
+    const revealTargets = document.querySelectorAll('.section-header, .chapter-box, .research-question, .card:not(.gap-hidden), .table-shell, .region-explorer, .calc-panel, .bill-tabs-wrapper, .non-ai-alternative, .data-questions > div');
+    if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      const revealObserver = new IntersectionObserver(entries=>{
+        entries.forEach(entry=>{
+          if(entry.isIntersecting){entry.target.classList.add('has-entered');revealObserver.unobserve(entry.target)}
+        });
+      }, {threshold:0.08,rootMargin:'0px 0px -24px 0px'});
+      revealTargets.forEach(el=>{
+        // Only animate below-fold content; avoid a blank first screen.
+        if(el.getBoundingClientRect().top > window.innerHeight * .75){
+          el.classList.add('will-reveal'); revealObserver.observe(el);
+        }
+      });
+    }
+
+
+
+    // Interactive communication story with explicit next/back controls.
+    const storyFrames = [
+      {title:'An official notice is issued',description:'Police approve information for public release. It exists — but it has not reached nearby residents yet.'},
+      {title:'The notice reaches volunteer channels',description:'Volunteer networks can share the appeal with their members, but not everyone follows these groups.'},
+      {title:'A screenshot circulates without context',description:'A forwarded post can lose its timestamp, verification status or instructions — and may travel far from the search area.'},
+      {title:'A nearby resident never sees it',description:'Someone who could help may not receive a timely alert at all. This is the communication problem BalaSafe KZ proposes to investigate.'}
+    ];
+    let storyIndex=0;
+    const storyNext=document.getElementById('storyNext'),storyBack=document.getElementById('storyBack');
+    function renderStory(){
+      const frame=storyFrames[storyIndex];
+      document.getElementById('storyTitle').textContent=frame.title;
+      document.getElementById('storyDescription').textContent=frame.description;
+      document.getElementById('storyIcon').textContent=String(storyIndex+1).padStart(2,'0');
+      document.getElementById('storyStepLabel').textContent=String(storyIndex+1).padStart(2,'0')+' / 04';
+      document.getElementById('storyScene').dataset.stage=String(storyIndex);
+      document.querySelectorAll('#storyProgress span').forEach((el,i)=>el.classList.toggle('on',i<=storyIndex));
+      document.querySelectorAll('#storyScene .story-node').forEach((el,i)=>{
+        el.classList.toggle('active',i<=Math.min(storyIndex,2));
+        el.classList.toggle('warn',storyIndex===3&&i===2);
+      });
+      storyBack.disabled=storyIndex===0;
+      storyNext.textContent=storyIndex===3?'Replay story ↻':'Next step →';
+      document.getElementById('storyOutcome').classList.toggle('visible',storyIndex===3);
+    }
+    if(storyNext&&storyBack){storyNext.addEventListener('click',()=>{storyIndex=(storyIndex+1)%4;renderStory()});storyBack.addEventListener('click',()=>{storyIndex=Math.max(0,storyIndex-1);renderStory()});renderStory()}
+
+    const sourceViews=[
+      ['Ministries & police','missing-child reports, searches and selected regional outcomes','a standardized national record of alert reach and time-to-find'],
+      ['Bureau of National Statistics','the number of children by age, sex and region','missing-child incidence without comparable police case counts'],
+      ['UNICEF and international organisations','child vulnerability, disability and wider regional inequality','who actually receives missing-child alerts'],
+      ['Academic researchers','methods for evaluating coordination, participation and technologies','a measured Kazakhstan-specific answer about AI alerts']
+    ];
+    document.querySelectorAll('.data-source-button').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        const i=Number(btn.dataset.ds), d=sourceViews[i];
+        document.querySelectorAll('.data-source-button').forEach(b=>{b.classList.remove('active');b.setAttribute('aria-pressed','false')});
+        btn.classList.add('active');btn.setAttribute('aria-pressed','true');
+        document.getElementById('dataInsightCount').textContent=String(i+1).padStart(2,'0')+' / 04';
+        document.getElementById('dataInsightTitle').textContent=d[0];
+        document.getElementById('dataInsightMeasures').textContent=d[1];
+        document.getElementById('dataInsightMissing').textContent=d[2];
+      });
+    });
+
+const billEntries = {
+ environment:{tag:'01 · ENVIRONMENT',title:'How much water would AI use?',
+  blocks:[['Published benchmark','Google estimated 0.26 mL cooling water per median Gemini text prompt in May 2025. At 1,040 similarly sized tasks: about 0.27 L. This is not a measured BalaSafe footprint.'],['Kazakhstan context','Electricity for inference and hosting has a grid footprint. The actual water use depends on the model, data-centre cooling and power supply; indirect power-generation water is not included in Google’s figure.']],
+  link:['Google: published Gemini footprint','https://cloud.google.com/blog/products/infrastructure/measuring-the-environmental-impact-of-ai-inference?hl=en'],
+  mitigation:'Choose efficient models, avoid unnecessary AI calls, and request measured water and electricity data from the provider.'},
+ economic:{tag:'02 · ECONOMIC',title:'Real price anchors, scenario totals.',
+  blocks:[['Published prices','SMS examples: 16.6–19.6 KZT each; one Kazakhstan VPS plan: 19,520 KZT/month. The calculator rounds SMS to 20 KZT and adds assumed wages and support.'],['Who pays / earns','A public pilot needs an approved budget; telecom and hosting providers would receive contracts. No agency has committed funds.']],
+  link:['SMS provider price list','https://kazinfoteh.kz/sms-sending.html'],
+  mitigation:'Get formal offers for all networks, model API use and specialist staff before procurement.'},
+ labor:{tag:'03 · LABOUR',title:'AI changes work; it does not erase it.',
+  blocks:[['Workload','At 40 alerts and 25 tips each, 3 minutes per tip plus 15 minutes per alert gives 60 review hours/month (assumed). Staff still verify translations, tips and volunteer assignments.'],['Who bears it','Police, moderators and volunteers; a 300,000 KZT reviewer salary is a budget assumption, not a specialist quote.']],
+  link:['Bureau of National Statistics wage context','https://stat.gov.kz/en/industries/labor-and-income/stat-wags/publications/509380/'],
+  mitigation:'Fund moderators and track correction time, volunteer hours and errors.'},
+ governance:{tag:'04 · GOVERNANCE',title:'Human oversight is a legal and political choice.',
+  blocks:[['Governance test','Who approves alerts? Police. Who can review access? Auditors. Can a vendor export child or witness data? Only after lawful review. Kazakhstan’s AI Law (effective 18 January 2026) establishes transparency, responsibility and risk management.']],
+  link:['Kazakhstan Ministry: AI Law','https://www.gov.kz/org/maidd/press/news/details/1143060?lang=ru'],
+  mitigation:'Role-based permissions, audit logs, no autonomous publishing and a documented review of data location.'},
+ ethics:{tag:'05 · DATA ETHICS',title:'Avoid putting children at greater risk.',
+  blocks:[['Data needed','Police-approved description, approximate last-seen area, opt-in district, witness reports and verified-volunteer contact details.'],['Potential harm','A child may be fleeing an abusive guardian; a false or leaked sighting can expose them. Family consent alone may be unsafe.']],
+  mitigation:'Safeguarding veto, minimum public details, restricted tips and automatic notice expiry.'}
+};
+const billPanelEl=document.getElementById('billPanel');
+document.querySelectorAll('.bill-tab').forEach(btn=>btn.addEventListener('click',()=>{
+ const item=billEntries[btn.dataset.bill];
+ if(!item||!billPanelEl)return;
+ document.querySelectorAll('.bill-tab').forEach(b=>{b.classList.remove('active');b.setAttribute('aria-selected','false')});
+ btn.classList.add('active');btn.setAttribute('aria-selected','true');
+ billPanelEl.replaceChildren();
+ const tag=document.createElement('span');tag.className='bill-panel-tag';tag.textContent=item.tag;billPanelEl.append(tag);
+ const title=document.createElement('h4');title.textContent=item.title;billPanelEl.append(title);
+ for(const [label,body] of item.blocks){const p=document.createElement('p');const strong=document.createElement('strong');strong.textContent=label+': ';p.append(strong,document.createTextNode(body));billPanelEl.append(p)}
+ if(item.link){const p=document.createElement('p');const a=document.createElement('a');a.href=item.link[1];a.target='_blank';a.rel='noopener noreferrer';a.textContent=item.link[0]+' ↗';p.append(a);billPanelEl.append(p)}
+ const mitigation=document.createElement('p');mitigation.className='bill-takeaway';mitigation.textContent='Mitigation: '+item.mitigation;billPanelEl.append(mitigation);
+}));
+
+// Concise four-region exploration (figures and definitions remain source-specific).
+(function(){
+const reports={
+ astana:{label:'ASTANA · JAN–25 AUG 2026',num:'≈2,000 calls',text:'Missing-minor and unauthorized-departure calls.',source:'https://www.gov.kz/org/mvd-astana/press/news/details/1279384?lang=ru'},
+ abai:{label:'ABAI REGION · JAN–OCT 2026',num:'500+ reports',text:'Reports involving missing children; some through the emergency line.',source:'https://www.gov.kz/org/qriim/press/news/details/1310173?lang=ru'},
+ aktobe:{label:'AKTOBE REGION · 2025',num:'658 children in search records',text:'Minors recorded as being sought during 2025.',source:'https://www.gov.kz/org/mvd-aktobe/press/news/details/1137632'},
+ mangystau:{label:'MANGYSTAU REGION · JAN–OCT 2026',num:'20 reports involving minors',text:'Police reported 20 missing-minor cases in a wider set of 167 missing-person reports.',source:'https://www.gov.kz/org/mvd-mangystau/press/news/details/1331184?lang=ru'}
+};
+const target=document.getElementById('regionReportDetail');
+document.querySelectorAll('.region-report-choice').forEach(btn=>btn.addEventListener('click',()=>{
+const r=reports[btn.dataset.region];if(!r||!target)return;
+document.querySelectorAll('.region-report-choice').forEach(b=>{b.classList.remove('active');b.setAttribute('aria-pressed','false')});
+btn.classList.add('active');btn.setAttribute('aria-pressed','true');
+target.replaceChildren();const span=document.createElement('span');span.textContent=r.label;
+const h=document.createElement('h4');h.textContent=r.num;const para=document.createElement('p');para.textContent=r.text;
+const link=document.createElement('a');link.href=r.source;link.target='_blank';link.rel='noopener noreferrer';link.textContent='Read the police announcement ↗';target.append(span,h,para,link);
+}));
+})();
+
+// Arrow-key operation for the single live cost panel; never hide the panel.
+(() => {
+  const tabs=Array.from(document.querySelectorAll('.bill-tab'));
+  tabs.forEach((tab,i)=>{
+    tab.addEventListener('keydown',event=>{
+      let next=-1;
+      if(event.key==='ArrowRight')next=(i+1)%tabs.length;
+      else if(event.key==='ArrowLeft')next=(i-1+tabs.length)%tabs.length;
+      else if(event.key==='Home')next=0;
+      else if(event.key==='End')next=tabs.length-1;
+      if(next>=0){event.preventDefault();tabs[next].focus();tabs[next].click()}
+    });
+  });
+})();
+</script>
+<script>
+
+// Trigger decorative page turns as the reader reaches each new chapter.
+(() => {
+  const turns = document.querySelectorAll('.magazine-chapter-turn');
+  if (!turns.length) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) {
+    turns.forEach(el => el.classList.add('is-open'));
+    return;
+  }
+  const observer = new IntersectionObserver(entries => {
+    for (const entry of entries) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-open');
+        observer.unobserve(entry.target);
+      }
+    }
+  }, { threshold: .42 });
+  turns.forEach(el => observer.observe(el));
+})();
+
+</script>
 </body>
 </html>
