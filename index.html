@@ -960,6 +960,18 @@ body{background:#fff8f0;color:var(--text)}
 #problem .global-eight-art{max-width:310px;margin-left:auto}
 #problem .global-eight-art svg{display:block;width:100%;height:auto}
 @media(max-width:760px){#problem .global-eight{grid-template-columns:1fr}#problem .global-eight-art{max-width:220px;margin:-10px auto 0}}
+
+
+/* Integrated, non-repeating AI process */
+#solution .ai-ops{margin-top:14px;}
+#solution .workflow-gate{display:flex;gap:13px;align-items:center;padding:17px 20px;border-radius:14px;background:#172943;color:#fff;margin-bottom:12px}
+#solution .workflow-gate b{font-size:.82rem;letter-spacing:.06em;color:#f4be72}
+#solution .workflow-gate p{margin:3px 0 0;color:#e7edf7;font-size:.93rem}
+#solution .workflow-gate-icon{display:flex;flex:none;align-items:center;justify-content:center;border-radius:50%;width:40px;height:40px;background:#f4be72;color:#172943;font-weight:900}
+#solution .workflow-connector{text-align:center;font-size:.75rem;letter-spacing:.12em;font-weight:850;color:#94572b;padding:4px 0 15px}
+#solution .ai-ops-grid{margin-bottom:12px}
+#solution .ai-boundary{background:#172943;color:#e7edf7;border-radius:14px;padding:16px 20px}
+#solution .ai-boundary strong{color:#f4be72;display:block;margin-bottom:4px}
 </style>
 </head>
 <body>
@@ -1090,7 +1102,6 @@ body{background:#fff8f0;color:var(--text)}
 <p class="story-disclaimer">Illustrative communication scenario — not a measured failure rate in Kazakhstan.</p>
 </div>
 </div>
-
 <div class="global-eight card reveal-on-scroll" id="why-searches-matter">
 <div class="global-eight-copy">
 <div class="section-tag">GLOBAL CONTEXT · WHY THIS TOPIC MATTERS</div>
@@ -1251,7 +1262,7 @@ body{background:#fff8f0;color:var(--text)}
 <div class="container">
 <div class="section-header"><div class="section-tag">04 / AI-Assisted Solution</div>
 <h2>An AI coordination engine for faster, smarter missing-child alerts.</h2>
-<p class="section-subtitle">BalaSafe KZ is a <strong>proposed AI-assisted alert and coordination network</strong>. Instead of merely displaying posts, its AI turns approved case details and incoming reports into clear multilingual alerts, identifies repeat or contradictory tips, recommends which districts should receive updates, and helps dispatch verified volunteer teams. <strong>Humans authorize publication, verify leads and direct real searches.</strong></p></div><p class="ai-value-statement"><strong>Why AI? </strong>It can process many unstructured tips in three languages, flag duplicates and organize reviewer queues. Ordinary geofencing delivers messages; AI handles the messy incoming information. Its value must still be tested against human processing.</p>
+<p class="section-subtitle">BalaSafe KZ would turn police-approved case details into <strong>Kazakh, Russian and English alerts</strong>, sort incoming sightings and suggest relevant districts and volunteer groups. <strong>Police and coordinators make the final decisions.</strong></p></div>
 <div class="card section-figure reveal-on-scroll solution-figure">
 <div class="figure-kicker">AI WORKFLOW · WHAT THE MODEL ACTUALLY DOES</div>
 <div class="ai-orbit">
@@ -1266,16 +1277,17 @@ body{background:#fff8f0;color:var(--text)}
 </svg>
 </div>
 </div>
-<div class="accent-band"><div class="project-kicker">THE OPERATING IDEA</div><h3>One verified case → three languages → targeted alerts → organized tips and volunteer teams.</h3><p>AI handles high-volume preparation and coordination tasks; police and safeguarding staff retain decisions that could affect a child's safety.</p></div>
-<div class="section-header"><div class="section-tag">HOW IT WOULD WORK</div><h2>From official report to useful lead</h2></div>
-<div class="flowline">
-<div class="flowstep"><span class="stepnumber">01 · APPROVE</span><strong>Police authorize safe case details</strong><p>A safeguarding officer selects what may be shared. Unapproved private information stays restricted.</p></div>
-<div class="flowstep"><span class="stepnumber">02 · AI PROCESSING</span><strong>AI produces a structured, trilingual alert</strong><p>AI extracts confirmed descriptions and dates, drafts Kazakh/Russian/English versions and checks for inconsistencies. A human approves the wording.</p></div>
-<div class="flowstep"><span class="stepnumber">03 · AI TARGETING</span><strong>AI helps decide whom to notify</strong><p>Using confirmed location and case updates, AI proposes relevant districts and notification wording. Police approve the area; the service delivers the alert to opt-in residents.</p></div>
-<div class="flowstep"><span class="stepnumber">04 · AI COORDINATION</span><strong>AI sorts tips and matches volunteers</strong><p>Incoming tips are translated, clustered and prioritized for review. AI suggests district teams based on verified volunteer locations and availability; coordinators assign tasks.</p></div>
-</div>
+
+<div class="section-header"><div class="section-tag">HOW IT WOULD WORK</div><h2>From official report to useful lead</h2><p class="section-subtitle">One workflow, six AI tasks and two human checkpoints.</p></div>
+
 <div class="ai-ops" id="ai-operations">
-<div class="ai-ops-header"><span class="project-kicker">6 AI OPERATIONS · FROM CASE TO COORDINATION</span><h3>What the AI actually does</h3><p>These are proposed functions, not claims that a working platform has already been deployed.</p></div>
+<div class="workflow-gate workflow-start">
+<span aria-hidden="true" class="workflow-gate-icon">✓</span>
+<div><b>START · POLICE APPROVE THE CASE</b><p>Only safe, verified details enter the alert workflow.</p></div>
+</div>
+<div aria-hidden="true" class="workflow-connector">↓ AI PROCESSES</div>
+
+
 <div class="ai-ops-grid">
 <article class="ai-op"><span class="ai-op-icon">01</span><h4>Extract</h4><p>Convert approved case descriptions, locations and timestamps into structured records.</p><span class="ai-op-output">OUTPUT · Clear case brief</span></article>
 <article class="ai-op"><span class="ai-op-icon">02</span><h4>Translate</h4><p>Draft alerts and incoming tip summaries in <strong>Kazakh, Russian and English</strong>.</p><span class="ai-op-output">OUTPUT · 3-language notices</span></article>
@@ -1284,7 +1296,7 @@ body{background:#fff8f0;color:var(--text)}
 <article class="ai-op"><span class="ai-op-icon">05</span><h4>Triage tips</h4><p>Group duplicate witness messages, extract new details and rank which leads need review first.</p><span class="ai-op-output">OUTPUT · Organized lead queue</span></article>
 <article class="ai-op"><span class="ai-op-icon">06</span><h4>Match volunteers</h4><p>Suggest search groups by district, language, availability and verified membership.</p><span class="ai-op-output">OUTPUT · Draft team assignments</span></article>
 </div>
-<div class="ai-boundary"><strong>AI processes and recommends. People decide.</strong> Police approve alerts and search areas; coordinators assign volunteers; safeguarding staff can block publication. No AI-generated statement is treated as a verified sighting.</div>
+<div aria-hidden="true" class="workflow-connector">↓ HUMAN REVIEW</div><div class="ai-boundary"><strong>FINISH · APPROVED ALERTS &amp; SEARCH TASKS</strong> Police review translations and suggested areas; residents receive approved notifications; verified volunteers act only on coordinator instructions.</div>
 </div>
 <div class="identity-flow reveal-on-scroll">
 <div class="identity-flow-head">
@@ -1405,7 +1417,8 @@ body{background:#fff8f0;color:var(--text)}
 </div>
 <div class="chapter-box"><div class="project-kicker">Critical choices</div><h3>What I rejected</h3><p>I rejected unsupported claims about survival after 24 hours, irrelevant statistics about abductions, unnecessary app development, and content that did not meet the course rubric.</p></div>
 </div>
-</section><section class="section references-section" id="sources">
+</section>
+<section class="section references-section" id="sources">
 <div class="container references-inner">
 <div class="section-header">
 <div class="section-tag">08 / REFERENCES</div>
@@ -1680,6 +1693,5 @@ const link=document.createElement('a');link.href=r.source;link.target='_blank';l
     });
   });
 })();
-</script>
-</body>
+</script></body>
 </html>
