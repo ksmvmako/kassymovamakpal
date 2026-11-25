@@ -988,6 +988,9 @@ body{background:#fff8f0;color:var(--text)}
 .wko-trend .caption{margin:14px 0 0;max-width:76ch}
 @media(max-width:700px){#regionalFigure .region-report-options{grid-template-columns:repeat(2,minmax(0,1fr));}}
 @media(max-width:420px){#regionalFigure .region-report-options{grid-template-columns:1fr}}
+
+#costs .staffing-reason{font-size:.82rem;line-height:1.4;margin:8px 0 14px;color:var(--muted);max-width:58ch}
+#costs .ai-api-result{background:rgba(214,156,47,.08);border-radius:12px}
 </style>
 </head>
 <body>
@@ -1124,7 +1127,6 @@ body{background:#fff8f0;color:var(--text)}
 <h3>Missing children are a global child-protection issue.</h3>
 <div class="global-eight-stat"><span>8 million</span><small>ICMEC's worldwide estimate of missing children</small></div>
 <p>Missing-child searches are not limited to Kazakhstan. <a href="https://www.icmec.org/global-missing-child-alert/" rel="noopener noreferrer" target="_blank">International Centre for Missing &amp; Exploited Children ↗</a></p>
-
 </div>
 <div aria-hidden="true" class="global-eight-art">
 <svg viewbox="0 0 280 225" xmlns="http://www.w3.org/2000/svg">
@@ -1375,12 +1377,16 @@ body{background:#fff8f0;color:var(--text)}
 <div class="calc-field"><label for="textsPerCase">SMS per alert <output id="textsOut">300</output></label><input id="textsPerCase" max="2000" min="0" step="50" type="range" value="300"/></div>
 <div class="calc-field"><label for="tipsPerCase">Witness tips per alert <output id="tipsOut">25</output></label><input id="tipsPerCase" max="100" min="0" step="5" type="range" value="25"/></div>
 <div class="calc-field"><label for="staffCount">Paid reviewers <output id="staffOut">2</output></label><input id="staffCount" max="8" min="1" step="1" type="range" value="2"/></div>
-<details class="cost-assumption-details"><summary>See published prices &amp; scenario assumptions</summary><div class="formula"><strong>Price anchors:</strong> a published Kazakhstan SMS list shows approximately <strong>16.6–19.6 KZT per message</strong> for several service categories (<a href="https://kazinfoteh.kz/sms-sending.html" rel="noopener noreferrer" target="_blank">Kazinfoteh ↗</a>). The calculator uses a rounded <strong>20 KZT/SMS</strong> scenario, not a guaranteed cross-network rate. A Kazakhstan VPS with 4 vCPU/8 GB is advertised at <strong>19,520 KZT/month</strong> (<a href="https://adastracloud.kz/en/pricing/" rel="noopener noreferrer" target="_blank">Adastra Cloud ↗</a>); <strong>80,480 KZT</strong> for support/backup is an assumption, making <strong>100,000 KZT/month</strong> total hosting/support. <strong>300,000 KZT per reviewer</strong> is an assumed salary, not a specialist quote (<a href="https://stat.gov.kz/en/industries/labor-and-income/stat-wags/publications/509380/" rel="noopener noreferrer" target="_blank">BNS wage context ↗</a>). Staffing time: 3 min per tip + 15 min per approved alert. The electricity model (30 kWh base + 0.002 kWh/task) is unmeasured. SMS sender-ID charges, model API/GPU use, development and security audits are <strong>not included</strong>.</div></details>
+<details class="cost-assumption-details"><summary>See published prices &amp; scenario assumptions</summary><div class="formula">
+<strong>Pricing basis:</strong> SMS <strong>20 KZT</strong>/message (rounded from a <a href="https://kazinfoteh.kz/sms-sending.html" rel="noopener noreferrer" target="_blank">published price list</a>); hosting and support <strong>100,000 KZT/month</strong> (including a <a href="https://adastracloud.kz/en/pricing/" rel="noopener noreferrer" target="_blank">19,520 KZT VPS reference</a>); reviewers <strong>300,000 KZT each/month</strong> (assumed).<br/>
+<strong>AI API estimate:</strong> GPT-4.1 mini <strong>$0.40 input / $1.60 output per 1 million tokens</strong> (<a href="https://openai.com/index/gpt-4-1/" rel="noopener noreferrer" target="_blank">OpenAI published model rates</a>), with assumed <strong>2,000 input + 500 output tokens per task</strong> and <strong>458.28 KZT/USD</strong> (<a href="https://nationalbank.kz/en/exchangerates/ezhednevnye-oficialnye-rynochnye-kursy-valyut" rel="noopener noreferrer" target="_blank">NBK, 25 Nov 2026</a>). This is a <em>pricing benchmark</em>, not a selected or tested model.<br/>
+Human review: <strong>3 minutes/tip + 15 minutes/alert</strong> (assumed). Electricity: <strong>30 kWh/month + 0.002 kWh/AI task</strong> (illustrative). Excludes setup, audits, sender-ID fees and extra compliance costs.
+</div></details>
 </div>
 <div class="calc-panel">
 <div class="project-kicker">Indicative recurring operating costs</div><div class="calc-hero" id="monthlyCost">—</div><p class="caption">Illustrative monthly operating cost, not a supplier quote; excludes setup and audits.</p>
-<div class="calc-results"><div class="calc-result"><b id="annualCost">—</b><span>12-month recurring cost · KZT</span></div><div class="calc-result"><b id="smsCost">—</b><span>SMS spend per month · KZT</span></div><div class="calc-result"><b id="computeTasks">—</b><span>AI text tasks per month</span></div><div class="calc-result"><b id="modelKwh">—</b><span>Modeled operational electricity · kWh/month</span></div><div class="calc-result"><b id="reviewHours">—</b><span>Estimated human review hours/month · assumed</span></div><div class="calc-result water-result"><b id="waterBenchmark">—</b><span>Illustrative cooling water · L/month<br/><small>At Google's median Gemini prompt benchmark (not BalaSafe use)</small></span></div></div>
-<div class="accent-band"><strong>Not priced:</strong> AI API/GPU, sender IDs, development, audits, safeguards and volunteer time.</div>
+<div class="calc-results"><div class="calc-result"><b id="annualCost">—</b><span>12-month recurring cost · KZT</span></div><div class="calc-result"><b id="smsCost">—</b><span>SMS spend per month · KZT</span></div><div class="calc-result ai-api-result"><b id="apiCost">—</b><span>AI API text processing · KZT/month</span></div><div class="calc-result"><b id="computeTasks">—</b><span>AI text tasks per month</span></div><div class="calc-result"><b id="modelKwh">—</b><span>Modeled operational electricity · kWh/month</span></div><div class="calc-result"><b id="reviewHours">—</b><span>Estimated human review hours/month · assumed</span></div><div class="calc-result water-result"><b id="waterBenchmark">—</b><span>Illustrative cooling water · L/month<br/><small>At Google's median Gemini prompt benchmark (not BalaSafe use)</small></span></div></div>
+
 </div>
 </div>
 </div>
@@ -1562,12 +1568,17 @@ body{background:#fff8f0;color:var(--text)}
         const [cases,smsPerCase,tips,reviewers]=inputs.map(el=>Number(el.value));
         const sms=cases*smsPerCase*20;
         const payroll=reviewers*300000;
-        const monthly=sms+payroll+100000;
         const tasks=cases*(1+tips);
+        // Published GPT-4.1 mini benchmark: 2k input / 500 output tokens per task,
+        // $0.40/$1.60 per million tokens, converted at NBK 25 Nov 2026 KZT rate.
+        const usdKzt=458.28;
+        const apiPerTaskUsd=(2000*0.40+500*1.60)/1000000;
+        const api=tasks*apiPerTaskUsd*usdKzt;
+        const monthly=sms+payroll+100000+api;
         const energy=30+tasks*.002;
         set('casesOut',cases);set('textsOut',fmt(smsPerCase));set('tipsOut',tips);set('staffOut',reviewers);
         set('monthlyCost',fmt(monthly)+' KZT');set('annualCost',fmt(monthly*12));
-        set('smsCost',fmt(sms));set('computeTasks',fmt(tasks));set('modelKwh',energy.toFixed(1));set('waterBenchmark',(tasks*0.26/1000).toFixed(2));set('reviewHours',(cases*0.25+cases*tips*3/60).toFixed(1));
+        set('smsCost',fmt(sms));set('apiCost',fmt(api));set('computeTasks',fmt(tasks));set('modelKwh',energy.toFixed(1));set('waterBenchmark',(tasks*0.26/1000).toFixed(2));set('reviewHours',(cases*0.25+cases*tips*3/60).toFixed(1));
       };
       inputs.forEach(el=>el.addEventListener('input',update));update();
     })();
@@ -1651,11 +1662,11 @@ const billEntries = {
   link:['Google: published Gemini footprint','https://cloud.google.com/blog/products/infrastructure/measuring-the-environmental-impact-of-ai-inference?hl=en'],
   mitigation:'Choose efficient models, avoid unnecessary AI calls, and request measured water and electricity data from the provider.'},
  economic:{tag:'02 · ECONOMIC',title:'Real price anchors, scenario totals.',
-  blocks:[['Published prices','SMS examples: 16.6–19.6 KZT each; one Kazakhstan VPS plan: 19,520 KZT/month. The calculator rounds SMS to 20 KZT and adds assumed wages and support.'],['Who pays / earns','A public pilot needs an approved budget; telecom and hosting providers would receive contracts. No agency has committed funds.']],
+  blocks:[['Price basis','SMS 20 KZT each, VPS reference 19,520 KZT/month, assumed wages and support. AI API uses a published per-token rate plus assumed token volumes; its cost updates with the sliders.'],['Who pays / earns','A public pilot needs an approved budget; telecom and hosting providers would receive contracts. No agency has committed funds.']],
   link:['SMS provider price list','https://kazinfoteh.kz/sms-sending.html'],
   mitigation:'Get formal offers for all networks, model API use and specialist staff before procurement.'},
  labor:{tag:'03 · LABOUR',title:'AI changes work; it does not erase it.',
-  blocks:[['Workload','At 40 alerts and 25 tips each, 3 minutes per tip plus 15 minutes per alert gives 60 review hours/month (assumed). Staff still verify translations, tips and volunteer assignments.'],['Who bears it','Police, moderators and volunteers; a 300,000 KZT reviewer salary is a budget assumption, not a specialist quote.']],
+  blocks:[['Workload','At 40 alerts and 25 tips each, modeled active review is 60 hours/month. Two reviewers allow staggered availability, second checks and urgent escalations, but do not provide 24/7 coverage.'],['Who bears it','Police, moderators and volunteers; a 300,000 KZT reviewer salary is a budget assumption, not a specialist quote.']],
   link:['Bureau of National Statistics wage context','https://stat.gov.kz/en/industries/labor-and-income/stat-wags/publications/509380/'],
   mitigation:'Fund moderators and track correction time, volunteer hours and errors.'},
  governance:{tag:'04 · GOVERNANCE',title:'Human oversight is a legal and political choice.',
